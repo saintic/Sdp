@@ -3,12 +3,11 @@ Simle Docker PaaS
 
 ###########
 Directory description:
-boot:创建number.sdi.paas.saintic.net三级域名记录，连接hipache、redis路由，触发文件服务功能，触发容器创建及分配和限制；
-components:SaintIC PaaS平台组件，HTTP路由，容器创建，文件服务，统一平台；
+components:PaaS平台组件，HTTP路由，容器创建，文件服务，统一平台；
 
+boot:引导用户生成、创建number.sdi.paas.saintic.net三级域名记录，连接hipache、redis路由，触发文件服务功能，触发容器创建及分配和限制；
 
-
-services:创建容器中主要服务，提供PaaS应用。
+builds:创建容器中主要服务，提供PaaS应用。
 
 ##
 
