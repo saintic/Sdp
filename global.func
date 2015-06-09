@@ -1,0 +1,11 @@
+#global.functions
+function ERROR()
+{
+  echo "Error:Please check this script and input/output!"
+  exit 1;
+}
+
+function create_ftp()
+{
+  
+}
