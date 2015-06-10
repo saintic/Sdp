@@ -1,4 +1,6 @@
 #!/bin/bash
-#init and boot paas, start all services.
-#1.Create three level domain name, the rule is ${NUM}.paas-sdi.saintic.com;
+#Create a dns record $init_user.sdp.saintic.net, and do route map to back-end docker application.
+source ../global.func
 
+
+source ./docker.sh
