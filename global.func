@@ -9,3 +9,8 @@ function create_ftp()
 {
   
 }
+
+MD5PASSWD() {
+  echo -n $1 | md5sum  |  awk  '{print $1}'
+  echo -n $1 | base64
+}
