@@ -7,7 +7,37 @@ function ERROR()
 
 function create_ftp()
 {
-  
+#arg:$init_user $init_passwd $init_user_home
+ 
+}
+
+function create_svn()
+{
+#arg:init_user_home
+sudosvnadmin create --fs-typefsfs /data/svndata/${1}
+sudochown-R apache:apache /data/svndata/${1}
+chmod-R g+w /data/svndata/${1}
+chmodg+s /data/svndata/${1}/db
+
+#Book.LYYGSD  ITsource  PaaS  puppet  server_conf
+cat >> /etc/httpd/conf.d/subversion.conf <<EOF
+<Location /${init_user}>
+   DAV svn
+   SVNPath $init_user_home
+   AuthType Basic
+   AuthName "Welcome to SaintIC."
+   AuthUserFile /svn/httppasswd
+   Satisfy Any
+   SSLRequireSSL
+  <LimitExcept GET PROPFIND OPTIONS REPORT>
+    Require valid-user
+  </LimitExcept>
+</Location>
+EOF
+
+
+
+
 }
 
 MD5PASSWD() {

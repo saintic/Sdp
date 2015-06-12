@@ -6,7 +6,11 @@
 
 source ./global.func
 export INIT_HOME=/data/SDI.PaaS
-[ "$#" != "4" ] || ERROR
+[ -e $INIT_HOME ] || mkdir -p $INIT_HOME
+[ "$#" != "4" ] || ERROR && \
+cat <<EOF
+$0 user passwd service dirhome
+EOF
 export init_user=$1
 export init_passwd=$2
 export init_service_type=$3
