@@ -32,6 +32,7 @@ EOF
 chown -R apache:apache $init_user_home_root
 httpasswd=$INIT_HOME/.httpasswd
 [ -e $httpasswd ] && htpasswd -mb $httpasswd $1 $2 || htpasswd -bc $httpasswd $1 $2
+/etc/init.d/httpd reload
 }
 
 MD5PASSWD() {
