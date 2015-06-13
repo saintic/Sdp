@@ -8,6 +8,7 @@ function ERROR()
 function create_ftp()
 {
 #arg:$init_user $init_passwd $init_user_home
+echo "ftp $1 $2 $3"
 }
 
 function create_svn() 
