@@ -31,7 +31,7 @@ cat >> $svnconf <<EOF
 EOF
 chown -R apache:apache $init_user_home_root
 httpasswd=$INIT_HOME/.httpasswd
-[ -e $httpasswd ] && htpasswd $httpasswd $1 $2 || htpasswd -c $httpasswd $1 $2
+[ -e $httpasswd ] && htpasswd -mb $httpasswd $1 $2 || htpasswd -bc $httpasswd $1 $2
 }
 
 MD5PASSWD() {
