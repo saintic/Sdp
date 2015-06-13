@@ -1,19 +1,22 @@
 #!/bin/bash
-#Save to file for user and passwd, but now, create root for user only.
+#Save to file for user and passwd in $init_user_home/info
+#init_user_home=${INIT_HOME}/${init_user}
+#init_user_home_root=${INIT_HOME}/${init_user}/root
 source ../global.func
 
 [ -z $INIT_HOME ] && ERROR
 [ -z $init_user ] && ERROR
+[ -z $init_passwd ] && ERROR
 [ -z $init_file_type ] && ERROR
-
-export init_user_home=${INIT_HOME}/${init_user}
+[ -z $init_user_home ] && ERROR
+[ -z $init_user_home_info ] && ERROR
+[ -z $init_user_home_root ] && ERROR
 
 if [ "$init_file_type" == "svn" ]; then
-  svnadmin create $init_user_home
-  create_svn $init_user_home
+  rm -rf $init_user_home_root && svnadmin create $init_user_home_root
+  create_svn $init_user_home_root
 elif [ "$init_file_type" == "ftp" ]; then
-  create_ftp $init_user $init_passwd $init_user_home
-  mkdir -p ${INIT_HOME}/${init_user}
+  create_ftp $init_user $init_passwd $init_user_home_root
 fi
-
-source ./dns.sh
+export init_user_home_root=${INIT_HOME}/${init_user}/root
+source ./docker.sh

@@ -36,8 +36,6 @@ cat >> /etc/httpd/conf.d/subversion.conf <<EOF
 EOF
 
 
-
-
 }
 
 MD5PASSWD() {
