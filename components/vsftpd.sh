@@ -63,6 +63,3 @@ local_root=/home/vsftpd/dbzh3
 EOF
 }
 
-create() 
-{
-}

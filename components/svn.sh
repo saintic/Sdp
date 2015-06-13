@@ -9,7 +9,7 @@
    DAV svn
    SVNPath /svn/repos/repo1
    AuthType Basic
-   AuthName "SVN Auth System NO.1"
+   AuthName "SDI Code Service"
    AuthUserFile /svn/webpasswd
    AuthzSVNAccessFile /svn/repos/repo1/conf/authz
    Satisfy Any
@@ -18,11 +18,5 @@
     Require valid-user
   </LimitExcept>
 </Location>
-
-
-
-
-
-
 
 

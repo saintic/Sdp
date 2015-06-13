@@ -23,7 +23,7 @@ export init_user_home_root=${INIT_HOME}/${init_user}/root   #directory
 
 #user_oid:Existing User ID
 user_oid=$(grep user_id $Sdp | tail -1 | awk -F : '{print $2}')
-if [ -z $user_oid ] || [ "$user_oid" = "" ];then
+if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
   echo "50000" > $portmap_file
 else
   echo `expr 50000 + $user_oid` > $portmap_file
