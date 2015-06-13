@@ -21,12 +21,13 @@ export init_user_home=${INIT_HOME}/${init_user}    #directory
 export init_user_home_info=${INIT_HOME}/${init_user}/info   #file
 export init_user_home_root=${INIT_HOME}/${init_user}/root   #directory
 
-#user_id:Existing User ID
-user_id=$(grep user_id $Sdp | tail -1 | awk -F : '{print $2}')
-if [ -z $user_id ] || [ "$user_id" = "" ];then
-  echo "5000" > $portmap_file
+#user_oid:Existing User ID
+user_oid=$(grep user_id $Sdp | tail -1 | awk -F : '{print $2}')
+if [ -z $user_oid ] || [ "$user_oid" = "" ];then
+  echo "50000" > $portmap_file
 else
-  echo "5000+$user_id" > $portmap_file
+  echo `expr 50000 + $user_oid` > $portmap_file
+  #first portmap is 5000, user_id is null ,and portmap = portmap + user_id
 fi
 
 source boot/user.file.sh

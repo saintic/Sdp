@@ -8,10 +8,15 @@ function ERROR()
 function create_ftp()
 {
 #arg:$init_user $init_passwd $init_user_home
- 
+echo "ftp $1 $2 $3"
 }
 
-function create_svn()
+function create_svn() 
+{
+echo "svn $1"
+}
+
+function create_svn_1()
 {
 #arg:init_user_home
 sudosvnadmin create --fs-typefsfs /data/svndata/${1}
@@ -34,8 +39,6 @@ cat >> /etc/httpd/conf.d/subversion.conf <<EOF
   </LimitExcept>
 </Location>
 EOF
-
-
 }
 
 MD5PASSWD() {

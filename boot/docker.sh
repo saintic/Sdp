@@ -11,8 +11,9 @@ source ../global.func
 [ -z $init_user_home_info ] && ERROR
 [ -z $portmap_file ] && ERROR
 [ -z $init_service_type ] && ERROR
-
-cat > ${init_user_home}/info
-
+export portmap=`cat $portmap_file`
+cat >> $init_user_home_info <<EOF
+182.92.106.104:$portmap
+EOF
 
 source ../builds/builds.sh

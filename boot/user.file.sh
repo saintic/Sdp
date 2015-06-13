@@ -1,5 +1,5 @@
 #!/bin/bash
-#Save to file for user and passwd in $init_user_home/info
+#Save to file for user and passwd > $init_user_home/info
 #init_user_home=${INIT_HOME}/${init_user}
 #init_user_home_root=${INIT_HOME}/${init_user}/root
 source ../global.func
@@ -18,5 +18,11 @@ if [ "$init_file_type" == "svn" ]; then
 elif [ "$init_file_type" == "ftp" ]; then
   create_ftp $init_user $init_passwd $init_user_home_root
 fi
-export init_user_home_root=${INIT_HOME}/${init_user}/root
+
+if [ -z $user_oid ] || [ "$user_oid" = "" ];then
+  export user_id=1
+else
+  export user_id=`expr $user_oid + 1`
+fi
+
 source ./docker.sh
