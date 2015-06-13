@@ -17,10 +17,12 @@ export init_service_type=$3
 export init_file_type=$4
 export portmap_file=${INIT_HOME}/portmap           #file
 export Sdp=${INIT_HOME}/Sdp.user.info              #file
-export init_user_home=${INIT_HOME}/${init_user}    #directory
+export init_user_home=${INIT_HOME}/$init_user      #directory
 export init_user_home_info=${INIT_HOME}/${init_user}/info   #file
 export init_user_home_root=${INIT_HOME}/${init_user}/root   #directory
 touch $Sdp $portmap_file
+mkdir -p $init_user_home && touch  $init_user_home_info
+
 #user_oid:Existing User ID
 user_oid=$(grep user_id $Sdp | tail -1 | awk -F : '{print $2}')
 if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
