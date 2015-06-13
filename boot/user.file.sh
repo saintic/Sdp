@@ -14,9 +14,11 @@ source $SDP_HOME/global.func
 
 if [ "$init_file_type" == "svn" ]; then
   rm -rf $init_user_home_root && svnadmin create $init_user_home_root
-  create_svn $init_user_home_root
+  create_svn $init_user $init_passwd $init_user_home_root
 elif [ "$init_file_type" == "ftp" ]; then
   create_ftp $init_user $init_passwd $init_user_home_root
+else
+  echo -e "\033[31mUnsupported code type！\033[0m"
 fi
 
 if [ -z $user_oid ] || [ "$user_oid" = "" ];then

@@ -1,22 +1,30 @@
 #!/bin/bash
 #SaintIC Sdp svn.
-
-<Directory "/svn/repos/">
+yum -y install httpd subversion mod_ssl mod_dav_svn
+svnconf=/etc/httpd/conf.d/subversion.conf
+mv $svnconf ${svnconf}.bak
+cat > $svnconf<<EOF
+<Directory "/svn/">
 	Order allow,deny
 	Allow from all
 </Directory>
-<Location /repos/repo1>
+<Directory "/data/">
+	Order allow,deny
+	Allow from all
+</Directory>
+<Location /sdi/test>
    DAV svn
-   SVNPath /svn/repos/repo1
+   SVNPath /data/repos/test
    AuthType Basic
    AuthName "SDI Code Service"
-   AuthUserFile /svn/webpasswd
-   AuthzSVNAccessFile /svn/repos/repo1/conf/authz
+   AuthUserFile /data/repos/.passwd
    Satisfy Any
-   Require valid-user
+   SSLRequireSSL
   <LimitExcept GET PROPFIND OPTIONS REPORT>
     Require valid-user
   </LimitExcept>
 </Location>
-
+EOF
+mkdir -p /data/repos/ && svnadmin create /data/repos/test
+htpasswd -c /data/repos/.passwd test test
 
