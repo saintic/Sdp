@@ -2,7 +2,7 @@
 #Save to file for user and passwd > $init_user_home/info
 #init_user_home=${INIT_HOME}/${init_user}
 #init_user_home_root=${INIT_HOME}/${init_user}/root
-source ../global.func
+source $SDP_HOME/global.func
 
 [ -z $INIT_HOME ] && ERROR
 [ -z $init_user ] && ERROR
@@ -25,4 +25,4 @@ else
   export user_id=`expr $user_oid + 1`
 fi
 
-source ./docker.sh
+source $SDP_HOME/boot/docker.sh

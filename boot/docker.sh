@@ -3,7 +3,7 @@
 #portmap:expose `cat $portmap_file`,comment:user_id
 #Now we're just opening a IP:PORT!
 #define range:5000>>=portmap=<<5999
-source ../global.func
+source $SDP_HOME/global.func
 
 [ -z $INIT_HOME ] && ERROR
 [ -z $init_user ] && ERROR
@@ -16,4 +16,4 @@ cat >> $init_user_home_info <<EOF
 182.92.106.104:$portmap
 EOF
 
-source ../builds/builds.sh
+source $SDP_HOME/builds/builds.sh

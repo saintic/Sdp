@@ -1,7 +1,7 @@
 #!/bin/bash
 #boot services.
-source ../global.func
+source $SDP_HOME/global.func
 [ -z $init_service_type ] && ERROR
 
 
-source ../.end.sh
+source $SDP_HOME/.end.sh
