@@ -1,7 +1,7 @@
 #!/bin/bash
 [ -z $Sdp ] && echo "Ending,Error." && exit 1
 cat >> $Sdp <<EOF
-user_id:1
+user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "other info:"
     "MAP:182.92.106.104:$portmap"
