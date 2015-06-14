@@ -7,7 +7,7 @@ function ERROR()
 
 function create_ftp()
 {
-[ "$3" != "3" ] && ERROR
+[ "$#" != "3" ] && ERROR
 #arg:$init_user $init_passwd $init_user_home_root
 vfu=/etc/vsftpd/vfu.list
 vfudb=/etc/vsftpd/vfu.db
