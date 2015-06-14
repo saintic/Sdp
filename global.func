@@ -17,7 +17,7 @@ $1
 $2
 EOF
 db_load -T -t hash -f $vfu $vfudb
-cat > $1 <<EOF
+cat > ${vfudir}/$1 <<EOF
 write_enable=YES
 anon_world_readable_only=NO
 anon_upload_enable=YES
