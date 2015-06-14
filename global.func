@@ -42,7 +42,7 @@ cat >> $svnconf <<EOF
    SVNPath $3
    AuthType Basic
    AuthName "Welcome to SDI CodeSourceRoot."
-   AuthUserFile $httppasswd
+   AuthUserFile $httpasswd
    Satisfy Any
    SSLRequireSSL
   <LimitExcept GET PROPFIND OPTIONS REPORT>
