@@ -32,7 +32,7 @@ chmod -R a+t $3
 
 function create_svn() 
 {
-[ "$3" != "3" ] && ERROR
+[ "$#" != "3" ] && ERROR
 #arg:$init_user $init_passwd $init_user_home_root
 svnconf=/etc/httpd/conf.d/subversion.conf
 httpasswd=${INIT_HOME}/.httpasswd
