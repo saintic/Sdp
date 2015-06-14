@@ -65,4 +65,4 @@ local_root=/var/ftp/
 EOF
 /etc/init.d/vsftpd restart
 echo "Ending,Succeed!!!"
-echo Please check iptables or firewalld, SELinux.""
+echo "Please check iptables or firewalld, SELinux."

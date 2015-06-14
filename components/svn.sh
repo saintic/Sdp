@@ -30,4 +30,4 @@ EOF
 mkdir -p /data/repos/ && svnadmin create /data/repos/test
 htpasswd -bc /data/repos/.passwd test test
 echo "Ending,Succeed!!!"
-echo "Please install SSL certs."
+echo "Please install SSL certs.If no, disable SSLRequireSSL."
