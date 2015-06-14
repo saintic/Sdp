@@ -25,7 +25,7 @@ anon_mkdir_write_enable=YES
 anon_other_write_enable=YES
 local_root=$3
 EOF
-setfacl -R -m u:ftp:rwx $3
+chown -R ftp.ftp $3
 chmod -R a+t $3
 /etc/init.d/vsftpd reload
 }
