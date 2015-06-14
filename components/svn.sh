@@ -4,6 +4,8 @@ yum -y install httpd subversion mod_ssl mod_dav_svn
 svnconf=/etc/httpd/conf.d/subversion.conf
 mv $svnconf ${svnconf}.bak
 cat > $svnconf<<EOF
+LoadModule dav_svn_module     modules/mod_dav_svn.so
+LoadModule authz_svn_module   modules/mod_authz_svn.so
 <Directory "/svn/">
 	Order allow,deny
 	Allow from all
@@ -26,5 +28,6 @@ cat > $svnconf<<EOF
 </Location>
 EOF
 mkdir -p /data/repos/ && svnadmin create /data/repos/test
-htpasswd -c /data/repos/.passwd test test
-
+htpasswd -bc /data/repos/.passwd test test
+echo "Ending,Succeed!!!"
+echo "Please install SSL certs."

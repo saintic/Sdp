@@ -13,7 +13,7 @@ source $SDP_HOME/global.func
 [ -z $init_service_type ] && ERROR
 export portmap=`cat $portmap_file`
 cat >> $init_user_home_info <<EOF
-182.92.106.104:$portmap:init_service_type
+182.92.106.104:${portmap}:${init_service_type}
 EOF
 
 source $SDP_HOME/builds/builds.sh
