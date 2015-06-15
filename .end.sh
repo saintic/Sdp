@@ -5,7 +5,7 @@ user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "other info:"
     "MAP:182.92.106.104:$portmap"
-	"User Home:$init_user_home"
+    "User Home:$init_user_home"
     "Code Directory:$init_user_home_root"
     "ContainerID:$container_id"
     "ContainerInfo:$container_info"

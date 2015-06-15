@@ -1,6 +1,10 @@
 #!/bin/bash
 #Create virtual ftp users, first user is test
-[ "$#" = "2" ] || exit 1 && echo "Error,args is 2" 
+error() {
+  exit 1
+  echo "Error,args is 2" 
+}
+[ "$#" = "2" ] || error
 vfu=/etc/vsftpd/vfu.list
 vfudb=/etc/vsftpd/vfu.db
 vfudir=/etc/vsftpd/vfu_dir
