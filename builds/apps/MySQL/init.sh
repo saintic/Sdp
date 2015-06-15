@@ -1,4 +1,4 @@
 #!/bin/bash
 #init app, Dockerfile
-export portmap=50000
+#init app, Dockerfile
 docker build -t staugur/mysql .
