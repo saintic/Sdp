@@ -1,20 +1,18 @@
 # This is a base comment  
-FROM staugur/centos  
+FROM 127.0.0.1:5000/centos6 
 MAINTAINER SaintIC <staugur@saintic.com>  
   
-#yum install Package  
-RUN yum -y install net-tools
-RUN yum -y install iputils  iproute  man  vim-minimal  openssh-server  openssh-clients  
-RUN yum -y install httpd  
-RUN yum -y install python-setuptools  
-RUN easy_install supervisor  
+#yum install Package
+WORKDIR /data
+RUN yum -y install net-tools iputils  iproute  man  vim git
+RUN git clone https://github.com/staugur/CoreWeb coreweb
+RUN cd coreweb/create
+RUN sh mysql.sh
+ADD supervisord.conf /etc/supervisord.conf
+#set port 
+EXPOSE $portmap
 
-#set port  
-EXPOSE 22  
-EXPOSE 80  
-EXPOSE $init_service_port
-
-#set ENV  
+#set ENV
 ENV LANG en_US.UTF-8  
 ENV LC_ALL en_US.UTF-8  
 
