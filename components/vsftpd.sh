@@ -1,8 +1,8 @@
 #!/bin/bash
 #Create virtual ftp users, first user is test
 error() {
-  exit 1
   echo "Error,args is 2" 
+  exit 1
 }
 [ "$#" = "2" ] || error
 vfu=/etc/vsftpd/vfu.list
@@ -67,6 +67,6 @@ anon_mkdir_write_enable=YES
 anon_other_write_enable=YES
 local_root=/var/ftp/
 EOF
-/etc/init.d/vsftpd restart
+/etc/init.d/vsftpd start
 echo "Ending,Succeed!!!"
 echo "Please check iptables or firewalld, SELinux."

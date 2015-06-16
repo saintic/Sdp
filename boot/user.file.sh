@@ -17,15 +17,8 @@ if [ "$init_file_type" == "svn" ]; then
   create_svn $init_user $init_passwd $init_user_home_root
 elif [ "$init_file_type" == "ftp" ]; then
   create_ftp $init_user $init_passwd $init_user_home_root
-else
-  echo -e "\033[31mUnsupported code type！\033[0m"
-  exit 1
-fi
-
-if [ -z $user_oid ] || [ "$user_oid" = "" ];then
-  export user_id=1
-else
-  export user_id=`expr $user_oid + 1`
+elif [ "$init_file_type" == "-" ]; then
+  :
 fi
 
 source $SDP_HOME/boot/docker.sh

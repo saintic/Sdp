@@ -1,5 +1,6 @@
 #!/bin/bash
-[ -z $Sdp ] && echo "Ending,Error." && exit 1
+source $SDP_HOME/global.func
+[ -z $Sdp ] && ERROR
 cat >> $Sdp <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
@@ -11,4 +12,13 @@ user_id:$user_id
     "ContainerInfo:$container_info"
 ####################@@@@@@@@@@@@@@@@@@####################@@@@@@@@@@@@@@!!!
 EOF
-echo "Ending,Succeed!!!"
+if [ -d $init_user_home ]; then
+  if [ "$init_file_type" = "svn" ]; then
+    grep "$init_user" /etc/httpd/conf.d/subversion.conf &> /dev/null || ERROR
+  elif [ "$init_file_type" = "ftp" ]; then
+    grep "$init_user" /etc/vsftpd/vfu.list &> /dev/null || ERROR
+  fi
+  echo "Ending,Succeed!!!"
+else
+  ERROR
+fi

@@ -8,10 +8,6 @@ mv $svnconf ${svnconf}.bak
 cat > $svnconf<<EOF
 LoadModule dav_svn_module     modules/mod_dav_svn.so
 LoadModule authz_svn_module   modules/mod_authz_svn.so
-<Directory "/svn/">
-	Order allow,deny
-	Allow from all
-</Directory>
 <Directory "/data/">
 	Order allow,deny
 	Allow from all

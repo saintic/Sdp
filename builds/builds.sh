@@ -4,16 +4,16 @@ source $SDP_HOME/global.func
 [ -z $init_service_type ] && ERROR
 case $init_service_type in
 memcached)
-  source ${SDP_HOME}/builds/apps/MemCached/init.sh
+  docker build -t staugur/memcached ${SDP_HOME}/builds/apps/MemCached
   ;;
 mongodb)
-  source ${SDP_HOME}/builds/apps/MongoDB/init.sh
+  docker build -t staugur/mongodb ${SDP_HOME}/builds/apps/MongoDB
   ;;
 mysql)
-  source ${SDP_HOME}/builds/apps/MySQL/init.sh
+  docker build -t staugur/mysql ${SDP_HOME}/builds/apps/MySQL
   ;;
 redis)
-  source ${SDP_HOME}/builds/apps/Redis/init.sh
+  docker build -t staugur/redis ${SDP_HOME}/builds/apps/Redis
   ;;
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
