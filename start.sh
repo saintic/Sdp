@@ -1,14 +1,12 @@
 #!/bin/bash
 #user/passwd/service/file->user.file->dns.map->docker.service
-#everythin is file.user/passwd、ip_port(expose docker)、docker_map
+#everything is file.user/passwd、ip_port(expose docker)、docker_map
 #retrun: $0 successful, user passwd IP:Port(DNS) service file_directory.
 export SDP_HOME=$(cd `dirname $0`; pwd)
 rpm -q subversion &> /dev/null || sh $SDP_HOME/components/svn.sh
 rpm -q vsftpd &> /dev/null || sh $SDP_HOME/components/vsftpd.sh
-if [ "$#" != "4" ]; then
-  echo "Usage: $0 user passwd service file_type" ; exit 1
-else
-  :
+if [ "$#" != "5" ]; then
+  echo "Usage: $0 user passwd service file_type email" ; exit 1
 fi
 source $SDP_HOME/global.func
 export INIT_HOME=/data/SDI.PaaS
@@ -16,6 +14,7 @@ export init_user=$1
 export init_passwd=$2
 export init_service_type=$3
 export init_file_type=$4
+export user_email=$5
 export portmap_file=${INIT_HOME}/portmap           #file
 export Sdp=${INIT_HOME}/Sdp.user.info              #file
 export init_user_home=${INIT_HOME}/$init_user      #directory
