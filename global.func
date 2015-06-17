@@ -37,6 +37,7 @@ function create_svn()
 svnconf=/etc/httpd/conf.d/subversion.conf
 httpasswd=${INIT_HOME}/.httpasswd
 cat >> $svnconf <<EOF
+
 <Location /sdi/$1>
    DAV svn
    SVNPath $3
