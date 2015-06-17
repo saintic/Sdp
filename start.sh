@@ -3,8 +3,6 @@
 #everything is file.user/passwd、ip_port(expose docker)、docker_map
 #retrun: $0 successful, user passwd IP:Port(DNS) service file_directory.
 export SDP_HOME=$(cd `dirname $0`; pwd)
-rpm -q subversion &> /dev/null || sh $SDP_HOME/components/svn.sh
-rpm -q vsftpd &> /dev/null || sh $SDP_HOME/components/vsftpd.sh
 if [ "$#" != "5" ]; then
   echo "Usage: $0 user passwd service file_type email" ; exit 1
 fi
