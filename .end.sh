@@ -10,7 +10,7 @@ user_id:$user_id
     "Code Directory:$init_user_home_root"
     "ContainerID:$container_id"
     "ContainerInfo:$container_info"
-####################@@@@@@@@@@@@@@@@@@@@@@@########################@@@@@@@@@@@@@@@@@@@@@@@!!!
+#########################@@@@@@@@@@@@@@@@@@@@@@@#########################!!!
 EOF
 if [ -d $init_user_home ]; then
   if [ "$init_file_type" = "svn" ]; then
