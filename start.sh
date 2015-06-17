@@ -22,9 +22,19 @@ export init_user_home=${INIT_HOME}/$init_user      #directory
 export init_user_home_info=${INIT_HOME}/${init_user}/info   #file
 export init_user_home_root=${INIT_HOME}/${init_user}/root   #directory
 
-if [ "$init_file_type" != "svn" ] || [ "$init_file_type" != "ftp" ] || [ "$init_file_type" != "-"  ]; then
+if [ "$init_file_type" = "svn" ] || [ "$init_file_type" = "ftp" ] || [ "$init_file_type" = "-"  ]; then
+  :
+else
   echo -e "\033[31mUnsupported code type！\033[0m"
   echo -e "\033[31mAsk:svn,ftp,-\033[0m"
+  exit 1
+fi
+
+if [ "$init_service_type" = "mongodb" ] || [ "$init_service_type" = "memcached" ] || [ "$init_service_type" = "redis" ] || [ "$init_service_type" = "mysql" ]; then
+  :
+else
+  echo -e "\033[31mUnsupported service type！\033[0m"
+  echo -e "\033[31mSupported service:redis,mongodb,memcached,mysql.\033[0m"
   exit 1
 fi
 
