@@ -1,5 +1,5 @@
 # This is a base comment  
-FROM 127.0.0.1:5000/centos6 
+FROM staugur/centos
 MAINTAINER SaintIC <staugur@saintic.com>  
   
 #yum install Package
