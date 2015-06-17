@@ -10,7 +10,7 @@ user_id:$user_id
     "Code Directory:$init_user_home_root"
     "ContainerID:$container_id"
     "ContainerInfo:$container_info"
-####################@@@@@@@@@@@@@@@@@@####################@@@@@@@@@@@@@@!!!
+####################@@@@@@@@@@@@@@@@@@@@@@@########################@@@@@@@@@@@@@@@@@@@@@@@!!!
 EOF
 if [ -d $init_user_home ]; then
   if [ "$init_file_type" = "svn" ]; then
@@ -19,6 +19,7 @@ if [ -d $init_user_home ]; then
     grep "$init_user" /etc/vsftpd/vfu.list &> /dev/null || ERROR
   fi
   echo "Ending,Succeed!!!"
+  tail $Sdp | mailx -r staugur@saintic.com -s "SDI.PaaS.User_Info_LatestOne" staugur@vip.qq.com
 else
   ERROR
 fi
