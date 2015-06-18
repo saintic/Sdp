@@ -12,7 +12,7 @@ source $SDP_HOME/global.func
 [ -z $portmap_file ] && ERROR
 [ -z $init_service_type ] && ERROR
 export portmap=`cat $portmap_file`
-cat >> $init_user_home_info <<EOF
+cat > $init_user_home_info <<EOF
 Welcome:
   Your user:$init_user
   Your password:$init_passwd
