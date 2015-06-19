@@ -4,10 +4,8 @@ MAINTAINER SaintIC <staugur@saintic.com>
   
 #yum install Package
 WORKDIR /data
-RUN yum -y install net-tools iputils  iproute  man  vim git
-RUN git clone https://github.com/staugur/CoreWeb coreweb
-RUN cd coreweb/create
-RUN sh mysql.sh
+ADD mongodb.repo /etc/yum.repos.d/
+RUN yum -y install net-tools mongodb-org
 ADD supervisord.conf /etc/supervisord.conf
 #set port 
 EXPOSE $portmap
