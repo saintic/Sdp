@@ -45,11 +45,11 @@ fi
 user_oid=$(grep user_id $Sdp | tail -1 | awk -F : '{print $2}')
 if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
   export user_id=1
-  echo "50000" > $portmap_file
+  echo "90000" > $portmap_file
 else
   export user_id=`expr $user_oid + 1`
-  echo `expr 50000 + $user_oid` > $portmap_file
-  #first portmap is 5000, and portmap = portmap + user_id
+  echo `expr 90000 + $user_oid` > $portmap_file
+  #first portmap is 90000, and portmap = portmap + user_id
   #firsh user_id is 1, and user_id = user_id + 1
 fi
 
