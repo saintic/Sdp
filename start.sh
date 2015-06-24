@@ -27,6 +27,15 @@ else
   exit 1
 fi
 
+services=("mongodb" "memcached" "redis" "mysql" "nginx" "httpd" "tomcat")
+
+for ((i=0,i<7,i++))
+do
+  if [ $init_file_type = ${services[$i]} ]; then
+    break
+  fi
+done
+
 if [ "$init_service_type" = "mongodb" ] || [ "$init_service_type" = "memcached" ] || [ "$init_service_type" = "redis" ] || [ "$init_service_type" = "mysql" ]; then
   :
 else
