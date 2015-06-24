@@ -29,10 +29,12 @@ fi
 
 services=("mongodb" "memcached" "redis" "mysql" "nginx" "httpd" "tomcat")
 
-for ((i=0,i<7,i++))
+for i in ${services[*]}
 do
-  if [ $init_file_type = ${services[$i]} ]; then
-    break
+  if [ $init_file_type = $i ]; then
+    :
+  else
+    ERROR
   fi
 done
 
