@@ -1,7 +1,5 @@
 #!/bin/bash
-#Save to file for user and passwd > $init_user_home/info #file
-#init_user_home=${INIT_HOME}/${init_user}
-#code:init_user_home_root=${INIT_HOME}/${init_user}/root
+
 source $SDP_HOME/global.func
 
 [ -z $INIT_HOME ] && ERROR

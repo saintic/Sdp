@@ -34,13 +34,12 @@ else
   check_service_type
 fi
 
-export INIT_HOME=/data/SDI.PaaS
+export INIT_HOME=/data/SDI.Sdp
 export init_user=$1
 export init_passwd=$2
 export init_service_type=$3
 export init_file_type=$4
 export user_email=$5
-export portmap_file=${INIT_HOME}/portmap         #file
 export Sdp=${INIT_HOME}/Sdp.user.info            #file
 export init_user_home=${INIT_HOME}/$init_user    #directory
 export init_user_home_info=${INIT_HOME}/${init_user}/info   #file
@@ -48,8 +47,7 @@ export init_user_home_root=${INIT_HOME}/${init_user}/root   #directory
 
 [ -d $INIT_HOME ] || mkdir -p ${INIT_HOME}/$init_user
 [ -f $Sdp ] || touch $Sdp
-[ -f $portmap_file ] || touch $portmap_file
-[ -d $init_user_home_info ] || mkdir -p $init_user_home_root
+[ -d $init_user_home_root ] || mkdir -p $init_user_home_root
 [ -f $init_user_home_info ] || touch  $init_user_home_info
 
 export webs=("nginx" "httpd" "tomcat")
