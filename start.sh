@@ -34,24 +34,34 @@ else
   check_service_type
 fi
 
-export INIT_HOME=/data/SDI.Sdp
 export init_user=$1
 export init_passwd=$2
 export init_service_type=$3
 export init_file_type=$4
 export user_email=$5
-export Sdp=${INIT_HOME}/Sdp.user.info            #file
-export init_user_home=${INIT_HOME}/$init_user    #directory
-export init_user_home_info=${INIT_HOME}/${init_user}/info   #file
-export init_user_home_root=${INIT_HOME}/${init_user}/root   #directory
+export INIT_HOME=/data/SDI.Sdp
+export Sdpuc=${INIT_HOME}/Sdp.Ucenter              #file
+export init_user_home=${INIT_HOME}/$init_user      #directory
+export init_user_home_info=${init_user_home}/info   #file
+export init_user_home_root=${init_user_home}/root   #directory
 
-[ -d $INIT_HOME ] || mkdir -p ${INIT_HOME}/$init_user
-[ -f $Sdp ] || touch $Sdp
+[ -d $INIT_HOME ] || mkdir -p $INIT_HOME
+[ -f $Sdpuc ] || touch $Sdpuc
 [ -d $init_user_home_root ] || mkdir -p $init_user_home_root
 [ -f $init_user_home_info ] || touch  $init_user_home_info
 
+#user_oid:Existing User ID
+user_oid=$(grep user_id $Sdpuc | tail -1 | awk -F : '{print $2}')
+if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
+  export user_id=1
+else
+  export user_id=`expr $user_oid + 1`
+fi
+
 export webs=("nginx" "httpd" "tomcat")
+#webs can use svn,ftp;
 export apps=("mongodb" "memcached" "redis" "mysql")
+#apps can't use anyone,onle -.
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   source $SDP_HOME/boot/web.sh
 elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then

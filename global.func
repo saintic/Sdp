@@ -1,10 +1,13 @@
 #global.functions
 SERVER_IP=$(echo $SSH_CONNECTION | awk '{print $3}')
+
+
 function ERROR()
 {
   echo "Error:Please check this script and input/output!" >&2
   exit 1;
 }
+
 
 function create_ftp()
 {
@@ -31,19 +34,23 @@ chmod -R a+t $3
 /etc/init.d/vsftpd reload
 }
 
+
 function create_svn() 
 {
-[ "$#" != "3" ] && ERROR
-#arg:$init_user $init_passwd $init_user_home_svnroot
+#arg:$init_user $init_passwd
+init_user_home_svnroot=${init_user_home}/$init_user
+svnadmin create $init_user_home_svnroot
+chown -R apache:apache $init_user_home_svnroot
+[ "$#" != "2" ] && ERROR
 svnconf=/etc/httpd/conf.d/subversion.conf
 httpasswd=${INIT_HOME}/.httpasswd
 cat >> $svnconf <<EOF
 
 <Location /sdi/$1>
    DAV svn
-   SVNPath $3
+   SVNPath $init_user_home_svnroot
    AuthType Basic
-   AuthName "Welcome to SDI CodeSourceRoot."
+   AuthName "Welcome to Sdp CodeSourceRoot."
    AuthUserFile $httpasswd
    Satisfy Any
    SSLRequireSSL
@@ -52,11 +59,22 @@ cat >> $svnconf <<EOF
   </LimitExcept>
 </Location>
 EOF
-chown -R apache:apache $3
 [ -e $httpasswd ] && htpasswd -mb $httpasswd $1 $2 || htpasswd -bc $httpasswd $1 $2
 /etc/init.d/httpd reload
 }
 
-MD5PASSWD() {
+AutoUpdateSvn() {
+svn co https://svn.saintic.com/sdi/$init_user init_user_home_root;
+cd ${init_user_home_svnroot}/hooks/;
+cat > post-commit <<EOF
+#!/bin/bash
+export LC_CTYPE="zh_CN.UTF-8"
+svn up $init_user_home_root
+EOF
+chmod -R 777 post-commit
+}
+
+function MD5PASSWD() {
+  [ "$#" != "1" ] && ERROR
   echo -n $1 | md5sum  |  awk  '{print $1}'
 }
