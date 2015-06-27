@@ -75,6 +75,7 @@ chmod -R 777 post-commit
 }
 
 function MD5PASSWD() {
-  [ "$#" != "1" ] && ERROR
-  echo -n $1 | md5sum  |  awk  '{print $1}'
+  #[ "$#" != "1" ] && ERROR
+  #echo -n $1 | md5sum  |  awk  '{print $1}'
+  echo -n `cat /dev/urandom | tr -dc "a-zA-Z0-9_+\~\!\@\#\$\%\^\&\*\(\)"| fold -w 12 |head -n 1` | md5sum  |  awk  '{print $1}'
 }

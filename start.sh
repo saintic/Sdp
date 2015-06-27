@@ -17,7 +17,7 @@ check_service_type() {
 
 export SDP_HOME=$(cd `dirname $0`; pwd)
 if [ "$#" != "5" ]; then
-  echo "Usage: $0 user passwd service_type file_type email" >&2 ; exit 1
+  echo "Usage: $0 user use_time service_type file_type email" >&2 ; exit 1
 fi
 
 files=("svn" "ftp" "-")
@@ -34,8 +34,10 @@ else
   check_service_type
 fi
 
+#Create a random password encrypted by MD5
+init_passwd=MD5PASSWD
 export init_user=$1
-export init_passwd=$2
+export init_passwd
 export init_service_type=$3
 export init_file_type=$4
 export user_email=$5
@@ -58,10 +60,13 @@ else
   export user_id=`expr $user_oid + 1`
 fi
 
+CreateTime=`date +%F`
+ExpirationTime=
+
 export webs=("nginx" "httpd" "tomcat")
 #webs can use svn,ftp;
 export apps=("mongodb" "memcached" "redis" "mysql")
-#apps can't use anyone,onle -.
+#apps can't use anyone,only -.
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   source $SDP_HOME/boot/web.sh
 elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
