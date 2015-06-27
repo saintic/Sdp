@@ -20,19 +20,25 @@ source $SDP_HOME/global.func
 export dnmap_file=${INIT_HOME}/dnmap
 export init_user_dns=${init_user}.${user_id}.sdp.saintic.com
 export init_user_host=${user_id}.sdp.com
-echo "$init_user:$init_user_dns" >> $dnmap_file
+echo "$init_user_dns" >> $dnmap_file
 
 #virtual proxy
 nginx_exec=/usr/sbin/nginx
 nginx_home=/usr/local/nginx
 nginx_conf=${nginx_home}/conf
 nginx_sdp_conf=${nginx_conf}/Sdp
+[ -d $nginx_sdp_conf ] || mkdir -p $nginx_sdp_conf
+if [ "$init_service_type" = "nginx" ] || [ "$init_service_type" = "httpd" ]; then
+  service_port=80
+elif [ "$init_service_type" = "tomcat" ]; then
+  service_port=8080
+fi
 cat > ${nginx_sdp_conf}/${init_user}.${user_id}.conf <<EOF
 server {
     listen ${SERVER_IP}:80;
     server_name ${init_user_dns};
     location / {
-	    proxy_pass http://${init_user_host}:80;
+	    proxy_pass http://${init_user_host}:${service_port};
 	    proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto https;

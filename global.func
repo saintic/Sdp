@@ -5,6 +5,7 @@ SERVER_IP=$(echo $SSH_CONNECTION | awk '{print $3}')
 function ERROR()
 {
   echo "Error:Please check this script and input/output!" >&2
+  rm -rf $init_user_home
   exit 1;
 }
 

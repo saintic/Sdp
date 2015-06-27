@@ -1,19 +1,40 @@
 #!/bin/bash
 source $SDP_HOME/global.func
 [ -z $Sdpuc ] && ERROR
+[ -z $webs ] && ERROR
+[ -z $apps ] && ERROR
+
+if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
 cat >> $Sdpuc <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "other info:"
-    "MAP:${SERVER_IP}:$portmap"
-	"CreateTime:"
-	"Expiration time:"
+    "DN/hosts:${init_user_dns},${init_user_host}"
+	"CreateTime:$CreateTime"
+	"Expiration time:$ExpirationTime"
     "User Home:$init_user_home"
-    "Code Directory:$init_user_home_root"
+    "Data Directory:$init_user_home_root"
     "ContainerID:$container_id"
-    "ContainerInfo:$container_ip:$container_port"
+    "ContainerIP=$container_ip"
+	"ContainerPID:$container_pid"
 ##########################################################!!!!!!!!!
 EOF
+elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
+cat >> $Sdpuc <<EOF
+user_id:$user_id
+  "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
+  "other info:"
+    "IP/PORT:${SERVER_IP}:$portmap"
+	"CreateTime:$CreateTime"
+	"Expiration time:$ExpirationTime"
+    "User Home:$init_user_home"
+    "Data Directory:$init_user_home_root"
+    "ContainerID:$container_id"
+    "ContainerIP=$container_ip"
+	"ContainerPID:$container_pid"
+##########################################################!!!!!!!!!
+EOF
+fi
 
 if [ -d $init_user_home ]; then
   if [ "$init_file_type" = "svn" ]; then
