@@ -15,7 +15,7 @@ source $SDP_HOME/global.func
 
 export dnmap_file=${INIT_HOME}/dnmap
 export init_user_dns=${init_user}.${user_id}.sdp.saintic.com
-export init_user_host=${user_id}.sdp.com
+export init_user_host=${user_id}.sdipaas.com
 echo "$init_user_dns" >> $dnmap_file
 
 #virtual proxy
