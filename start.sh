@@ -15,6 +15,18 @@ check_service_type() {
   exit 1
 }
 
+#Create a random password encrypted by MD5 and email user.
+export init_user=$1
+export use_time=$2
+export init_passwd=`MD5PASSWD`
+export init_service_type=$3
+export init_file_type=$4
+export user_email=$5
+export INIT_HOME=/data/SDI.Sdp
+export Sdpuc=${INIT_HOME}/Sdp.Ucenter               #file
+export init_user_home=${INIT_HOME}/$init_user       #directory
+export init_user_home_info=${init_user_home}/info   #file
+export init_user_home_root=${init_user_home}/root   #directory
 export SDP_HOME=$(cd `dirname $0`; pwd)
 if [ "$#" != "5" ]; then
   echo "Usage: $0 user use_time service_type file_type email" >&2 ; exit 1
@@ -33,19 +45,6 @@ if echo "${services[@]}" | grep -w $init_service_type &> /dev/null ;then
 else
   check_service_type
 fi
-
-#Create a random password encrypted by MD5 and email user.
-export init_user=$1
-export use_time=$2
-export init_passwd=`MD5PASSWD`
-export init_service_type=$3
-export init_file_type=$4
-export user_email=$5
-export INIT_HOME=/data/SDI.Sdp
-export Sdpuc=${INIT_HOME}/Sdp.Ucenter               #file
-export init_user_home=${INIT_HOME}/$init_user       #directory
-export init_user_home_info=${init_user_home}/info   #file
-export init_user_home_root=${init_user_home}/root   #directory
 
 [ -d $INIT_HOME ] || mkdir -p $INIT_HOME
 [ -f $Sdpuc ] || touch $Sdpuc
