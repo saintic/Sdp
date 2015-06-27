@@ -22,12 +22,13 @@ tomcat)
   ;;
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
+  rm -fr $init_user_home ; rm -f ${nginx_sdp_conf}/${init_user}.${user_id}.conf
   exit 1
   ;;
 esac
 
 container_id=$(sudo docker ps | grep $init_user | awk '{print $1}')
-container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}') $init_user
+container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $init_user)
 container_pid=$(sudo docker inspect --format '{{.State.Pid}}' $init_user)
 
 echo "$container_ip  $init_user_dns" >> /etc/hosts
