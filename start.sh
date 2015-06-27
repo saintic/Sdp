@@ -2,6 +2,8 @@
 #user/passwd/service/file->user.file->dns.map->docker.service
 #everything is file.user/passwd、ip_port(expose docker)、docker_map
 #retrun: $0 successful, user passwd IP:Port(DNS) service file_directory.
+export SDP_HOME=$(cd `dirname $0`; pwd)
+source $SDP_HOME/global.func
 
 check_file_type() {
   echo -e "\033[31mUnsupported code type！\033[0m" >&2
@@ -27,7 +29,7 @@ export Sdpuc=${INIT_HOME}/Sdp.Ucenter               #file
 export init_user_home=${INIT_HOME}/$init_user       #directory
 export init_user_home_info=${init_user_home}/info   #file
 export init_user_home_root=${init_user_home}/root   #directory
-export SDP_HOME=$(cd `dirname $0`; pwd)
+
 if [ "$#" != "5" ]; then
   echo "Usage: $0 user use_time service_type file_type email" >&2 ; exit 1
 fi
