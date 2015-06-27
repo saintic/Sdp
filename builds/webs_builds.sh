@@ -1,6 +1,8 @@
 #!/bin/bash
 #boot web services.
 source $SDP_HOME/global.func
+[ -z $init_user ] && ERROR
+[ -z $init_user_dns ] && ERROR
 [ -z $init_service_type ] && ERROR
 
 container_nginx=staugur/centos
@@ -28,4 +30,5 @@ container_id=$(sudo docker ps | grep $init_user | awk '{print $1}')
 container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}') $init_user
 container_pid=$(sudo docker inspect --format '{{.State.Pid}}' $init_user)
 
+echo "$container_ip  $init_user_dns" >> /etc/hosts
 source $SDP_HOME/.end.sh
