@@ -12,13 +12,5 @@ source $SDP_HOME/global.func
 [ -z $portmap_file ] && ERROR
 [ -z $init_service_type ] && ERROR
 export portmap=`cat $portmap_file`
-cat > $init_user_home_info <<EOF
-Welcome:
-  Your user:$init_user
-  Your password:$init_passwd
-  Verification E-mail:$user_email
-  Your service:${init_service_type}
-  IP&PORT:182.92.106.104:${portmap}
-EOF
 
 source $SDP_HOME/builds/builds.sh
