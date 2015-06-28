@@ -1,5 +1,5 @@
 #global.functions
-export SDP_HOME=$(cd `dirname $0`; pwd)
+
 export SERVER_IP=$(echo $SSH_CONNECTION | awk '{print $3}')
 export webs=("nginx" "httpd" "tomcat")
 export apps=("mongodb" "memcached" "redis" "mysql")

@@ -1,5 +1,6 @@
 #!/bin/bash
 #retrun: $0 successful, user passwd IP:Port(DNS) service file_directory.
+export SDP_HOME=$(cd `dirname $0`; pwd)
 source $SDP_HOME/global.func
 
 check_file_type() {
