@@ -10,6 +10,7 @@ cat >> $Sdpuc <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "Other info:"
+    "Verification E-mail:$user_email"
     "DN/hosts:${init_user_dns},${init_user_host}"
     "CreateTime:$CreateTime"
     "Expiration time:$ExpirationTime"
@@ -36,6 +37,7 @@ cat >> $Sdpuc <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "Other info:"
+    "Verification E-mail:$user_email"
     "DN/hosts:${init_user_dns},${init_user_host}"
     "CreateTime:$CreateTime"
     "Expiration time:$ExpirationTime"
@@ -64,6 +66,7 @@ cat >> $Sdpuc <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "Other info:"
+    "Verification E-mail:$user_email"
     "IP/PORT:${SERVER_IP}:$portmap"
     "CreateTime:$CreateTime"
     "Expiration time:$ExpirationTime"
