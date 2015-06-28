@@ -58,7 +58,8 @@ if [ "$init_file_type" == "svn" ]; then
 elif [ "$init_file_type" == "ftp" ]; then
   create_ftp $init_user $init_passwd $init_user_home_root
 elif [ "$init_file_type" == "-" ]; then
-  ERROR
+  echo "You choose the web application, which is not allowed." ;
+  exit 1  
 fi
 
 source $SDP_HOME/builds/webs_builds.sh

@@ -29,6 +29,6 @@ esac
 container_id=$(sudo docker ps | grep $init_user | awk '{print $1}')
 container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $init_user)
 container_pid=$(sudo docker inspect --format '{{.State.Pid}}' $init_user)
-echo "$container_ip  $init_user_dns" >> /etc/hosts
+echo "$container_ip  $init_user_host" >> /etc/hosts
 
 source $SDP_HOME/.end.sh
