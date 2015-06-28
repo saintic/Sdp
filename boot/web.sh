@@ -47,8 +47,7 @@ EOF
 
 check_reload() {
   $nginx_exec -t
-  rm -rf $init_user_home ; rm -f $user_nginx_conf
-  exit 1
+  ERROR
 }
 $nginx_exec -t &> /dev/null && nginx -s reload || check_reload
 
