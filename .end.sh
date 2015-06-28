@@ -16,7 +16,7 @@ user_id:$user_id
     "Data Directory:$init_user_home_root"
     "ContainerID:$container_id"
     "ContainerIP=$container_ip"
-	"ContainerPID:$container_pid"
+    "ContainerPID:$container_pid"
 ##########################################################!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
