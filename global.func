@@ -83,7 +83,7 @@ EOF
 }
 
 AutoUpdateSvn() {
-svn co https://svn.saintic.com/sdi/$init_user init_user_home_root;
+svn co https://svn.saintic.com/sdi/$init_user $init_user_home_root;
 cd ${init_user_home_svnroot}/hooks/;
 cat > post-commit <<EOF
 #!/bin/bash
