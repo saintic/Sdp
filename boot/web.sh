@@ -23,13 +23,15 @@ nginx_exec=/usr/sbin/nginx
 nginx_home=/usr/local/nginx
 nginx_conf=${nginx_home}/conf
 nginx_sdp_conf=${nginx_conf}/Sdp
+user_nginx_conf=${nginx_sdp_conf}/${init_user}.${user_id}.conf
 [ -d $nginx_sdp_conf ] || mkdir -p $nginx_sdp_conf
+[ -f $user_nginx_conf ] && echo "Nginx configuration file already exists, and exit." && exit 1
 if [ "$init_service_type" = "nginx" ] || [ "$init_service_type" = "httpd" ]; then
   service_port=80
 elif [ "$init_service_type" = "tomcat" ]; then
   service_port=8080
 fi
-cat > ${nginx_sdp_conf}/${init_user}.${user_id}.conf <<EOF
+cat > $user_nginx_conf <<EOF
 server {
     listen ${SERVER_IP}:80;
     server_name ${init_user_dns};
@@ -42,10 +44,10 @@ server {
 }
 EOF
 #You need to write DNS information to hosts.
-#echo "$init_user_container_ip  $init_user_dns" >> /etc/hosts
+
 check_reload() {
   $nginx_exec -t
-  rm -rf $init_user_home; rm -f ${nginx_sdp_conf}/${init_user}.${user_id}.conf
+  rm -rf $init_user_home ; rm -f $user_nginx_conf
   exit 1
 }
 $nginx_exec -t &> /dev/null && nginx -s reload || check_reload
@@ -56,7 +58,7 @@ if [ "$init_file_type" == "svn" ]; then
 elif [ "$init_file_type" == "ftp" ]; then
   create_ftp $init_user $init_passwd $init_user_home_root
 elif [ "$init_file_type" == "-" ]; then
-  rm -fr $init_user_home_root
+  ERROR
 fi
 
 source $SDP_HOME/builds/webs_builds.sh

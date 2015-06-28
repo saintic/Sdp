@@ -1,8 +1,5 @@
 #!/bin/bash
-#user/passwd/service/file->user.file->dns.map->docker.service
-#everything is file.user/passwd、ip_port(expose docker)、docker_map
 #retrun: $0 successful, user passwd IP:Port(DNS) service file_directory.
-export SDP_HOME=$(cd `dirname $0`; pwd)
 source $SDP_HOME/global.func
 
 check_file_type() {
@@ -61,13 +58,10 @@ else
   export user_id=`expr $user_oid + 1`
 fi
 
+#use_time:month
 CreateTime=`date +%Y%m%d`
 ExpirationTime=`date +%Y%m%d -d "$use_time month"`
 
-export webs=("nginx" "httpd" "tomcat")
-#webs can use svn,ftp;
-export apps=("mongodb" "memcached" "redis" "mysql")
-#apps can't use anyone,only -.
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   source $SDP_HOME/boot/web.sh
 elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then

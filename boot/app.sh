@@ -1,6 +1,6 @@
 #!/bin/bash
 #app:MongoDB,Redis,MySQL,MemCached
-#save ip:port
+
 source $SDP_HOME/global.func
 [ -z $apps ] && ERROR
 [ -z $INIT_HOME ] && ERROR
@@ -18,8 +18,9 @@ else
   echo `expr 9000 + $user_oid` > $portmap_file
   #First open port is 9000, and portmap = portmap + user_id. Does not support multiple applications for the same user
   #Firsh user_id is 1, and user_id = user_id + 1
-  #Cat $portmap_file , start iptables
-  /sbin/iptables -I INPUT -p tcp --dport `cat $portmap_file` -j ACCEPT
 fi
+
+portmap=`cat $portmap_file`
+/sbin/iptables -I INPUT -p tcp --dport $portmap -j ACCEPT
 
 source $SDP_HOME/builds/apps_builds.sh

@@ -1,22 +1,43 @@
 #global.functions
-SERVER_IP=$(echo $SSH_CONNECTION | awk '{print $3}')
+export SDP_HOME=$(cd `dirname $0`; pwd)
+export SERVER_IP=$(echo $SSH_CONNECTION | awk '{print $3}')
+export webs=("nginx" "httpd" "tomcat")
+export apps=("mongodb" "memcached" "redis" "mysql")
+#webs can use svn,ftp;
+#apps can't use anyone,only -.
+svnconf=/etc/httpd/conf.d/subversion.conf
+httpasswd=${INIT_HOME}/.httpasswd
+vfu=/etc/vsftpd/vfu.list
+vfudb=/etc/vsftpd/vfu.db
+vfudir=/etc/vsftpd/vfu_dir
 
 
 function ERROR()
 {
   echo "Error:Please check this script and input/output!" >&2
-  rm -rf $init_user_home
+  [ -d $init_user_home ] && rm -rf $init_user_home ;
+  [ -f $user_nginx_conf ] && rm -f $user_nginx_conf ;
+
+  if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
+    sed -i "/$init_user_host/d" /etc/hosts
+	[ -f $dnmap_file ] && sed -i "/$init_user_dns/d" $dnmap_file
+  fi
+
+  #if echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
+
+  if [ "$init_file_type" = "svn" ]; then
+    sed -i "/<Location \/sdi\/$init_user>/,\$d" $svnconf
+  elif [ "$init_file_type" = "ftp" ]; then
+    sed -i "/$init_user/,+1d" $vfu
+    db_load -T -t hash -f $vfu $vfudb
+  fi
   exit 1;
 }
 
 
-function create_ftp()
-{
+function create_ftp() {
 [ "$#" != "3" ] && ERROR
 #arg:$init_user $init_passwd $init_user_home_root
-vfu=/etc/vsftpd/vfu.list
-vfudb=/etc/vsftpd/vfu.db
-vfudir=/etc/vsftpd/vfu_dir
 cat >> $vfu <<EOF
 $1
 $2
@@ -40,11 +61,8 @@ function create_svn()
 {
 #arg:$init_user $init_passwd
 init_user_home_svnroot=${init_user_home}/$init_user
-svnadmin create $init_user_home_svnroot
-chown -R apache:apache $init_user_home_svnroot
+svnadmin create $init_user_home_svnroot ; chown -R apache:apache $init_user_home_svnroot
 [ "$#" != "2" ] && ERROR
-svnconf=/etc/httpd/conf.d/subversion.conf
-httpasswd=${INIT_HOME}/.httpasswd
 cat >> $svnconf <<EOF
 
 <Location /sdi/$1>
@@ -76,7 +94,7 @@ chmod -R 777 post-commit
 }
 
 function MD5PASSWD() {
-  #[ "$#" != "1" ] && ERROR
-  #echo -n $1 | md5sum  |  awk  '{print $1}'
   echo -n `cat /dev/urandom | tr -dc "a-zA-Z0-9_+\~\!\@\#\$\%\^\&\*\(\)"| fold -w 12 |head -n 1` | md5sum  |  awk  '{print $1}'
 }
+
+
