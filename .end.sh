@@ -102,7 +102,7 @@ if [ -d $init_user_home ]; then
   fi
   echo "Ending,Succeed!!!"
   tail $init_user_home_info | mailx -r Sdp@saintic.com -s "Welcome:$init_user,you are SaintIC NO.${user_id} user." $user_email
-  tail -12 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com staugur@saintic.com
+  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com staugur@saintic.com
 else
   ERROR
 fi
