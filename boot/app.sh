@@ -11,6 +11,8 @@ source $SDP_HOME/global.func
 [ -z $init_user_home_info ] && ERROR
 [ -z $init_user_home_root ] && ERROR
 
+[ -d $init_user_home_root ] || mkdir -p $init_user_home_root
+[ -f $init_user_home_info ] || touch $init_user_home_info
 export portmap_file=${INIT_HOME}/portmap
 if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
   echo "9000" > $portmap_file
