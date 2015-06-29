@@ -7,15 +7,13 @@ export webs=("nginx" "httpd" "tomcat")
 export apps=("mongodb" "memcached" "redis" "mysql")
 export files=("svn" "ftp" "-")
 export services=("mongodb" "memcached" "redis" "mysql" "nginx" "httpd" "tomcat")
-svnconf=/etc/httpd/conf.d/subversion.conf
-httpasswd=${INIT_HOME}/.httpasswd
-vfu=/etc/vsftpd/vfu.list
-vfudb=/etc/vsftpd/vfu.db
-vfudir=/etc/vsftpd/vfu_dir
+export svnconf="/etc/httpd/conf.d/subversion.conf"
+export httpasswd="${INIT_HOME}/.httpasswd"
+export vfu="/etc/vsftpd/vfu.list"
+export vfudb="/etc/vsftpd/vfu.db"
+export vfudir="/etc/vsftpd/vfu_dir"
 
-
-function ERROR()
-{
+function ERROR() {
   echo "Error:Please check this script and input/output!" >&2
   [ -d $init_user_home ] && rm -rf $init_user_home ;
   [ -f $user_nginx_conf ] && rm -f $user_nginx_conf ;
@@ -27,11 +25,19 @@ function ERROR()
     sed -i "/<Location \/sdi\/$init_user>/,\$d" $svnconf
   elif [ "$init_file_type" = "ftp" ]; then
     sed -i "/$init_user/,+1d" $vfu
-    db_load -T -t hash -f $vfu $vfudb
+    db_load -T -t hash -f $vfu $vfudb ; /etc/init.d/vsftpd reload
   fi
   exit 1;
 }
 
+dockererror() {
+  local init_user_container=`docker ps | grep $init_user`
+  if test -z $init_user_container &> /dev/null ; then
+    :
+  else
+    docker rm -f $container_id
+  fi
+}
 
 function create_ftp() {
 [ "$#" != "3" ] && ERROR

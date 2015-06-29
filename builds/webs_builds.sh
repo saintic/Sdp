@@ -5,11 +5,12 @@ source $SDP_HOME/global.func
 [ -z $init_user_dns ] && ERROR
 [ -z $init_service_type ] && ERROR
 
+
 container_nginx=staugur/centos
 container_httpd=staugur/centos
 container_tomcat=staugur/centos
 
-#Ask:data include wwwroot,logs.
+#Ask:/data include wwwroot,logs.
 case $init_service_type in
 nginx)
   docker run -tdi --name $init_user -v ${init_user_home_root}:/data/wwwroot $container_nginx
@@ -23,6 +24,7 @@ tomcat)
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
   ERROR
+  dockererror
   ;;
 esac
 

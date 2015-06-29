@@ -22,7 +22,7 @@ nginx_conf=${nginx_home}/conf
 nginx_sdp_conf=${nginx_conf}/Sdp
 user_nginx_conf=${nginx_sdp_conf}/${init_user}.${user_id}.conf
 [ -d $nginx_sdp_conf ] || mkdir -p $nginx_sdp_conf
-[ -f $user_nginx_conf ] && echo "Nginx configuration file already exists, and exit." && exit 1
+[ -f $user_nginx_conf ] && echo "Nginx configuration file already exists, and exit." && ERROR
 if [ "$init_service_type" = "nginx" ] || [ "$init_service_type" = "httpd" ]; then
   service_port=80
 elif [ "$init_service_type" = "tomcat" ]; then
@@ -52,10 +52,7 @@ if [ "$init_file_type" == "svn" ]; then
   create_svn $init_user $init_passwd
   AutoUpdateSvn
 elif [ "$init_file_type" == "ftp" ]; then
-  create_ftp $init_user $init_passwd $init_user_home_root
-elif [ "$init_file_type" == "-" ]; then
-  echo "You choose the web application, which is not allowed." ;
-  exit 1  
+  create_ftp $init_user $init_passwd $init_user_home_root 
 fi
 
 source $SDP_HOME/builds/webs_builds.sh

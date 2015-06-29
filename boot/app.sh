@@ -15,12 +15,12 @@ export portmap_file=${INIT_HOME}/portmap
 if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
   echo "9000" > $portmap_file
 else
-  echo `expr 9000 + $user_oid` > $portmap_file
+  echo `expr 9000 + $user_id` > $portmap_file
   #First open port is 9000, and portmap = portmap + user_id. Does not support multiple applications for the same user
   #Firsh user_id is 1, and user_id = user_id + 1
 fi
 
-portmap=`cat $portmap_file`
+export portmap=`cat $portmap_file`
 /sbin/iptables -I INPUT -p tcp --dport $portmap -j ACCEPT
 
 source $SDP_HOME/builds/apps_builds.sh

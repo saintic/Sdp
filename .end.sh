@@ -15,7 +15,7 @@ user_id:$user_id
     "CreateTime:$CreateTime"
     "Expiration time:$ExpirationTime"
     "User Home:$init_user_home"
-    "Your SVN address:https://svn.saintic.com/sdi/${init_user}"
+    "SVN Address:https://svn.saintic.com/sdi/${init_user}"
     "ContainerID:$container_id"
     "ContainerIP=$container_ip"
     "ContainerPID:$container_pid"
@@ -42,7 +42,7 @@ user_id:$user_id
     "CreateTime:$CreateTime"
     "Expiration time:$ExpirationTime"
     "User Home:$init_user_home"
-    "Your FTP address:$init_user_dns"
+    "FTP Address:$init_user_dns"
     "ContainerID:$container_id"
     "ContainerIP=$container_ip"
     "ContainerPID:$container_pid"
@@ -105,4 +105,5 @@ if [ -d $init_user_home ]; then
   tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com staugur@saintic.com
 else
   ERROR
+  dockererror
 fi

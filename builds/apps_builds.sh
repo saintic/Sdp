@@ -24,6 +24,7 @@ redis)
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
   ERROR
+  dockererror
   ;;
 esac
 
