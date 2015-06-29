@@ -1,22 +1,19 @@
 #!/bin/bash
 #web.app:nginx,httpd,tomcat
 #save dn, nginx proxy.
-
 source $SDP_HOME/global.func
-[ -z $webs ] && ERROR
-[ -z $SERVER_IP ] && ERROR
-[ -z $INIT_HOME ] && ERROR
-[ -z $init_user ] && ERROR
-[ -z $init_passwd ] && ERROR
-[ -z $init_file_type ] && ERROR
-[ -z $init_user_home ] && ERROR
-[ -z $init_user_home_info ] && ERROR
-[ -z $init_user_home_root ] && ERROR
+[ -d $init_user_home_root ] || mkdir -p $init_user_home_root
+[ -f $init_user_home_info ] || touch $init_user_home_info
 
 export dnmap_file=${INIT_HOME}/dnmap
 export init_user_dns=${init_user}.${user_id}.sdp.saintic.com
 export init_user_host=${user_id}.sdipaas.com
-echo "$init_user_dns" >> $dnmap_file
+if grep $init_user_dns $dnmap_file &> /dev/null ;then
+  echo -e "\033[31mThe domain name has been recorded in the $dnmap_file file.\033[0m" >&2
+  rm -rf $init_user_home ; exit 1
+else
+  echo "$init_user_dns" >> $dnmap_file
+fi
 
 #virtual proxy
 nginx_exec=/usr/sbin/nginx

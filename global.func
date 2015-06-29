@@ -1,10 +1,12 @@
 #global.functions
 
 export SERVER_IP=$(echo $SSH_CONNECTION | awk '{print $3}')
-export webs=("nginx" "httpd" "tomcat")
-export apps=("mongodb" "memcached" "redis" "mysql")
 #webs can use svn,ftp;
 #apps can't use anyone,only -.
+export webs=("nginx" "httpd" "tomcat")
+export apps=("mongodb" "memcached" "redis" "mysql")
+export files=("svn" "ftp" "-")
+export services=("mongodb" "memcached" "redis" "mysql" "nginx" "httpd" "tomcat")
 svnconf=/etc/httpd/conf.d/subversion.conf
 httpasswd=${INIT_HOME}/.httpasswd
 vfu=/etc/vsftpd/vfu.list
@@ -17,14 +19,10 @@ function ERROR()
   echo "Error:Please check this script and input/output!" >&2
   [ -d $init_user_home ] && rm -rf $init_user_home ;
   [ -f $user_nginx_conf ] && rm -f $user_nginx_conf ;
-
   if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
     sed -i "/$init_user_host/d" /etc/hosts
 	[ -f $dnmap_file ] && sed -i "/$init_user_dns/d" $dnmap_file
   fi
-
-  #if echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
-
   if [ "$init_file_type" = "svn" ]; then
     sed -i "/<Location \/sdi\/$init_user>/,\$d" $svnconf
   elif [ "$init_file_type" = "ftp" ]; then

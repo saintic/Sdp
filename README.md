@@ -12,15 +12,12 @@ components:PaaS基础服务器，文件服务、容器服务。
 
 boot:引导不同类型服务创建，引导用户生成、创建IP:PORT记录，触发文件服务功能，触发容器创建及分配和限制；
 
-builds:创建容器中主要服务，提供PaaS应用。
+builds:创建容器中主要服务，提供PaaS应用；
+
+tools:其他工具类脚本，如续费功能、服务到期邮件提醒功能等。
 
 
 **Version2**
 
-components:PaaS平台组件:HTTP路由，容器创建，文件服务，统一平台；
-
-boot:引导用户生成、创建number.sdi.paas.saintic.net三级域名记录，连接hipache、redis路由，触发文件服务功能，触发容器创建及分配和限制；
-
-builds:创建容器中主要服务，提供PaaS应用。
 
 _More content_: [SaintIC Sdp](https://saintic.com/sdp)

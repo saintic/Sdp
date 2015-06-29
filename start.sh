@@ -8,18 +8,6 @@ if [ "$#" != "5" ]; then
   echo "Usage: $0 user use_time service_type file_type email" >&2 ; exit 1
 fi
 
-check_file_type() {
-  echo -e "\033[31mUnsupported code type！\033[0m" >&2
-  echo -e "\033[31mAsk:svn,ftp,-\033[0m" >&2
-  exit 1
-}
-
-check_service_type() {
-  echo -e "\033[31mUnsupported service type！\033[0m" >&2
-  echo -e "\033[31mSupported service:redis,mongodb,memcached,mysql,nginx,httpd,tomcat.\033[0m" >&2
-  exit 1
-}
-
 #Create a random password encrypted by MD5 and email user.
 export init_user=$1
 export use_time=$2
@@ -33,26 +21,13 @@ export init_user_home=${INIT_HOME}/$init_user       #directory
 export init_user_home_info=${init_user_home}/info   #file
 export init_user_home_root=${init_user_home}/root   #directory
 
-files=("svn" "ftp" "-")
-if echo "${files[@]}" | grep -w $init_file_type &> /dev/null ;then
-  :
+if [ -d $INIT_HOME ]; then
+  [ -d $init_user_home ] && echo "The user already exists" >&2 && exit 1
 else
-  check_file_type
+  mkdir -p $INIT_HOME
 fi
-
-services=("mongodb" "memcached" "redis" "mysql" "nginx" "httpd" "tomcat")
-if echo "${services[@]}" | grep -w $init_service_type &> /dev/null ;then
-  :
-else
-  check_service_type
-fi
-
-[ -d $INIT_HOME ] || mkdir -p $INIT_HOME
 [ -f $Sdpuc ] || touch $Sdpuc
-[ -d $init_user_home_root ] || mkdir -p $init_user_home_root
-[ -f $init_user_home_info ] || touch $init_user_home_info
 
-#user_oid:Existing User ID
 user_oid=$(grep user_id $Sdpuc | tail -1 | awk -F : '{print $2}')
 if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
   export user_id=1
@@ -60,14 +35,27 @@ else
   export user_id=`expr $user_oid + 1`
 fi
 
-#use_time:month
 CreateTime=`date +%Y%m%d`
 ExpirationTime=`date +%Y%m%d -d "$use_time month"`
 
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
-  source $SDP_HOME/boot/web.sh
+  if [[ `echo "$init_file_type"` == "-" ]]; then
+    echo -e -n "\033[31mUnsupported file type:\033[0m" >&2 ;\
+    echo -e "\033[31mAppsTypeService need svn or ftp\033[0m" >&2
+    exit 1
+  else
+    source $SDP_HOME/boot/web.sh
+  fi
 elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
-  source $SDP_HOME/boot/app.sh
+  if [[ `echo "$init_file_type"` == "-" ]]; then
+    source $SDP_HOME/boot/app.sh
+  else
+    echo -e -n "\033[31mUnsupported file type:\033[0m" >&2 ;\
+    echo -e "\033[31mAppsTypeService need -\033[0m" >&2
+    exit 1
+  fi
 else
-  check_service_type
+  echo -e -n "\033[31mUnsupported service type:\033[0m" >&2 ;\
+  echo -e "\033[31mSupported service:redis,mongodb,memcached,mysql,nginx,httpd,tomcat.\033[0m" >&2
+  exit 1
 fi
