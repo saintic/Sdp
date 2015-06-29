@@ -2,6 +2,13 @@
 #web.app:nginx,httpd,tomcat
 #save dn, nginx proxy.
 source $SDP_HOME/global.func
+
+[ -z $init_user ] && ERROR
+[ -z $init_user_dns ] && ERROR
+[ -z $init_service_type ] && ERROR
+[ -z $init_user_home_root ] && ERROR
+[ -z $init_user_home_info ] && ERROR
+
 [ -d $init_user_home_root ] || mkdir -p $init_user_home_root
 [ -f $init_user_home_info ] || touch $init_user_home_info
 
