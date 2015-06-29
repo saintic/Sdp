@@ -4,7 +4,7 @@
 source $SDP_HOME/global.func
 
 [ -z $init_user ] && ERROR
-[ -z $init_user_dns ] && ERROR
+[ -z $init_file_type ] && ERROR
 [ -z $init_service_type ] && ERROR
 [ -z $init_user_home_root ] && ERROR
 [ -z $init_user_home_info ] && ERROR
