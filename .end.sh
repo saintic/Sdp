@@ -94,6 +94,11 @@ elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
   AppsUserInfo
 fi
 
+DoubleError() {
+ERROR
+dockererror
+}
+
 if [ -d $init_user_home ]; then
   if [ "$init_file_type" = "svn" ]; then
     grep "$init_user" $svnconf &> /dev/null || ERROR && dockererror
@@ -101,13 +106,12 @@ if [ -d $init_user_home ]; then
     grep "$init_user" $vfu &> /dev/null || ERROR && dockererror
   fi
   if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
-    grep $init_user_host /etc/hosts &> /dev/null || ERROR && dockererror
-    grep $init_user_dns	$dnmap_file &> /dev/null || ERROR && dockererror
+    grep $init_user_host /etc/hosts &> /dev/null || DoubleError
+    grep $init_user_dns	$dnmap_file &> /dev/null || DoubleError
   fi
   echo "Ending,Succeed!!!"
   tail $init_user_home_info | mailx -r Sdp@saintic.com -s "Welcome:$init_user,you are SaintIC NO.${user_id} user." $user_email
   tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com
 else
-  ERROR
-  dockererror
+  DoubleError
 fi
