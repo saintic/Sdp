@@ -5,7 +5,7 @@ export SDP_HOME=$(cd `dirname $0`; pwd)
 source $SDP_HOME/global.func
 
 if [ "$#" != "5" ]; then
-  echo "Usage: $0 user use_time service_type file_type email" >&2 ; exit 1
+  echo -e "\033[31mUsage: $0 user use_time service_type file_type email\033[0m" >&2 ; exit 1
 fi
 
 #Create a random password encrypted by MD5 and email user.
@@ -22,7 +22,7 @@ export init_user_home_info=${init_user_home}/info   #file
 export init_user_home_root=${init_user_home}/root   #directory
 
 if [ -d $INIT_HOME ]; then
-  [ -d $init_user_home ] && echo "The user already exists" >&2 && exit 1
+  [ -d $init_user_home ] && echo -e "\033[31mThe user already exists\033[0m" >&2 && exit 1
 else
   mkdir -p $INIT_HOME
 fi

@@ -20,4 +20,4 @@ tools:其他工具类脚本，如续费功能、服务到期邮件提醒功能�
 **Version2**
 
 
-_More content_: [SaintIC Sdp](https://saintic.com/sdp)
+_More content and Using method: [SaintIC Sdp](https://saintic.com/sdp)
