@@ -10,15 +10,15 @@ cat >> $Sdpuc <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "Other info:"
-    "Verification E-mail:$user_email"
-    "DN/hosts:${init_user_dns},${init_user_host}"
-    "CreateTime:$CreateTime"
-    "Expiration time:$ExpirationTime"
-    "User Home:$init_user_home"
-    "SVN Address:https://svn.saintic.com/sdi/${init_user}"
-    "ContainerID:$container_id"
-    "ContainerIP=$container_ip"
-    "ContainerPID:$container_pid"
+    "Verification E-mail: $user_email"
+    "DN/hosts: ${init_user_dns},${init_user_host}"
+    "CreateTime: $CreateTime"
+    "Expiration time: $ExpirationTime"
+    "User Home: $init_user_home"
+    "SVN Address: https://svn.saintic.com/sdi/${init_user}"
+    "ContainerID: $container_id"
+    "ContainerIP: $container_ip"
+    "ContainerPID: $container_pid"
 ##########################################################!!!!!!!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
@@ -37,15 +37,15 @@ cat >> $Sdpuc <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "Other info:"
-    "Verification E-mail:$user_email"
-    "DN/hosts:${init_user_dns},${init_user_host}"
-    "CreateTime:$CreateTime"
-    "Expiration time:$ExpirationTime"
-    "User Home:$init_user_home"
-    "FTP Address:$init_user_dns"
-    "ContainerID:$container_id"
-    "ContainerIP=$container_ip"
-    "ContainerPID:$container_pid"
+    "Verification E-mail: $user_email"
+    "DN/hosts: ${init_user_dns},${init_user_host}"
+    "CreateTime: $CreateTime"
+    "Expiration time: $ExpirationTime"
+    "User Home: $init_user_home"
+    "FTP Address: $init_user_dns"
+    "ContainerID: $container_id"
+    "ContainerIP: $container_ip"
+    "ContainerPID: $container_pid"
 ##########################################################!!!!!!!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
@@ -66,15 +66,15 @@ cat >> $Sdpuc <<EOF
 user_id:$user_id
   "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
   "Other info:"
-    "Verification E-mail:$user_email"
-    "IP/PORT:${SERVER_IP}:$portmap"
-    "CreateTime:$CreateTime"
-    "Expiration time:$ExpirationTime"
-    "User Home:$init_user_home"
-    "Data Directory:$init_user_home_root"
-    "ContainerID:$container_id"
-    "ContainerIP=$container_ip"
-    "ContainerPID:$container_pid"
+    "Verification E-mail: $user_email"
+    "IP/PORT: ${SERVER_IP}:$portmap"
+    "CreateTime: $CreateTime"
+    "Expiration time: $ExpirationTime"
+    "User Home: $init_user_home"
+    "Data Directory: $init_user_home_root"
+    "ContainerID: $container_id"
+    "ContainerIP: $container_ip"
+    "ContainerPID: $container_pid"
 ##########################################################!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
@@ -96,13 +96,17 @@ fi
 
 if [ -d $init_user_home ]; then
   if [ "$init_file_type" = "svn" ]; then
-    grep "$init_user" $svnconf &> /dev/null || ERROR
+    grep "$init_user" $svnconf &> /dev/null || ERROR && dockererror
   elif [ "$init_file_type" = "ftp" ]; then
-    grep "$init_user" $vfu &> /dev/null || ERROR
+    grep "$init_user" $vfu &> /dev/null || ERROR && dockererror
+  fi
+  if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
+    grep $init_user_host /etc/hosts &> /dev/null || ERROR && dockererror
+    grep $init_user_dns	$dnmap_file &> /dev/null || ERROR && dockererror
   fi
   echo "Ending,Succeed!!!"
   tail $init_user_home_info | mailx -r Sdp@saintic.com -s "Welcome:$init_user,you are SaintIC NO.${user_id} user." $user_email
-  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com staugur@saintic.com
+  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com
 else
   ERROR
   dockererror

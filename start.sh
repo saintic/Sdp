@@ -50,9 +50,8 @@ elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
   if [[ `echo "$init_file_type"` == "-" ]]; then
     source $SDP_HOME/boot/app.sh
   else
-    echo -e -n "\033[31mUnsupported file type:\033[0m" >&2 ;\
-    echo -e "\033[31mAppsTypeService need -\033[0m" >&2
-    exit 1
+    export init_file_type="-"
+    echo -e -n "\033[31mFile types have been set to -\033[0m" >&2 ;\
   fi
 else
   echo -e -n "\033[31mUnsupported service type:\033[0m" >&2 ;\

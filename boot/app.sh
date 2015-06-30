@@ -19,7 +19,6 @@ if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
 else
   echo `expr 9000 + $user_id` > $portmap_file
   #First open port is 9000, and portmap = portmap + user_id. Does not support multiple applications for the same user
-  #Firsh user_id is 1, and user_id = user_id + 1
 fi
 
 export portmap=`cat $portmap_file`

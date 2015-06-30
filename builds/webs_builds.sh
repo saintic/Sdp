@@ -5,7 +5,6 @@ source $SDP_HOME/global.func
 [ -z $init_user_dns ] && ERROR
 [ -z $init_service_type ] && ERROR
 
-
 container_nginx=staugur/centos
 container_httpd=staugur/centos
 container_tomcat=staugur/centos
