@@ -11,16 +11,16 @@ container_redis=staugur/centos
 
 case $init_service_type in
 memcached)
-  docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:11211 $container_memcached
+  container_id=`docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:11211 $container_memcached`
   ;;
 mongodb)
-  docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:27017 $container_mongodb
+  container_id=`docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:27017 $container_mongodb`
   ;;
 mysql)
-  docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:3306 $container_mysql
+  container_id=`docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:3306 $container_mysql`
   ;;
 redis)
-  docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:6379 $container_redis
+  container_id=`docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:6379 $container_redis`
   ;;
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
@@ -29,7 +29,6 @@ redis)
   ;;
 esac
 
-container_id=$(sudo docker ps | grep $init_user | awk '{print $1}')
 container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $init_user)
 container_pid=$(sudo docker inspect --format '{{.State.Pid}}' $init_user)
 
