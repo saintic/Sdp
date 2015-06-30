@@ -52,6 +52,7 @@ elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
   else
     export init_file_type="-"
     echo -e -n "\033[31mFile types have been set to -\033[0m" >&2 ;\
+    source $SDP_HOME/boot/app.sh	
   fi
 else
   echo -e -n "\033[31mUnsupported service type:\033[0m" >&2 ;\
