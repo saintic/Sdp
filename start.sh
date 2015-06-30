@@ -55,7 +55,7 @@ elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
     source $SDP_HOME/boot/app.sh	
   fi
 else
-  echo -e -n "\033[31mUnsupported service type:\033[0m" >&2 ;\
+  echo -e "\033[31mUnsupported service type:\033[0m" >&2 ;\
   echo -e "\033[31mSupported service:redis,mongodb,memcached,mysql,nginx,httpd,tomcat.\033[0m" >&2
   exit 1
 fi
