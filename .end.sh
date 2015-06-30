@@ -101,9 +101,9 @@ dockererror
 
 if [ -d $init_user_home ]; then
   if [ "$init_file_type" = "svn" ]; then
-    grep "$init_user" $svnconf &> /dev/null || ERROR && dockererror
+    grep "$init_user" $svnconf &> /dev/null || DoubleError
   elif [ "$init_file_type" = "ftp" ]; then
-    grep "$init_user" $vfu &> /dev/null || ERROR && dockererror
+    grep "$init_user" $vfu &> /dev/null || DoubleError
   fi
   if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
     grep $init_user_host /etc/hosts &> /dev/null || DoubleError
