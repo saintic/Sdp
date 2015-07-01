@@ -94,4 +94,5 @@ function docker-enter() {
     fi
 }
 EOF
-echo "~/.docker_tools" >> ~/.bashrc && . ~/.bashrc
+chmod +x ~/.docker_tools
+echo ". ~/.docker_tools" >> ~/.bashrc && . ~/.bashrc
