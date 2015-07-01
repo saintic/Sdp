@@ -1,9 +1,10 @@
 #!/bin/bash
 #Create virtual ftp users, first user is test
 error() {
-  echo "Error,args is 2" 
+  echo "Error,args is 2:user password" 
   exit 1
 }
+SYS_VERSION=$(awk -F "release" '{print $2}' /etc/redhat-release | awk '{print $1}' | awk -F . '{print $1}')
 [ "$#" = "2" ] || error
 vfu=/etc/vsftpd/vfu.list
 vfudb=/etc/vsftpd/vfu.db
@@ -69,4 +70,10 @@ local_root=/var/ftp/
 EOF
 /etc/init.d/vsftpd start
 echo "Ending,Succeed!!!"
-echo "Please check iptables or firewalld, SELinux."
+if [ "$SYS_VERSION" == "6" ] || [ "$SYS_VERSION" == "5" ]; then
+  sed -i 's/IPTABLES_MODULES=""/IPTABLES_MODULES="nf_conntrack_ftp"/' /etc/sysconfig/iptables-config
+  modprobe nf_conntrack_ftp
+  iptables -I INPUT -p tcp --dport 21 -j ACCEPT
+elif [ "$SYS_VERSION" == "7" ] ;then
+  echo "Please check firewalld:stop or set rule."
+fi

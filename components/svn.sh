@@ -28,4 +28,4 @@ EOF
 mkdir -p /data/repos/ && svnadmin create /data/repos/test
 htpasswd -bc /data/repos/.passwd test test
 echo "Ending,Succeed!!!"
-echo "Please install SSL certs and enable SSLRequireSSL in 26 line."
+echo "Please install SSL certs and enable SSLRequireSSL in 22 line."
