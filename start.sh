@@ -59,3 +59,4 @@ else
   echo -e "\033[31mSupported service:redis,mongodb,memcached,mysql,nginx,httpd,tomcat.\033[0m" >&2
   exit 1
 fi
+
