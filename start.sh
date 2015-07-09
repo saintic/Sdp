@@ -1,6 +1,5 @@
 #!/bin/bash
 #need: $0 user use_time service_type file_type email;
-#retrun: $0 successful, user passwd IP:Port(DNS) service file_directory.
 export SDP_HOME=$(cd `dirname $0`; pwd)
 source $SDP_HOME/global.func
 

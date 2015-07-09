@@ -115,3 +115,16 @@ if [ -d $init_user_home ]; then
 else
   DoubleError
 fi
+
+
+$init_user
+$use_time
+$init_passwd
+$init_service_type
+$init_file_type
+$user_email
+$INIT_HOME
+$Sdpuc
+$init_user_home
+$init_user_home_info
+$init_user_home_root
