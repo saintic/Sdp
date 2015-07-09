@@ -2,7 +2,7 @@
 *Simle Docker PaaS*
 
 ###
-泛解析*.saintic.net到paas主服务器，用户的域名cname到不同的number.sdi.paas.saintic.net三级域名，然后用hipache提供一对一http路由映射到真正的docker容器上，容器即服务，而所有的docker建立在hdfs或其他分布式存储上，建立统一的数据容器，提供FTP svn git任意一种方式文件，代码上传功能，这样一个简单的paas。
+泛解析*.saintic.com到paas主服务器，用户的域名cname到不同的uid.sdipaas.comt三级域名，由nginx反向代理提供一对一http路由映射到真正的docker容器上，容器即服务，而所有的docker建立在hdfs或其他分布式存储上，建立统一的数据容器，提供FTP svn git任意一种方式文件，代码上传功能，这样一个简单的paas。
 
 ####Directory description:
 
