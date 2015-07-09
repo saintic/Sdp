@@ -4,10 +4,10 @@ source $SDP_HOME/global.func
 [ -z $init_service_type ] && ERROR
 [ -z $SERVER_IP ] && ERROR
 
-container_memcached=staugur/centos
-container_mongodb=staugur/centos
-container_mysql=staugur/centos
-container_redis=staugur/centos
+container_memcached=staugur/memcached
+container_mongodb=staugur/mongodb
+container_mysql=staugur/mysql
+container_redis=staugur/redis
 
 case $init_service_type in
 memcached)
