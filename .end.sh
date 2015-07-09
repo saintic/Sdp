@@ -116,7 +116,7 @@ else
   DoubleError
 fi
 
-
+:<<BLOCK
 $init_user
 $use_time
 $init_passwd
@@ -128,3 +128,4 @@ $Sdpuc
 $init_user_home
 $init_user_home_info
 $init_user_home_root
+BLOCK
