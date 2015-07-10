@@ -75,7 +75,6 @@ cat >> $svnconf <<EOF
    AuthType Basic
    AuthName "Welcome to Sdp CodeSourceRoot."
    AuthUserFile $httpasswd
-   Satisfy Any
    SSLRequireSSL
   <LimitExcept GET PROPFIND OPTIONS REPORT>
     Require valid-user
@@ -87,9 +86,7 @@ EOF
 }
 
 AutoUpdateSvn() {
-svn co https://svn.saintic.com/sdi/$init_user $init_user_home_root;
-chmod -R 777 $init_user_home_root/.svn
-chown -R apache.apache $init_user_home_root/.svn
+cd $init_user_home ; svn co https://svn.saintic.com/sdi/$init_user root;
 cd ${init_user_home_svnroot}/hooks/;
 cat > post-commit <<EOF
 #!/bin/bash
@@ -99,6 +96,7 @@ cd $init_user_home_root ;  svn up
 EOF
 chmod -R 777 post-commit
 chown -R apache.apache post-commit
+chmod -R 777 $init_user_home_root
 }
 
 function MD5PASSWD() {
