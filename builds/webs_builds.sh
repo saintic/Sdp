@@ -32,6 +32,38 @@ esac
 
 container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $init_user)
 container_pid=$(sudo docker inspect --format '{{.State.Pid}}' $init_user)
-echo "$container_ip  $init_user_host" >> /etc/hosts
+
+#virtual proxy
+nginx_exec=/usr/sbin/nginx
+nginx_home=/usr/local/nginx
+nginx_conf=${nginx_home}/conf
+nginx_sdp_conf=${nginx_conf}/Sdp
+user_nginx_conf=${nginx_sdp_conf}/${init_user}.${user_id}.conf
+[ -d $nginx_sdp_conf ] || mkdir -p $nginx_sdp_conf
+[ -f $user_nginx_conf ] && echo "Nginx configuration file already exists, and exit." && ERROR
+if [ "$init_service_type" = "nginx" ] || [ "$init_service_type" = "httpd" ]; then
+  service_port=80
+elif [ "$init_service_type" = "tomcat" ]; then
+  service_port=8080
+fi
+cat > $user_nginx_conf <<EOF
+server {
+    listen ${SERVER_IP}:80;
+    server_name ${init_user_dns};
+    location / {
+       proxy_pass http://${container_ip}:${service_port}/;
+       proxy_set_header Host \$host;
+       proxy_set_header X-Real-IP \$remote_addr;
+       proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+}
+EOF
+
+check_reload() {
+  $nginx_exec -t
+  ERROR
+}
+$nginx_exec -t &> /dev/null && nginx -s reload || check_reload
+
 
 source $SDP_HOME/.end.sh
