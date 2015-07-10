@@ -1,5 +1,6 @@
 <?php   
-$url = "https://ci.saintic.com/"; ?> 
+$url = "https://ci.saintic.com/";
+?> 
 <html>
  <head>
   <meta http-equiv="refresh" content="2; url=<?php echo $url; ?>">
@@ -15,7 +16,8 @@ $time = $_POST['time'];
 $service = $_POST['service'];
 $file = $_POST['file'];
 $email = $_POST['email'];
-system("echo Sdp.SaintIC.com@2016 | sudo -u root -S /bin/sh -x /data/sdp/start.sh $user $time $service $file $email",$status);
+//password:of sudo USER.
+system("echo password | sudo -u root -S /bin/sh -x /data/sdp/start.sh $user $time $service $file $email",$status);
 if($status == 'true') {
   echo "<script>alert('Build Seccuss!');</script>";
 } else {
