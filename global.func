@@ -88,17 +88,20 @@ EOF
 
 AutoUpdateSvn() {
 svn co https://svn.saintic.com/sdi/$init_user $init_user_home_root;
+chmod -R 777 $init_user_home_root/.svn
+chown -R apache.apache $init_user_home_root/.svn
 cd ${init_user_home_svnroot}/hooks/;
 cat > post-commit <<EOF
 #!/bin/bash
-export LC_CTYPE="zh_CN.UTF-8"
-svn up $init_user_home_root
+export LC_CTYPE=en_US.UTF-8
+export LANG=en_US.UTF-8
+cd $init_user_home_root ;  svn up
 EOF
 chmod -R 777 post-commit
+chown -R apache.apache post-commit
 }
 
 function MD5PASSWD() {
   cat /dev/urandom | tr -dc "a-zA-Z0-9_+\~\!\@\#\$\%\^\&\*\(\)"| fold -w 12 |head -n 1 | md5sum  |  awk  '{print $1}' | fold -w 12 | head -1
 }
-
 

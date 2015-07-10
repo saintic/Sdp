@@ -42,7 +42,7 @@ mongodb)
   ;;
 mysql)
   docker exec -ti $container_id /etc/init.d/mysqld start
-  docker exec -ti $container_id mysqladmin -u root password $init_passwd
+  docker exec -ti $container_id mysqladmin -u root -password $init_passwd
   ;;
 redis)
   #docker exec -ti sed -i 's/appendonly no/appendonly yes/' /etc/redis.conf
