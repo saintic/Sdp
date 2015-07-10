@@ -106,7 +106,6 @@ if [ -d $init_user_home ]; then
     grep "$init_user" $vfu &> /dev/null || DoubleError
   fi
   if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
-    grep $init_user_host /etc/hosts &> /dev/null || DoubleError
     grep $init_user_dns	$dnmap_file &> /dev/null || DoubleError
   fi
   echo "Ending,Succeed!!!"
@@ -115,17 +114,3 @@ if [ -d $init_user_home ]; then
 else
   DoubleError
 fi
-
-:<<BLOCK
-$init_user
-$use_time
-$init_passwd
-$init_service_type
-$init_file_type
-$user_email
-$INIT_HOME
-$Sdpuc
-$init_user_home
-$init_user_home_info
-$init_user_home_root
-BLOCK
