@@ -16,7 +16,7 @@ export dnmap_file=${INIT_HOME}/dnmap
 export init_user_dns=${init_user}.${user_id}.sdp.saintic.com
 export init_user_host=${user_id}.sdipaas.com
 if grep $init_user_dns $dnmap_file &> /dev/null ;then
-  echo -e "\033[31mThe domain name has been recorded in the $dnmap_file file.\033[0m" >&2
+  echo -e "\033[31mThe domain name has been recorded in the $dnmap_file file.\033[0m" 2>&1
   rm -rf $init_user_home ; exit 1
 else
   echo "$init_user_dns" >> $dnmap_file
