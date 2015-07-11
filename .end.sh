@@ -1,8 +1,5 @@
 #!/bin/bash
 source $SDP_HOME/global.func
-[ -z $Sdpuc ] && ERROR
-[ -z $webs ] && ERROR
-[ -z $apps ] && ERROR
 
 WebsUserInfo() {
 if [ $init_file_type = svn ]; then

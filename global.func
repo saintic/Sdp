@@ -1,6 +1,6 @@
 #global.functions
 
-export SERVER_IP=$(echo $SSH_CONNECTION | awk '{print $3}')
+export SERVER_IP=182.92.106.104
 #webs can use svn,ftp;
 #apps can't use anyone,only -.
 export webs=("nginx" "httpd" "tomcat")
@@ -30,8 +30,8 @@ function ERROR() {
 }
 
 dockererror() {
-  local init_user_container=`docker ps | grep $init_user`
-  if test -z $init_user_container &> /dev/null ; then
+  local init_user_container=`docker ps -a | grep $init_user | wc -l`
+  if [ $init_user_container -gt 0 ]; then
     :
   else
     docker rm -f $container_id
