@@ -90,13 +90,46 @@ EOF
 
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   WebsUserInfo
+cat > $init_user_home_json <<EOF
+{
+  "web": [
+    {
+      "ip": "$container_ip",
+      "conf": "$user_nginx_conf"
+    }
+  ],
+  "uid": "$user_id",
+  "user": "$init_user",
+  "passwd": "$init_passwd",
+  "service": "$init_service_type",
+  "usetime": "$use_time",
+  "file": "$init_file_type",
+  "email": "$user_email"
+}
+EOF
 elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
   AppsUserInfo
+cat > $init_user_home_json <<EOF
+{
+  "uid": "$user_id",
+  "user": "$init_user",
+  "passwd": "$init_passwd",
+  "service": "$init_service_type",
+  "usetime": "$use_time",
+  "file": "$init_file_type",
+  "email": "$user_email"
+}
+EOF
 fi
 
 DoubleError() {
 ERROR
 dockererror
+}
+
+email() {
+  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "Welcome:$init_user,you are SaintIC NO.${user_id} user." $user_email
+  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com
 }
 
 if [ -d $init_user_home ]; then
@@ -109,8 +142,8 @@ if [ -d $init_user_home ]; then
     grep $init_user_dns	$dnmap_file &> /dev/null || DoubleError
   fi
   echo "Ending,Succeed!!!"
-  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "Welcome:$init_user,you are SaintIC NO.${user_id} user." $user_email
-  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com
+  email
 else
   DoubleError
 fi
+

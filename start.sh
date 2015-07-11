@@ -15,10 +15,11 @@ export init_service_type=$3
 export init_file_type=$4
 export user_email=$5
 export INIT_HOME=/data/SDI.Sdp
-export Sdpuc=${INIT_HOME}/Sdp.Ucenter               #file
-export init_user_home=${INIT_HOME}/$init_user       #directory
-export init_user_home_info=${init_user_home}/info   #file
-export init_user_home_root=${init_user_home}/root   #directory
+export Sdpuc=${INIT_HOME}/Sdp.Ucenter                   #file
+export init_user_home=${INIT_HOME}/$init_user           #directory
+export init_user_home_info=${init_user_home}/info       #file
+export init_user_home_json=${init_user_home}/user.json  #file
+export init_user_home_root=${init_user_home}/root       #directory
 
 if [ -d $INIT_HOME ]; then
   [ -d $init_user_home ] && echo -e "\033[31mThe user already exists\033[0m" 2>&1 && exit 1

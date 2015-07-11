@@ -4,7 +4,7 @@
 <title>Sdp.SPMC | Simple Docker PaaS</title>
 <body>
 <center><h1>Sdp:SaintIC PaaS Management Console!<h1></center>
-<center><h1>Remote execution and create appication services<h1></center>
+<center><h1>Remote execution and create application services<h1></center>
 
 <?php
 echo "Sdp Usage:user use_time service_type file_type email";
