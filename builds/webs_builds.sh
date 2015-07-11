@@ -22,6 +22,7 @@ httpd)
   ;;
 tomcat)
   container_id=`docker run -tdi --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_tomcat`
+  docker exec -i $container_id /usr/local/tomcat/bin/startup.sh   
   ;;
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
@@ -50,6 +51,7 @@ cat > $user_nginx_conf <<EOF
 server {
     listen ${SERVER_IP}:80;
     server_name ${init_user_dns};
+    index index.htm index.html index.php index.jsp;
     location / {
        proxy_pass http://${container_ip}:${service_port}/;
        proxy_set_header Host \$host;
