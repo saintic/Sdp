@@ -99,7 +99,7 @@ cat > $init_user_home_json <<EOF
   "user": "$init_user",
   "passwd": "$init_passwd",
   "service": "$init_service_type",
-  "usetime": "$use_time",
+  "time": "$ExpirationTime",
   "file": "$init_file_type",
   "email": "$user_email"
 }
@@ -112,7 +112,7 @@ cat > $init_user_home_json <<EOF
   "user": "$init_user",
   "passwd": "$init_passwd",
   "service": "$init_service_type",
-  "usetime": "$use_time",
+  "time": "$ExpirationTime",
   "file": "$init_file_type",
   "email": "$user_email"
 }
