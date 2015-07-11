@@ -20,12 +20,12 @@ user_id:$user_id
 EOF
 cat > $init_user_home_info <<EOF
 Welcome:
-  Your user:$init_user
-  Your password:$init_passwd
-  Verification E-mail:$user_email
-  Your service:$init_service_type
-  Your DomainName:$init_user_dns
-  Your SVN address:https://svn.saintic.com/sdi/$init_user
+  Your user: $init_user
+  Your password: $init_passwd
+  Verification E-mail: $user_email
+  Your service: $init_service_type
+  Your DomainName: $init_user_dns
+  Your SVN address: https://svn.saintic.com/sdi/$init_user
   Please CNAME your own domain name to "$init_user_dns", please visit:https://saintic.com/sdp
 EOF
 
@@ -39,7 +39,7 @@ user_id:$user_id
     "CreateTime: $CreateTime"
     "Expiration time: $ExpirationTime"
     "User Home: $init_user_home"
-    "FTP Address: $init_user_dns"
+    "FTP Address: ftp://$init_user_dns"
     "ContainerID: $container_id"
     "ContainerIP: $container_ip"
     "ContainerPID: $container_pid"
@@ -47,12 +47,12 @@ user_id:$user_id
 EOF
 cat > $init_user_home_info <<EOF
 Welcome:
-  Your user:$init_user
-  Your password:$init_passwd
-  Verification E-mail:$user_email
-  Your service:$init_service_type
-  Your DomainName:$init_user_dns
-  Your FTP address:$init_user_dns
+  Your user: $init_user
+  Your password: $init_passwd
+  Verification E-mail: $user_email
+  Your service: $init_service_type
+  Your DomainName: $init_user_dns
+  Your FTP address: ftp://$init_user_dns
   Please CNAME your own domain name to "$init_user_dns", please visit:https://saintic.com/sdp
 EOF
 fi
@@ -76,12 +76,12 @@ user_id:$user_id
 EOF
 cat > $init_user_home_info <<EOF
 Welcome:
-  Your user:$init_user
-  Your password:$init_passwd
-  Verification E-mail:$user_email
-  Your service:${init_service_type}
-  IP&PORT:${SERVER_IP}:${portmap}
-  Please visit:https://saintic.com/sdp
+  Your user: $init_user
+  Your password: $init_passwd
+  Verification E-mail: $user_email
+  Your service: $init_service_type
+  IP&PORT: ${SERVER_IP}:${portmap}
+  Please visit: https://saintic.com/sdp
 EOF
 }
 
