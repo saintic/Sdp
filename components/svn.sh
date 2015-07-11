@@ -18,7 +18,6 @@ LoadModule authz_svn_module   modules/mod_authz_svn.so
    AuthType Basic
    AuthName "SDI Code Service"
    AuthUserFile /data/repos/.passwd
-   Satisfy Any
    #SSLRequireSSL
   <LimitExcept GET PROPFIND OPTIONS REPORT>
     Require valid-user
