@@ -19,14 +19,14 @@ user_id:$user_id
 ##########################################################!!!!!!!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
-Welcome:
-  Your user: $init_user
-  Your password: $init_passwd
-  Verification E-mail: $user_email
-  Your service: $init_service_type
-  Your DomainName: $init_user_dns
-  Your SVN address: https://svn.saintic.com/sdi/$init_user
-  Please CNAME your own domain name to "$init_user_dns", please visit:https://saintic.com/sdp
+欢迎:
+  用户名: $init_user
+  密码: $init_passwd
+  验证邮箱: $user_email
+  服务类型: $init_service_type
+  免费域名: $init_user_dns
+  版本库地址: https://svn.saintic.com/sdi/${init_user}
+  请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问https://saintic.com/sdp
 EOF
 
 elif [ $init_file_type = ftp ]; then
@@ -46,14 +46,14 @@ user_id:$user_id
 ##########################################################!!!!!!!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
-Welcome:
-  Your user: $init_user
-  Your password: $init_passwd
-  Verification E-mail: $user_email
-  Your service: $init_service_type
-  Your DomainName: $init_user_dns
-  Your FTP address: ftp://$init_user_dns
-  Please CNAME your own domain name to "$init_user_dns", please visit:https://saintic.com/sdp
+欢迎:
+  用户名: $init_user
+  密码: $init_passwd
+  验证邮箱: $user_email
+  服务类型: $init_service_type
+  免费域名: $init_user_dns
+  FTP地址: ftp://$init_user_dns
+  请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问https://saintic.com/sdp
 EOF
 fi
 }
@@ -75,13 +75,13 @@ user_id:$user_id
 ##########################################################!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
-Welcome:
-  Your user: $init_user
-  Your password: $init_passwd
-  Verification E-mail: $user_email
-  Your service: $init_service_type
-  IP&PORT: ${SERVER_IP}:${portmap}
-  Please visit: https://saintic.com/sdp
+欢迎:
+  用户名: $init_user
+  密码: $init_passwd
+  验证邮箱: $user_email
+  服务类型: $init_service_type
+  IP和端口: ${SERVER_IP}:${portmap}
+  应用连接信息即IP和端口，若您的服务类型为MySQL，则其root密码为${init_passwd}，详情请访问https://saintic.com/sdp
 EOF
 }
 
@@ -125,8 +125,8 @@ dockererror
 }
 
 email() {
-  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "Welcome:$init_user,you are SaintIC NO.${user_id} user." $user_email
-  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:LatestOne" staugur@vip.qq.com
+  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "尊敬的$init_user，欢迎您：你是我们第${user_id}个用户" $user_email
+  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:${init_user}(${user_id})" staugur@vip.qq.com
 }
 
 if [ -d $init_user_home ]; then
