@@ -1,5 +1,6 @@
 #!/bin/bash
 source $SDP_HOME/global.func
+export LANG=zh_CN.UTF-8
 
 WebsUserInfo() {
 if [ $init_file_type = svn ]; then
@@ -125,7 +126,7 @@ dockererror
 }
 
 email() {
-  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "$init_user，Sdp应用信息您，你是我们第${user_id}个用户" $user_email
+  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "$init_user，欢迎您，你是我们第${user_id}个用户" $user_email
   tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:${init_user}(${user_id})" staugur@vip.qq.com
 }
 
