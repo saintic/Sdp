@@ -19,7 +19,7 @@ user_id:$user_id
 ##########################################################!!!!!!!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
-欢迎:
+Sdp应用信息:
   用户名: $init_user
   密码: $init_passwd
   验证邮箱: $user_email
@@ -46,7 +46,7 @@ user_id:$user_id
 ##########################################################!!!!!!!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
-欢迎:
+Sdp应用信息:
   用户名: $init_user
   密码: $init_passwd
   验证邮箱: $user_email
@@ -75,7 +75,7 @@ user_id:$user_id
 ##########################################################!!!!!!!!!
 EOF
 cat > $init_user_home_info <<EOF
-欢迎:
+Sdp应用信息:
   用户名: $init_user
   密码: $init_passwd
   验证邮箱: $user_email
@@ -125,7 +125,7 @@ dockererror
 }
 
 email() {
-  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "尊敬的$init_user，欢迎您：你是我们第${user_id}个用户" $user_email
+  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "$init_user，Sdp应用信息您，你是我们第${user_id}个用户" $user_email
   tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:${init_user}(${user_id})" staugur@vip.qq.com
 }
 
