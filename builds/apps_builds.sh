@@ -22,7 +22,9 @@ mongodb)
 mysql)
   container_id=`docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:3306 $container_mysql`
   docker exec -i $container_id /etc/init.d/mysqld start
-  docker exec -i $container_id mysqladmin -u root -password $init_passwd
+  docker exec -i $container_id mysql -e "grant all on *.* to 'root'@'%' identified by \"${init_passwd}\" with grant option;"
+  docker exec -i $container_id mysql -e "grant all on *.* to 'root'@'localhost' identified by \"${init_passwd}\";"
+  docker exec -i $container_id /etc/init.d/mysqld reload
   ;;
 redis)
   container_id=`docker run -tdi --name $init_user -p ${SERVER_IP}:${portmap}:6379 $container_redis`
