@@ -19,7 +19,5 @@ tools:其他工具类脚本，如续费功能、服务到期邮件提醒功能�
 spmc:Sdp持续集成简易管理控制台。
 
 
-**Version2**
-
 
 More content and Using method: [SaintIC Sdp](https://saintic.com/sdp)
