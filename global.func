@@ -74,7 +74,7 @@ cat >> $svnconf <<EOF
    AuthType Basic
    AuthName "Welcome to Sdp CodeSourceRoot."
    AuthUserFile $httpasswd
-   SSLRequireSSL
+   #SSLRequireSSL
   <LimitExcept GET PROPFIND OPTIONS REPORT>
     Require valid-user
   </LimitExcept>
