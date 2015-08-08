@@ -1,9 +1,10 @@
 #!/bin/bash
 #boot services.
 source ${SDP_HOME}/global.func
-[ -z $init_service_type ] && ERROR
+[ -z $portmap ] && ERROR
 [ -z $SERVER_IP ] && ERROR
 [ -z $init_passwd ] && ERROR
+[ -z $init_service_type ] && ERROR
 
 container_memcached=staugur/memcached
 container_mongodb=staugur/mongodb
@@ -24,7 +25,7 @@ mysql)
   docker exec -i $container_id /etc/init.d/mysqld start
   docker exec -i $container_id mysql -e "grant all on *.* to 'root'@'%' identified by \"${init_passwd}\" with grant option;"
   docker exec -i $container_id mysql -e "grant all on *.* to 'root'@'localhost' identified by \"${init_passwd}\";"
-  docker exec -i $container_id /etc/init.d/mysqld reload
+  docker exec -i $container_id /etc/init.d/mysqld restart
   ;;
 redis)
   container_id=`docker run -tdi --restart=always --name $init_user -p ${SERVER_IP}:${portmap}:6379 $container_redis`

@@ -46,7 +46,7 @@ Sdp应用信息:
 EOF
 }
 
-#将用户信息写入用户数据文件,必须要删除$Sdpuc最后一行}闭括号
+#将用户信息写入用户数据文件,必须要删除$Sdpuc空行最后一行}闭括号，完成后删除最后两行，加两个闭大括号。
 sed -i '/^$/ d' $Sdpuc ; sed -i '$d' $Sdpuc
 cat >> $Sdpuc <<USERINFO
   "UID_${user_id}": {
@@ -84,7 +84,7 @@ fi
 
 email() {
   tail $init_user_home_info | mailx -r Sdp@saintic.com -s "$init_user，欢迎您，你是我们第${user_id}个用户" $user_email
-  tail -13 $Sdpuc | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:${init_user}(${user_id})" staugur@vip.qq.com
+  tail -20 $Sdpuc | head -19 | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:${init_user}(${user_id})" staugur@vip.qq.com
 }
 
 if [ -d $init_user_home ]; then
