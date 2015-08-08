@@ -1,7 +1,7 @@
 #!/bin/bash
 #web.app:nginx,httpd,tomcat
 #save dn, nginx proxy.
-source $SDP_HOME/global.func
+source ${SDP_HOME}/global.func
 
 [ -z $init_user ] && ERROR
 [ -z $init_file_type ] && ERROR
@@ -14,6 +14,7 @@ source $SDP_HOME/global.func
 
 export dnmap_file=${INIT_HOME}/dnmap
 export init_user_dns=${init_user}.${user_id}.sdp.saintic.com
+
 if grep $init_user_dns $dnmap_file &> /dev/null ;then
   echo -e "\033[31mThe domain name has been recorded in the $dnmap_file file.\033[0m" 2>&1
   rm -rf $init_user_home ; exit 1
@@ -28,4 +29,4 @@ elif [ "$init_file_type" == "ftp" ]; then
   create_ftp $init_user $init_passwd $init_user_home_root 
 fi
 
-source $SDP_HOME/builds/webs_builds.sh
+source ${SDP_HOME}/builds/webs_builds.sh

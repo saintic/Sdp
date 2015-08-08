@@ -1,24 +1,13 @@
 #!/bin/bash
-source $SDP_HOME/global.func
+source ${SDP_HOME}/global.func
 export LANG=zh_CN.UTF-8
 
+DoubleError() {
+  ERROR
+  dockererror
+}
+
 WebsUserInfo() {
-if [ $init_file_type = svn ]; then
-cat >> $Sdpuc <<EOF
-user_id:$user_id
-  "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
-  "Other info:"
-    "Verification E-mail: $user_email"
-    "DN: ${init_user_dns}"
-    "CreateTime: $CreateTime"
-    "Expiration time: $ExpirationTime"
-    "User Home: $init_user_home"
-    "SVN Address: https://svn.saintic.com/sdi/${init_user}"
-    "ContainerID: $container_id"
-    "ContainerIP: $container_ip"
-    "ContainerPID: $container_pid"
-##########################################################!!!!!!!!!!!!!!!
-EOF
 cat > $init_user_home_info <<EOF
 Sdp应用信息:
   用户名: $init_user
@@ -26,55 +15,20 @@ Sdp应用信息:
   验证邮箱: $user_email
   服务类型: $init_service_type
   免费域名: $init_user_dns
-  版本库地址: https://svn.saintic.com/sdi/${init_user}
-  请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问https://saintic.com/sdp
+  请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问https://saintic.com/sdp，您的文件系统访问类型地址是：
 EOF
 
-elif [ $init_file_type = ftp ]; then
-cat >> $Sdpuc <<EOF
-user_id:$user_id
-  "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
-  "Other info:"
-    "Verification E-mail: $user_email"
-    "DN: ${init_user_dns}"
-    "CreateTime: $CreateTime"
-    "Expiration time: $ExpirationTime"
-    "User Home: $init_user_home"
-    "FTP Address: ftp://$init_user_dns"
-    "ContainerID: $container_id"
-    "ContainerIP: $container_ip"
-    "ContainerPID: $container_pid"
-##########################################################!!!!!!!!!!!!!!!
+if [ $init_file_type == svn ]; then
+cat >> $init_user_home_info <<EOF
+  版本库地址: https://svn.saintic.com/sdi/${init_user}
 EOF
-cat > $init_user_home_info <<EOF
-Sdp应用信息:
-  用户名: $init_user
-  密码: $init_passwd
-  验证邮箱: $user_email
-  服务类型: $init_service_type
-  免费域名: $init_user_dns
+elif [ $init_file_type == ftp ]; then
+cat >> $init_user_home_info <<EOF
   FTP地址: ftp://$init_user_dns
-  请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问https://saintic.com/sdp
 EOF
-fi
 }
 
 AppsUserInfo() {
-cat >> $Sdpuc <<EOF
-user_id:$user_id
-  "user:$init_user" "password:$init_passwd" "installed:$init_service_type"; "filetype:$init_file_type";
-  "Other info:"
-    "Verification E-mail: $user_email"
-    "IP/PORT: ${SERVER_IP}:$portmap"
-    "CreateTime: $CreateTime"
-    "Expiration time: $ExpirationTime"
-    "User Home: $init_user_home"
-    "Data Directory: $init_user_home_root"
-    "ContainerID: $container_id"
-    "ContainerIP: $container_ip"
-    "ContainerPID: $container_pid"
-##########################################################!!!!!!!!!
-EOF
 cat > $init_user_home_info <<EOF
 Sdp应用信息:
   用户名: $init_user
@@ -82,48 +36,38 @@ Sdp应用信息:
   验证邮箱: $user_email
   服务类型: $init_service_type
   IP和端口: ${SERVER_IP}:${portmap}
-  应用连接信息即IP和端口，若您的服务类型为MySQL，则其root密码为${init_passwd}，详情请访问https://saintic.com/sdp
+  应用连接信息即IP和端口，若您的服务中有任何需要密码的部分均为"${init_passwd}"，详情文档请访问https://saintic.com/sdp
 EOF
 }
+
+#将用户信息写入用户数据文件
+cat >> $Sdpuc <<USERINFO
+  "$user_id": {
+  "uid": "$user_id",
+  "user": "$init_user",
+  "passwd": "$init_passwd",
+  "home": "$init_user_home",
+  "email": "$user_email",
+  "service": "$init_service_type",
+  "file": "$init_file_type",
+  "CreateTime": "$CreateTime",
+  "ExpirationTime": "$ExpirationTime",
+  "port": "$portmap",
+  "dn": "$init_user_dns",
+  "container_id": "$container_id",
+  "container_ip": "$container_ip",
+  "userinfo": "$init_user_home_info",
+  "SVN": "https://svn.saintic.com/sdi/${init_user}",
+  "FTP": "ftp://${init_user_dns}",
+  "Notes": "##########################################################"
+  }
+USERINFO
 
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   WebsUserInfo
-cat > $init_user_home_json <<EOF
-{
-  "web": [
-    {
-      "ip": "$container_ip",
-      "conf": "$user_nginx_conf"
-    }
-  ],
-  "uid": "$user_id",
-  "user": "$init_user",
-  "passwd": "$init_passwd",
-  "service": "$init_service_type",
-  "time": "$ExpirationTime",
-  "file": "$init_file_type",
-  "email": "$user_email"
-}
-EOF
 elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
   AppsUserInfo
-cat > $init_user_home_json <<EOF
-{
-  "uid": "$user_id",
-  "user": "$init_user",
-  "passwd": "$init_passwd",
-  "service": "$init_service_type",
-  "time": "$ExpirationTime",
-  "file": "$init_file_type",
-  "email": "$user_email"
-}
-EOF
 fi
-
-DoubleError() {
-ERROR
-dockererror
-}
 
 email() {
   tail $init_user_home_info | mailx -r Sdp@saintic.com -s "$init_user，欢迎您，你是我们第${user_id}个用户" $user_email

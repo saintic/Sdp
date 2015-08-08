@@ -29,7 +29,7 @@ function ERROR() {
   exit 1;
 }
 
-dockererror() {
+function dockererror() {
   local init_user_container=`docker ps -a | grep $init_user | wc -l`
   if [ $init_user_container -gt 0 ]; then
     :
@@ -84,7 +84,7 @@ EOF
 /etc/init.d/httpd reload
 }
 
-AutoUpdateSvn() {
+function AutoUpdateSvn() {
 cd $init_user_home ; svn co https://svn.saintic.com/sdi/$init_user root;
 cd ${init_user_home_svnroot}/hooks/;
 cat > post-commit <<EOF
