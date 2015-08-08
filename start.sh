@@ -58,8 +58,8 @@ fi
 EOF
 
 #获取用户数，如果没有即为空，UID唯一且递增。
-user_oid=$(grep user_id $Sdpuc | tail -1 | awk -F : '{print $2}')
-if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
+user_oid=$(jq '.user_id' $Sdpuc)
+if [ -z $user_oid ] || [ "$user_oid" = "" ] || [ "$user_oid" = "null" ]; then
   export user_id=1
 else
   export user_id=`expr $user_oid + 1`
