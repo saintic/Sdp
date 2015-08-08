@@ -61,7 +61,7 @@ cat >> $Sdpuc <<USERINFO
   "userinfo": "$init_user_home_info",
   "SVN": "https://svn.saintic.com/sdi/",
   "FTP": "ftp://182.92.106.104",
-  "Notes": "##################################################"
+  "Notes": "############################"
   },
 }
 USERINFO
