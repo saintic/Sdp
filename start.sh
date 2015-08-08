@@ -36,7 +36,8 @@ export init_service_type=$3
 export init_file_type=$4
 export user_email=$5
 export INIT_HOME=/data/SDI.Sdp
-export Sdpuc=${INIT_HOME}/Sdp.Ucenter                   #file
+export uidfile=${INIT_HOME}/.uid                        #file
+export Sdpuc=${INIT_HOME}/.Ucenter                      #file
 export init_user_home=${INIT_HOME}/$init_user           #directory
 export init_user_home_info=${init_user_home}/info       #file
 export init_user_home_root=${init_user_home}/root       #directory
@@ -58,12 +59,13 @@ fi
 EOF
 
 #获取用户数，如果没有即为空，UID唯一且递增。
-export user_oid=$(jq '.user_id' $Sdpuc)
-if [ -z $user_oid ] || [ "$user_oid" = "" ] || [ "$user_oid" = "null" ]; then
+user_oid=$(cat $uidfile)
+if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
   export user_id=1
 else
   export user_id=`expr $user_oid + 1`
 fi
+echo "$user_id" > $uidfile
 
 #制定服务使用期限。
 CreateTime=`date +%Y%m%d`

@@ -13,7 +13,7 @@ source ${SDP_HOME}/global.func
 [ -d $init_user_home_root ] || mkdir -p $init_user_home_root
 [ -f $init_user_home_info ] || touch $init_user_home_info
 
-export dnmap_file=${INIT_HOME}/dnmap
+export dnmap_file=${INIT_HOME}/.dnmap
 export init_user_dns=${init_user}.${user_id}.sdp.saintic.com
 
 if grep $init_user_dns $dnmap_file &> /dev/null ;then

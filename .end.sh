@@ -78,8 +78,8 @@ elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
 fi
 
 email() {
-  tail $init_user_home_info | mailx -r Sdp@saintic.com -s "$init_user，欢迎您，你是我们第${user_id}个用户" $user_email
-  tail -20 $Sdpuc | head -19 | mailx -r Sdp@saintic.com -s "Sdp.UserInfo:${init_user}(${user_id})" staugur@vip.qq.com
+  tail $init_user_home_info | mailx -r SdpCenter@saintic.com -s "欢迎您，$init_user，你是我们第${user_id}个用户" $user_email
+  tail -20 $Sdpuc | head -19 | mailx -r SdpCenter@saintic.com -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" staugur@vip.qq.com
 }
 
 if [ -d $init_user_home ]; then
