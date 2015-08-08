@@ -5,10 +5,18 @@ export SDP_HOME=$(cd `dirname $0`; pwd)
 source ${SDP_HOME}/global.func
 
 #判断入参及入参要求是否符合。
-if [ "$#" != "5" ]; then
-  echo -e "\033[31mUsage: $0 user use_time service_type file_type email\033[0m" 2>&1 ; exit 1
-else [ $3 -le 0 ]; then
-  echo "第三个参数要求大于0，即使用期限大于一个月！" 2>&1 
+if [ "$#" = 5 ]; then
+  if [[ $3 -le 0 ]]; then echo "第三个参数要求大于0，即使用期限大于一个月！" 2>&1 ; ERROR ; fi
+elif [ "$#" != "5" ]; then
+  cat << HELP
+此脚本需要五个参数，分别是user(用户) use_time(使用时间，单位月) service_type(服务) file_type(文件类型) email(用户邮箱)。
+要求：
+1).用户名不冲突，同个用户需要多个服务当前版本必须多次以不同user执行；
+2).使用时间不限，至少1个月(当前版本并不限制此值为0)；
+3).服务类型：nginx、httpd、tomcat、mysql、mongodb、redis、memcached;
+4).文件类型：若为web类型可支持ftp、svn，若为app类型默认无；
+5).邮件提醒：部署成功后会发给用户一封信息邮件(确保不在垃圾邮件中)，大致内容包括用户名、密码、验证邮箱、服务类型，若为web服务类型则包含域名信息，否则为IP+PORT信息，若文件类型是svn则包含用户版本库地址，否则为FTP地址，最后是FAQ链接，此链接详细讲解用户应该如果使用邮件的信息。
+HELP
   exit 1
 fi
 

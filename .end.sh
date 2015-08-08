@@ -26,6 +26,7 @@ elif [ $init_file_type == ftp ]; then
 cat >> $init_user_home_info <<EOF
   FTP地址: ftp://$init_user_dns
 EOF
+fi
 }
 
 AppsUserInfo() {
@@ -35,14 +36,15 @@ Sdp应用信息:
   密码: $init_passwd
   验证邮箱: $user_email
   服务类型: $init_service_type
-  IP和端口: ${SERVER_IP}:${portmap}
-  应用连接信息即IP和端口，若您的服务中有任何需要密码的部分均为"${init_passwd}"，详情文档请访问https://saintic.com/sdp
+  IP和端口: ${SERVER_IP}:${portmap} 应用连接信息即IP和端口，若您的服务中有任何需要密码的部分均为"${init_passwd}"，详情文档请访问https://saintic.com/sdp
 EOF
 }
 
-#将用户信息写入用户数据文件
+#将用户信息写入用户数据文件,必须要删除$Sdpuc最后一行}闭括号
+sed -i '/^$/ d' $Sdpuc 
+sed -i '$d' $Sdpuc
 cat >> $Sdpuc <<USERINFO
-  "$user_id": {
+  "UID_${user_id}": {
   "uid": "$user_id",
   "user": "$init_user",
   "passwd": "$init_passwd",
@@ -61,6 +63,7 @@ cat >> $Sdpuc <<USERINFO
   "FTP": "ftp://${init_user_dns}",
   "Notes": "##########################################################"
   }
+}
 USERINFO
 
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
