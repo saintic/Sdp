@@ -7,6 +7,12 @@ DoubleError() {
   dockererror
 }
 
+[ -z $INIT_HOME ] && DoubleError
+[ -z $init_user ] && DoubleError
+[ -z $init_passwd ] && DoubleError
+[ -z $user_email ] && DoubleError
+[ -z $user_id ] && DoubleError
+
 WebsUserInfo() {
 cat > $init_user_home_info <<EOF
 Sdp应用信息:
@@ -41,8 +47,7 @@ EOF
 }
 
 #将用户信息写入用户数据文件,必须要删除$Sdpuc最后一行}闭括号
-sed -i '/^$/ d' $Sdpuc 
-sed -i '$d' $Sdpuc
+sed -i '/^$/ d' $Sdpuc ; sed -i '$d' $Sdpuc
 cat >> $Sdpuc <<USERINFO
   "UID_${user_id}": {
   "uid": "$user_id",
@@ -62,9 +67,14 @@ cat >> $Sdpuc <<USERINFO
   "SVN": "https://svn.saintic.com/sdi/${init_user}",
   "FTP": "ftp://${init_user_dns}",
   "Notes": "##########################################################"
-  }
+  },
 }
 USERINFO
+sed -i 'N;$!P;$!D;$d' $Sdpuc
+cat >> $Sdpuc <<EOF
+  }
+}
+EOF
 
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   WebsUserInfo
