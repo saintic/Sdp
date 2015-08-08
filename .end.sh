@@ -2,11 +2,6 @@
 source ${SDP_HOME}/global.func
 export LANG=zh_CN.UTF-8
 
-DoubleError() {
-  ERROR
-  dockererror
-}
-
 [ -z $INIT_HOME ] && DoubleError
 [ -z $init_user ] && DoubleError
 [ -z $init_passwd ] && DoubleError
@@ -20,7 +15,7 @@ Sdp应用信息:
   密码: $init_passwd
   验证邮箱: $user_email
   服务类型: $init_service_type
-  免费域名: $init_user_dns
+  免费域名: http://${init_user_dns}
   请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问https://saintic.com/sdp，您的文件系统访问类型地址是：
 EOF
 
@@ -49,7 +44,7 @@ EOF
 #将用户信息写入用户数据文件,必须要删除$Sdpuc空行最后一行}闭括号，完成后删除最后两行，加两个闭大括号。
 sed -i '/^$/ d' $Sdpuc ; sed -i '$d' $Sdpuc
 cat >> $Sdpuc <<USERINFO
-  "UID_${user_id}": {
+  "UID-${user_id}": {
   "uid": "$user_id",
   "user": "$init_user",
   "passwd": "$init_passwd",
@@ -66,7 +61,7 @@ cat >> $Sdpuc <<USERINFO
   "userinfo": "$init_user_home_info",
   "SVN": "https://svn.saintic.com/sdi/${init_user}",
   "FTP": "ftp://${init_user_dns}",
-  "Notes": "##########################################################"
+  "Notes": "##################################################"
   },
 }
 USERINFO

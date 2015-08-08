@@ -3,6 +3,8 @@
 
 source $SDP_HOME/global.func
 [ -z $apps ] && ERROR
+[ -z $user_id ] && ERROR
+[ -z $user_oid ] && ERROR
 [ -z $INIT_HOME ] && ERROR
 [ -z $init_user ] && ERROR
 [ -z $init_passwd ] && ERROR
@@ -16,7 +18,7 @@ source $SDP_HOME/global.func
 
 #APP型独有的端口文件
 export portmap_file=${INIT_HOME}/portmap
-if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
+if [ -z $user_oid ] || [ "$user_oid" = "" ] || [ "$user_oid" = "null" ]; then
   echo "9000" > $portmap_file
 else
   user_old_port=`cat $portmap_file`

@@ -38,6 +38,11 @@ function dockererror() {
   fi
 }
 
+function DoubleError() {
+  ERROR
+  dockererror
+}
+
 function create_ftp() {
 [ "$#" != "3" ] && ERROR
 #arg:$init_user $init_passwd $init_user_home_root

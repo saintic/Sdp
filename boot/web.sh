@@ -3,6 +3,7 @@
 #save dn, nginx proxy.
 source ${SDP_HOME}/global.func
 
+[ -z $user_id ] && ERROR
 [ -z $init_user ] && ERROR
 [ -z $init_file_type ] && ERROR
 [ -z $init_service_type ] && ERROR

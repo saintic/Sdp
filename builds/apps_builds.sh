@@ -2,6 +2,7 @@
 #boot services.
 source ${SDP_HOME}/global.func
 [ -z $portmap ] && ERROR
+[ -z $user_id ] && ERROR
 [ -z $SERVER_IP ] && ERROR
 [ -z $init_passwd ] && ERROR
 [ -z $init_service_type ] && ERROR
@@ -34,8 +35,7 @@ redis)
   ;;
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
-  ERROR
-  dockererror
+  DoubleError
   ;;
 esac
 

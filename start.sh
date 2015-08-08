@@ -58,7 +58,7 @@ fi
 EOF
 
 #获取用户数，如果没有即为空，UID唯一且递增。
-user_oid=$(jq '.user_id' $Sdpuc)
+export user_oid=$(jq '.user_id' $Sdpuc)
 if [ -z $user_oid ] || [ "$user_oid" = "" ] || [ "$user_oid" = "null" ]; then
   export user_id=1
 else

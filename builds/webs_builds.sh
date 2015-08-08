@@ -1,6 +1,7 @@
 #!/bin/bash
 #boot web services.
 source $SDP_HOME/global.func
+[ -z $user_id ] && ERROR
 [ -z $init_user ] && ERROR
 [ -z $init_user_dns ] && ERROR
 [ -z $init_service_type ] && ERROR
@@ -26,8 +27,7 @@ tomcat)
   ;;
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
-  ERROR
-  dockererror
+  DoubleError
   ;;
 esac
 
