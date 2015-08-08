@@ -6,12 +6,11 @@ source ${SDP_HOME}/global.func
 
 #判断入参及入参要求是否符合。
 if [ "$#" = 5 ]; then
-  if [ $3 -le 0 ]; then
+  if [[ $3 -le 0 ]]; then
     echo "第三个参数要求大于0，即使用期限大于一个月！" 2>&1
     exit 1;
   fi
-  Verify_mailbox_format=`echo $5 | sed -r '/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/!d'`
-  if [ "$Verify_mailbox_format" == "" ]; then
+  if [ `echo $5 | sed -r '/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/!d'` == "" ]; then
     echo "邮箱格式不正确！"
     exit 1;
   fi
