@@ -41,10 +41,18 @@ Sdp应用信息:
 EOF
 }
 
-#将用户信息写入用户数据文件,必须要删除$Sdpuc空行最后一行}闭括号，完成后删除最后两行，加两个闭大括号。
-sed -i '/^$/ d' $Sdpuc ; sed -i '$d' $Sdpuc
+#将用户信息写入用户数据文件,完成后删除最后两行，加两个闭大括号。
+if [ `cat $Sdpuc | wc -l` -le 6 ]; then  #不存在UID配置
+sed -i 'N;$!P;$!D;$d' $Sdpuc
+elif [ `cat $Sdpuc | wc -l` -gt 6 ]; then  #即存在UID配置
+sed -i 'N;$!P;$!D;$d' $Sdpuc
+cat >> $Sdpuc <<EOF
+  },
+EOF
+fi
+
 cat >> $Sdpuc <<USERINFO
-  "UID-${user_id}": {
+  "UID${user_id}": {
   "uid": "$user_id",
   "user": "$init_user",
   "passwd": "$init_passwd",
@@ -70,6 +78,7 @@ cat >> $Sdpuc <<EOF
   }
 }
 EOF
+
 
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   WebsUserInfo

@@ -55,6 +55,7 @@ fi
   "SdpHome": "$INIT_HOME",
   "SdpUC": "$Sdpuc",
   "SdpIP": "$SERVER_IP",
+  },
 }
 EOF
 
