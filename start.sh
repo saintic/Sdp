@@ -8,8 +8,9 @@ source ${SDP_HOME}/global.func
 if [ "$#" = 5 ]; then
   if [[ $3 -le 0 ]]; then echo "第三个参数要求大于0，即使用期限大于一个月！" 2>&1 ; ERROR ; fi
 elif [ "$#" != "5" ]; then
+  echo -e "\033[31mUsage: $0 user use_time service_type file_type email\033[0m"
   cat << HELP
-此脚本需要五个参数，分别是user(用户) use_time(使用时间，单位月) service_type(服务) file_type(文件类型) email(用户邮箱)。
+此脚本五个入参说明，分别是user(用户) use_time(使用时间，单位月) service_type(服务) file_type(文件类型) email(用户邮箱)。
 要求：
 1).用户名不冲突，同个用户需要多个服务当前版本必须多次以不同user执行；
 2).使用时间不限，至少1个月(当前版本并不限制此值为0)；
