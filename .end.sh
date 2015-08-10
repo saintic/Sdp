@@ -42,9 +42,9 @@ EOF
 }
 
 #将用户信息写入用户数据文件,完成后删除最后两行，加两个闭大括号。
-if [ `cat $Sdpuc | wc -l` -le 6 ]; then  #不存在UID配置
+if [ `cat $Sdpuc | wc -l` -le 7 ]; then  #不存在UID配置
 sed -i 'N;$!P;$!D;$d' $Sdpuc
-elif [ `cat $Sdpuc | wc -l` -gt 6 ]; then  #即存在UID配置
+elif [ `cat $Sdpuc | wc -l` -gt 7 ]; then  #即存在UID配置
 sed -i 'N;$!P;$!D;$d' $Sdpuc
 cat >> $Sdpuc <<EOF
   },
