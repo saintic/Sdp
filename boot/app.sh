@@ -4,7 +4,6 @@
 source $SDP_HOME/global.func
 [ -z $apps ] && ERROR
 [ -z $user_id ] && ERROR
-[ -z $user_oid ] && ERROR
 [ -z $INIT_HOME ] && ERROR
 [ -z $init_user ] && ERROR
 [ -z $init_passwd ] && ERROR
@@ -23,8 +22,7 @@ if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
   echo "9000" > $portmap_file
 else
   echo `expr 9000 + $user_id` > $portmap_file
-  export portmap=`cat $portmap_file`
   /sbin/iptables -I INPUT -p tcp --dport $portmap -j ACCEPT
 fi
-
+export portmap=`cat $portmap_file`
 source ${SDP_HOME}/builds/apps_builds.sh
