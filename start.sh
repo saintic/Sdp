@@ -69,8 +69,8 @@ fi
 echo "$user_id" > $uidfile
 
 #制定服务使用期限。
-CreateTime=`date +%Y%m%d`
-ExpirationTime=`date +%Y%m%d -d "$use_time month"`
+CreateTime=$(date +%Y-%m-%d)
+ExpirationTime=$(date +%Y-%m-%d -d "$use_time month")
 
 #判断服务类型，APP型和WEB型，并触发不同类型的脚本。
 if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then

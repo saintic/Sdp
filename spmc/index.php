@@ -5,7 +5,7 @@
         <title>Sdp.SPMC | SaintIC PaaS Management Console</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="style/css/style.css">
     </head>
     <body>
         <div class="page-container">
@@ -22,10 +22,10 @@
         </div>
         <p></p>
         <!-- Javascript -->
-        <script src="assets/js/jquery-1.8.2.min.js"></script>
-        <script src="assets/js/supersized.3.2.7.min.js"></script>
-        <script src="assets/js/supersized-init.js"></script>
-        <script src="assets/js/scripts.js"></script>
+        <script src="style/js/jquery-1.8.2.min.js"></script>
+        <script src="style/js/supersized.3.2.7.min.js"></script>
+        <script src="style/js/supersized-init.js"></script>
+        <script src="style/js/scripts.js"></script>
 <br/>
 <?php
 $t=time();
@@ -33,7 +33,7 @@ echo date("Y-m-d H:i:s",$t);
 ?>
 &nbsp;&nbsp;
 Copyright © 2015-<?php echo date("Y")?>
-<a href="https://www.saintic.com" target="_blank">SaintIC</a> 
+<a href="https://saintic.com/" target="_blank">SaintIC</a> 
     </body>
 </html>
 

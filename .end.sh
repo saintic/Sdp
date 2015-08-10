@@ -85,6 +85,20 @@ if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
 elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
   AppsUserInfo
 fi
+cat > ${init_user_home}/user.json <<EOF
+{
+  "uid": "$user_id",
+  "user": "$init_user",
+  "passwd": "$init_passwd",
+  "home": "$init_user_home",
+  "email": "$user_email",
+  "service": "$init_service_type",
+  "file": "$init_file_type",
+  "CreateTime": "$CreateTime",
+  "ExpirationTime": "$ExpirationTime",
+  "container_id": "$container_id"
+}
+EOF
 
 email() {
   local admin_email=staugur@vip.qq.com

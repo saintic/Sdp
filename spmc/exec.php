@@ -9,7 +9,7 @@ $url = "https://ci.saintic.com/";
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="refresh" content="2; url=<?php echo $url; ?>">
         <!-- CSS -->
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="style/css/style.css">
     </head>
     <body>
 <?php
@@ -29,10 +29,10 @@ if($status == 'true') {
 }
 ?>
         <!-- Javascript -->
-        <script src="assets/js/jquery-1.8.2.min.js"></script>
-        <script src="assets/js/supersized.3.2.7.min.js"></script>
-        <script src="assets/js/supersized-init.js"></script>
-        <script src="assets/js/scripts.js"></script>
+        <script src="style/js/jquery-1.8.2.min.js"></script>
+        <script src="style/js/supersized.3.2.7.min.js"></script>
+        <script src="style/js/supersized-init.js"></script>
+        <script src="style/js/scripts.js"></script>
     </body>
 </html>
 
