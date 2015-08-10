@@ -25,7 +25,7 @@ cat >> $init_user_home_info <<EOF
 EOF
 elif [ $init_file_type == ftp ]; then
 cat >> $init_user_home_info <<EOF
-  FTP地址: ftp://$init_user_dns
+  FTP地址: ftp://${init_user_dns}
 EOF
 fi
 }

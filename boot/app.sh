@@ -1,7 +1,7 @@
 #!/bin/bash
 #app:MongoDB,Redis,MySQL,MemCached
 
-source $SDP_HOME/global.func
+source ${SDP_HOME}/global.func
 [ -z $apps ] && ERROR
 [ -z $user_id ] && ERROR
 [ -z $INIT_HOME ] && ERROR
@@ -18,11 +18,11 @@ source $SDP_HOME/global.func
 #APP型独有的端口文件
 export portmap_file=${INIT_HOME}/.portmap
 
-if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
-  echo "9000" > $portmap_file
+if [ -e $portmap_file ]; then
+  echo $(($(cat $portmap_file) + 1)) > $portmap_file
 else
-  echo `expr 9000 + $user_id` > $portmap_file
-  /sbin/iptables -I INPUT -p tcp --dport $portmap -j ACCEPT
+  echo "9000" > $portmap_file
 fi
 export portmap=`cat $portmap_file`
+/sbin/iptables -I INPUT -p tcp --dport $portmap -j ACCEPT
 source ${SDP_HOME}/builds/apps_builds.sh

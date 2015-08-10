@@ -1,6 +1,7 @@
 #global.functions
 
-export SERVER_IP=182.92.106.104
+#tools
+export SERVER_IP="182.92.106.104"
 #webs can use svn,ftp;
 #apps can't use anyone,only -.
 export webs=("nginx" "httpd" "tomcat")
@@ -12,6 +13,7 @@ export httpasswd="${INIT_HOME}/.httpasswd"
 export vfu="/etc/vsftpd/vfu.list"
 export vfudb="/etc/vsftpd/vfu.db"
 export vfudir="/etc/vsftpd/vfu_dir"
+export uidfile=${INIT_HOME}/.uid
 
 function ERROR() {
   echo "Error:Please check this script and input/output!" >&2
@@ -25,6 +27,13 @@ function ERROR() {
   elif [ "$init_file_type" = "ftp" ]; then
     sed -i "/$init_user/,+1d" $vfu
     db_load -T -t hash -f $vfu $vfudb ; /etc/init.d/vsftpd reload
+  fi
+  if [ -e $uidfile ];then
+    if [ `cat $uidfile` -eq 1 ]; then
+      rm -f $uidfile
+    else
+      echo $((`cat $uidfile` - 1)) > $uidfile
+    fi
   fi
   exit 1;
 }

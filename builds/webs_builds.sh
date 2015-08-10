@@ -1,6 +1,6 @@
 #!/bin/bash
 #boot web services.
-source $SDP_HOME/global.func
+source ${SDP_HOME}/global.func
 [ -z $user_id ] && ERROR
 [ -z $init_user ] && ERROR
 [ -z $init_user_dns ] && ERROR
@@ -35,10 +35,10 @@ container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $
 container_pid=$(sudo docker inspect --format '{{.State.Pid}}' $init_user)
 
 #virtual proxy
-nginx_exec=/usr/sbin/nginx
+nginx_exec=`which nginx`
 nginx_home=/usr/local/nginx
 nginx_conf=${nginx_home}/conf
-nginx_sdp_conf=${nginx_conf}/Sdp
+nginx_sdp_conf=${nginx_conf}/SdpConf
 user_nginx_conf=${nginx_sdp_conf}/${init_user}.${user_id}.conf
 [ -d $nginx_sdp_conf ] || mkdir -p $nginx_sdp_conf
 [ -f $user_nginx_conf ] && echo "Nginx configuration file already exists, and exit." && ERROR

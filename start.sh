@@ -52,19 +52,19 @@ fi
 #创建Sdp用户数据文件，JSON格式，方便tools工具后续工作。
 [ -f $Sdpuc ] || cat > $Sdpuc <<EOF
 {
-  "SdpHome": "$INIT_HOME",
-  "SdpUC": "$Sdpuc",
-  "SdpIP": "$SERVER_IP",
+  "SdpHome": "${SDP_HOME}",
+  "SdpDataHome": "${INIT_HOME}",
+  "SdpUC": "${Sdpuc}",
+  "SdpIP": "${SERVER_IP}",
   },
 }
 EOF
 
-#获取用户数，如果没有即为空，UID唯一且递增。
-user_oid=$(cat $uidfile)
-if [ -z $user_oid ] || [ "$user_oid" = "" ]; then
-  export user_id=1
+#获取用户文件，如果没有即为空，UID唯一且递增。
+if [ -e $uidfile ];then
+  export user_id=$((`cat $uidfile` + 1))
 else
-  export user_id=`expr $user_oid + 1`
+  export user_id=1
 fi
 echo "$user_id" > $uidfile
 
