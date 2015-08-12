@@ -13,16 +13,16 @@ container_tomcat=staugur/tomcat
 #Ask:/data include wwwroot,logs.
 case $init_service_type in
 nginx)
-  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_nginx`
+  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_nginx | cut -c 1-12`
   docker exec -i $container_id /usr/sbin/nginx
   docker exec -i $container_id /etc/init.d/php-fpm start
   ;;
 httpd)
-  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_httpd`
+  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_httpd | cut -c 1-12`
   docker exec -i $container_id /etc/init.d/httpd start
   ;;
 tomcat)
-  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_tomcat`
+  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_tomcat | cut -c 1-12`
   docker exec -i $container_id /usr/local/tomcat/bin/startup.sh   
   ;;
 *)
