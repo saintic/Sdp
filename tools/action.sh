@@ -48,6 +48,7 @@ EOF
 
 function RESTART() {
 #根据服务类型启动服务,保证IP不变，将服务创建时间和到期时间更改
+echo 'pass'
 }
 
 function main() {
@@ -67,6 +68,7 @@ do
   RemindTimeWeek=$(date -d "-1 week ${getExpirationTime}" +%Y-%m-%d)
   keepTime=$(date -d "+1 week ${getExpirationTime}" +%Y-%m-%d)
   getToday=$(date +%Y-%m-%d)
+
 if [[ "$getToday" == "$RemindTimeWeek" ]] || [[ "$getToday" == "$RemindTimeTwo" ]]; then
   EMAIL
 elif [[ "$getToday" == "$getExpirationTime" ]]; then
@@ -82,5 +84,7 @@ elif [[ "$getToday" == "$getExpirationTime" ]]; then
 elif [[ "getToday" == "$keepTime" ]]; then
   DEL $getContainer_ID
 fi
+done
+}
 
 main
