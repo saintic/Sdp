@@ -55,7 +55,7 @@ function main() {
 #邮件提醒 开启、停止、删除服务
 for user in $Users
 do
-  userjson=${DataHOME}/${user}/user.json
+  userjson=${SdpDataHOME}/${user}/user.json
   getUID=$(jq '.uid' $userjson)
   getUSER=$(jq '.user' $userjson)
   getUHome=$(jq '.home' $userjson)
