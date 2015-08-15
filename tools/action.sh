@@ -1,8 +1,11 @@
 #!/bin/bash
 #获取用户到期信息，提前一周和两天邮件提醒用户
+#start atd start; chkconfig atd on
+#crontab: run 23:00, par 1h
+
 ScriptDIR=$(cd `dirname $0`; pwd)
 source ${ScriptDIR}/functions.sh
-export LANG=zh_CN.UTF-8
+export LANG="zh_CN.UTF-8"
 
 function EMAIL() {
 #邮件对象及模板
@@ -23,59 +26,31 @@ EOF
 
 function EmailError() {
 mailx -s "捕捉到错误信息，请及时处理:" -r SdpTeam@saintic.com $getEmail <<EOF
-
+$1
 EOF
 }
 
 function STOP() {
 #到期前没续费，触发stop动作，传递getContainer_ID参数
+service atd start
 at 23:59 <<EOF
 docker stop $1
 EOF
 }
 
-function START() {
-#根据服务类型启动服务
-nginx)
-  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_nginx`
-  docker exec -i $container_id /usr/sbin/nginx
-  docker exec -i $container_id /etc/init.d/php-fpm start
-  ;;
-httpd)
-  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_httpd`
-  docker exec -i $container_id /etc/init.d/httpd start
-  ;;
-tomcat)
-  container_id=`docker run -tdi --restart=always --name $init_user -v ${init_user_home_root}:/data/wwwroot/html $container_tomcat`
-  docker exec -i $container_id /usr/local/tomcat/bin/startup.sh   
-  ;;
-memcached)
-  container_id=`docker run -tdi --restart=always --name $init_user -p ${SERVER_IP}:${portmap}:11211 $container_memcached`
-  docker exec -i $container_id /usr/local/bin/memcached -d -u root
-  ;;
-mongodb)
-  container_id=`docker run -tdi --restart=always --name $init_user -p ${SERVER_IP}:${portmap}:27017 $container_mongodb`
-  docker exec -i $container_id /data/app/mongodb/bin/mongod -f /data/app/mongodb/mongod.conf &
-  ;;
-mysql)
-  container_id=`docker run -tdi --restart=always --name $init_user -p ${SERVER_IP}:${portmap}:3306 $container_mysql`
-  docker exec -i $container_id /etc/init.d/mysqld start
-  docker exec -i $container_id mysql -e "grant all on *.* to 'root'@'%' identified by \"${init_passwd}\" with grant option;"
-  docker exec -i $container_id mysql -e "grant all on *.* to 'root'@'localhost' identified by \"${init_passwd}\";"
-  docker exec -i $container_id /etc/init.d/mysqld restart
-  ;;
-redis)
-  container_id=`docker run -tdi --restart=always --name $init_user -p ${SERVER_IP}:${portmap}:6379 $container_redis`
-  #docker exec -i sed -i 's/appendonly no/appendonly yes/' /etc/redis.conf
-  docker exec -i $container_id /etc/init.d/redis start
-}
-
 function DEL() {
 #续费用户会在用户主目录创建renew空文件，若存在则启动文件，若不存在
+service atd start
+at 23:59 <<EOF
 docker rm -f $1
+EOF
 }
 
-function ACTION() {
+function RESTART() {
+#根据服务类型启动服务,保证IP不变，将服务创建时间和到期时间更改
+}
+
+function main() {
 #邮件提醒 开启、停止、删除服务
 for user in $Users
 do
@@ -95,12 +70,17 @@ do
 if [[ "$getToday" == "$RemindTimeWeek" ]] || [[ "$getToday" == "$RemindTimeTwo" ]]; then
   EMAIL
 elif [[ "$getToday" == "$getExpirationTime" ]]; then
-  if [ -e ${getUHome}/renew ]; then
-    START $getContainer_ID $getService $getToday
-    rm -f ${getUHome}/renew
+  if [ -f ${getUHome}/renew ]; then
+    if [ $(docker inspect -f '{{.State.Running}}' $getContainer_ID) = "true" ]; then
+      :
+    else      
+      RESTART $getContainer_ID
+    fi
   else
     STOP $getContainer_ID
   fi
 elif [[ "getToday" == "$keepTime" ]]; then
   DEL $getContainer_ID
 fi
+
+main
