@@ -6,4 +6,4 @@ export SdpDataHOME="/data/SDI.Sdp"
 export SdpUC="${SdpDataHOME}/.Ucenter"
 export PreciseTime=$(date +"%Y-%m-%d_%H:%M:%S")
 export Users=$(ls -l ${SdpDataHOME} | awk '/^d/ {print $NF}')
-echo $Users
+
