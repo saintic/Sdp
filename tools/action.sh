@@ -1,7 +1,7 @@
 #!/bin/bash
 #获取用户到期信息，提前一周和两天邮件提醒用户
 #start atd start; chkconfig atd on
-#crontab: run 23:00, par 1h
+#crontab: run 00:01, par 1d
 
 ScriptDIR=$(cd `dirname $0`; pwd)
 source ${ScriptDIR}/functions.sh
@@ -16,7 +16,7 @@ mailx -s "尊敬的${getUSER}：" -r SdpTeam@saintic.com $getEmail <<EOF
 
 祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
     QQ:   1663116375
-    Mail: staugur@saintic.com
+    Mail: staugur@vip.qq.com
     旺旺: 楠孩纸
     官网：https://saintic.com/
     微博：http://weibo.com/staugur/
