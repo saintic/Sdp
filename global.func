@@ -15,9 +15,6 @@ export vfu="/etc/vsftpd/vfu.list"
 export vfudb="/etc/vsftpd/vfu.db"
 export vfudir="/etc/vsftpd/vfu_dir"
 export uidfile="${INIT_HOME}/.uid"
-export LogDir="${INIT_HOME}/logs"
-export Suclog="${LogDir}/access.log"
-export Errlog="${LogDir}/error.log"
 export PreciseTime=$(date +"%Y-%m-%d_%H:%M:%S")
 
 function ERROR() {

@@ -2,7 +2,12 @@
 #need: $0 user use_time service_type file_type email;
 export LANG=zh_CN.UTF-8
 export SDP_HOME=$(cd `dirname $0`; pwd)
+export LogDir="${INIT_HOME}/logs"
+export Suclog="${LogDir}/access.log"
+export Errlog="${LogDir}/error.log"
 source ${SDP_HOME}/global.func
+#Logs
+[ -d $LogDir ] || mkdir -p $LogDir
 
 #判断入参及入参要求是否符合。
 if [ "$#" = 5 ]; then
@@ -59,8 +64,6 @@ else
   mkdir -p $INIT_HOME
 fi
 
-#Logs
-[ -d $LogDir ] || mkdir -p $LogDir
 #创建Sdp用户数据文件，JSON格式，方便tools工具后续工作。
 [ -f $Sdpuc ] || cat > $Sdpuc <<EOF
 {
