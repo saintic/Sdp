@@ -14,16 +14,19 @@ for user in $Users
 do
   userbackupfile="${BakDir}/${user}/${DateTime}.tar.gz"
   userjson=${SdpDataHOME}/${user}/user.json
-  UHome=$(jq '.home' ${userjson}|awk -F \" '{print $2}')
-  UService=$(jq '.service' $userjson|awk -F \" '{print $2}')
-  UCreateTime=$(jq '.CreateTime' $userjson|awk -F \" '{print $2}')
-  UExpirationTime=$(jq '.ExpirationTime' $userjson|awk -F \" '{print $2}')
-  mkdir -p ${BakDir}/${user} ; tar zcf ${userbackupfile} $UHome
-  if [ -z $user ] && [ -e $userbackupfile ]; then
-    echo "
-${PreciseTime} ${user}:${UHome} ${UService}:${UCreateTime}~${UExpirationTime} ${userbackupfile}" >> ${LogFile}
+  UHome=$(jq '.home' ${userjson} | awk -F \" '{print $2}')
+  UService=$(jq '.service' ${userjson} | awk -F \" '{print $2}')
+  UCreateTime=$(jq '.CreateTime' ${userjson} | awk -F \" '{print $2}')
+  UExpirationTime=$(jq '.ExpirationTime' ${userjson} | awk -F \" '{print $2}')
+  if [ -z $user ]; then
+    exit 1
   else
-    echo "不存在备份数据，脚本退出！"
-	exit 1
+    mkdir -p ${BakDir}/${user} ; tar zcf ${userbackupfile} ${UHome}
+    if [ -e $userbackupfile ]; then
+      echo "${PreciseTime} ${user}:${UHome} ${UService}:${UCreateTime}~${UExpirationTime} ${userbackupfile}" >> ${LogFile}
+    else
+      echo "不存在备份数据，脚本退出！"
+	  exit 1
+    fi
   fi
 done
