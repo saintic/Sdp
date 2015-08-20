@@ -7,7 +7,7 @@ export DataHome="/data/PaaSdp"
 export INIT_HOME="${DataHome}/USERS"
 export uidfile=${INIT_HOME}/.uid
 export Sdpuc=${INIT_HOME}/.Ucenter
-export LogDir="${INIT_HOME}/logs"
+export LogDir="${DataHome}/logs"
 export Suclog="${LogDir}/access.log"
 export Errlog="${LogDir}/error.log"
 
