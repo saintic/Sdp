@@ -14,8 +14,8 @@ for user in $Users
 do
   userbackupfile="${BakDir}/${user}/${DateTime}.tar.gz"
   userjson=${SdpDataHOME}/${user}/user.json
-  UHome=$(jq '.home' ${userjson})
-  UService=$(jq '.service' $userjson)
+  UHome=$(jq '.home' ${userjson}|awk -F \" '{print $2}')
+  UService=$(jq '.service' $userjson|awk -F \" '{print $2}')
   UCreateTime=$(jq '.CreateTime' $userjson|awk -F \" '{print $2}')
   UExpirationTime=$(jq '.ExpirationTime' $userjson|awk -F \" '{print $2}')
   mkdir -p ${BakDir}/${user} ; tar zcf ${userbackupfile} $UHome
