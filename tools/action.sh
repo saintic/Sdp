@@ -56,14 +56,14 @@ function main() {
 for user in $Users
 do
   userjson=${SdpDataHOME}/${user}/user.json
-  getUID=$(jq '.uid' $userjson)
-  getUSER=$(jq '.user' $userjson)
-  getUHome=$(jq '.home' $userjson)
-  getEmail=$(jq '.email' $userjson)
-  getService=$(jq '.service' $userjson)
+  getUID=$(jq '.uid' $userjson|awk -F \" '{print $2}')
+  getUSER=$(jq '.user' $userjson|awk -F \" '{print $2}')
+  getUHome=$(jq '.home' $userjson|awk -F \" '{print $2}')
+  getEmail=$(jq '.email' $userjson|awk -F \" '{print $2}')
+  getService=$(jq '.service' $userjson|awk -F \" '{print $2}')
   getCreateTime=$(jq '.CreateTime' $userjson|awk -F \" '{print $2}')
   getExpirationTime=$(jq '.ExpirationTime' $userjson|awk -F \" '{print $2}')
-  getContainer_ID=$(jq '.container_id' $userjson)
+  getContainer_ID=$(jq '.container_id' $userjson|awk -F \" '{print $2}')
   RemindTimeTwo=$(date -d "-2 day ${getExpirationTime}" +%Y-%m-%d)
   RemindTimeWeek=$(date -d "-1 week ${getExpirationTime}" +%Y-%m-%d)
   keepTime=$(date -d "+1 week ${getExpirationTime}" +%Y-%m-%d)
