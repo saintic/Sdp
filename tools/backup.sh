@@ -18,7 +18,7 @@ do
   UService=$(jq '.service' ${userjson} | awk -F \" '{print $2}')
   UCreateTime=$(jq '.CreateTime' ${userjson} | awk -F \" '{print $2}')
   UExpirationTime=$(jq '.ExpirationTime' ${userjson} | awk -F \" '{print $2}')
-  if [ -z $user ]; then
+  if [ -z $user ] || [ ! -e $UHome ]; then
     exit 1
   else
     mkdir -p ${BakDir}/${user} ; tar zcf ${userbackupfile} ${UHome}
@@ -30,7 +30,7 @@ do
       exit 1
     fi
     if [ $(du -m $LogFile | awk '{print $1}') -gt 18 ]; then
-      tar zcvf ${LogFile}-${DateTime}.tar.gz ${LogFile}
+      tar zcf ${LogFile}-${DateTime}.tar.gz ${LogFile}
       echo "${PreciseTime} backup.log ${LogFile}-${DateTime}.tar.gz" >> ${LogFile}
     fi
   fi
