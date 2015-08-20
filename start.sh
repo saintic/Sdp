@@ -8,8 +8,8 @@ export INIT_HOME="${DataHome}/USERS"
 export uidfile=${INIT_HOME}/.uid
 export Sdpuc=${INIT_HOME}/.Ucenter
 export LogDir="${DataHome}/logs"
-export Suclog="${LogDir}/access.log"
-export Errlog="${LogDir}/error.log"
+export Suclog="${LogDir}/sdp.access.log"
+export Errlog="${LogDir}/sdp.error.log"
 
 #Logs
 [ -d $LogDir ] || mkdir -p $LogDir
