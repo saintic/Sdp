@@ -24,6 +24,7 @@ do
     mkdir -p ${BakDir}/${user} ; tar zcf ${userbackupfile} ${UHome}
     if [ -e $userbackupfile ]; then
       echo "${PreciseTime} ${user}:${UHome} ${UService}:${UCreateTime}~${UExpirationTime} ${userbackupfile}" >> ${LogFile}
+      echo "" >> ${LogFile}
     else
       echo "不存在备份数据，脚本退出！"
 	  exit 1
