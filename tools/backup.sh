@@ -10,7 +10,8 @@ LogFile="${BakDir}/backup.log"
 #PreciseTime user service:create_time~exp_time backup_file
 
 [ -d ${BakDir} ] || mkdir -p $BakDir
-for user in Users ; do
+for user in $Users
+do
   userbackupfile="${BakDir}/${DateTime}.tar.gz"
   userjson=${SdpDataHOME}/${user}/user.json
   UHome=$(jq '.home' ${userjson})
