@@ -27,7 +27,11 @@ do
       echo "" >> ${LogFile}
     else
       echo "不存在备份数据，脚本退出！"
-	  exit 1
+      exit 1
+    fi
+    if [ $(du -m $LogFile | awk '{print $1}') -gt 18 ]; then
+      tar zcvf ${LogFile}-${DateTime}.tar.gz ${LogFile}
+      echo "${PreciseTime} backup.log ${LogFile}-${DateTime}.tar.gz" >> ${LogFile}
     fi
   fi
 done
