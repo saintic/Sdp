@@ -5,6 +5,10 @@
 export SERVER_IP="182.92.106.104"
 #webs can use svn,ftp;
 #apps can't use anyone,only -.
+export DataHome="/data/PaaSdp"
+export INIT_HOME="${DataHome}/USERS"
+export uidfile=${INIT_HOME}/.uid
+export Sdpuc=${INIT_HOME}/.Ucenter
 export webs=("nginx" "httpd" "tomcat")
 export apps=("mongodb" "memcached" "redis" "mysql")
 export files=("svn" "ftp" "-")
@@ -15,7 +19,11 @@ export vfu="/etc/vsftpd/vfu.list"
 export vfudb="/etc/vsftpd/vfu.db"
 export vfudir="/etc/vsftpd/vfu_dir"
 export uidfile="${INIT_HOME}/.uid"
+export LogDir="${DataHome}/logs"
+export Suclog="${LogDir}/sdp.access.log"
+export Errlog="${LogDir}/sdp.error.log"
 export PreciseTime=$(date +"%Y-%m-%d_%H:%M:%S")
+
 
 function ERROR() {
   echo "Error:Please check this script and input/output!" >&2

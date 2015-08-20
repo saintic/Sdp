@@ -3,13 +3,6 @@
 export LANG=zh_CN.UTF-8
 export SDP_HOME=$(cd `dirname $0`; pwd)
 source ${SDP_HOME}/global.func
-export DataHome="/data/PaaSdp"
-export INIT_HOME="${DataHome}/USERS"
-export uidfile=${INIT_HOME}/.uid
-export Sdpuc=${INIT_HOME}/.Ucenter
-export LogDir="${DataHome}/logs"
-export Suclog="${LogDir}/sdp.access.log"
-export Errlog="${LogDir}/sdp.error.log"
 
 #Logs
 [ -d $LogDir ] || mkdir -p $LogDir
