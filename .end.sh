@@ -118,6 +118,7 @@ if [ -d $init_user_home ]; then
   echo "Ending,Succeed!!!"
   email
   echo {"${PreciseTime}":{"user": "${init_user}","id": "${user_id}","email": "${user_email}","service": "${init_service_type}","container": "${container_id}","time": "${CreateTime}~${ExpirationTime}","code": "${init_file_type}","other": "`cat $portmap_file`"}} >> $Suclog
+  echo >> $Suclog
 else
   DoubleError
 fi
