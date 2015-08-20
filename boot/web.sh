@@ -14,7 +14,7 @@ source ${SDP_HOME}/global.func
 [ -f $init_user_home_info ] || touch $init_user_home_info
 
 export dnmap_file=${INIT_HOME}/.dnmap
-export init_user_dns=${init_user}.${user_id}.sdp.saintic.com
+export init_user_dns=${init_user}.sdp.saintic.com
 
 if grep $init_user_dns $dnmap_file &> /dev/null ;then
   echo -e "\033[31mThe domain name has been recorded in the $dnmap_file file.\033[0m" 2>&1

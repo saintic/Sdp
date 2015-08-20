@@ -27,6 +27,7 @@ tomcat)
   ;;
 *)
   echo -e "\033[31mUnsupported service type！\033[0m"
+  echo "${PreciseTime} ${init_user} ${user_email} ErrAction:\"Unsupported service type\" " >> $Errlog
   DoubleError
   ;;
 esac
@@ -66,6 +67,5 @@ check_reload() {
   ERROR
 }
 $nginx_exec -t &> /dev/null && nginx -s reload || check_reload
-
 
 source ${SDP_HOME}/.end.sh

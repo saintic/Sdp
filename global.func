@@ -1,3 +1,4 @@
+#!/bin/bash
 #global.functions
 
 #tools
@@ -13,7 +14,11 @@ export httpasswd="${INIT_HOME}/.httpasswd"
 export vfu="/etc/vsftpd/vfu.list"
 export vfudb="/etc/vsftpd/vfu.db"
 export vfudir="/etc/vsftpd/vfu_dir"
-export uidfile=${INIT_HOME}/.uid
+export uidfile="${INIT_HOME}/.uid"
+export LogDir="${INIT_HOME}/logs"
+export Suclog="${LogDir}/access.log"
+export Errlog="${LogDir}/error.log"
+export PreciseTime=$(date +"%Y-%m-%d_%H:%M:%S")
 
 function ERROR() {
   echo "Error:Please check this script and input/output!" >&2
@@ -35,6 +40,9 @@ function ERROR() {
       echo $((`cat $uidfile` - 1)) > $uidfile
     fi
   fi
+cat >> $Errlog <<EOF
+${PreciseTime} ${init_user} ${user_email} ErrAction:rm -rf ${init_user_home}, rm -f ${user_nginx_conf}, del $uidfile
+EOF
   exit 1;
 }
 
@@ -45,6 +53,9 @@ function dockererror() {
   else
     docker rm -f $container_id
   fi
+cat >> $Errlog <<EOF
+${PreciseTime} ${init_user} ${user_email} ErrAction:docker rm -f ${container_id}
+EOF
 }
 
 function DoubleError() {

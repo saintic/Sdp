@@ -102,7 +102,7 @@ EOF
 
 email() {
   local admin_email=staugur@vip.qq.com
-  tail $init_user_home_info | mailx -s "欢迎您，$init_user，你是我们第${user_id}个用户" -r SdpCenter@saintic.com $user_email
+  tail $init_user_home_info | mailx -s "欢迎您，$init_user" -r SdpCenter@saintic.com $user_email
   tail -20 $Sdpuc | head -19 | mailx -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" -r SdpCenter@saintic.com $admin_email
 }
 
@@ -117,6 +117,11 @@ if [ -d $init_user_home ]; then
   fi
   echo "Ending,Succeed!!!"
   email
+cat >> $Suclog <<EOF
+{"${PreciseTime}":{"user": "${init_user}","id": "${user_id}","email": "${user_email}","service": "${init_service_type}","container": "${container_id}","time": "${CreateTime}~${ExpirationTime}","code": "${init_file_type}","other": "`cat $portmap_file`"}}
+
+EOF
+
 else
   DoubleError
 fi

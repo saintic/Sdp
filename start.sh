@@ -10,10 +10,12 @@ if [ "$#" = 5 ]; then
     :
   else
     echo "第二个参数要求为正整数，单位为月！"
+    echo "${PreciseTime} ${init_user} ${user_email} ErrAction:\"使用时间参数错误\" " >> $Errlog
     exit 1;
   fi
   if [[ `echo $5 | sed -r '/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/!d'` == "" ]]; then
     echo "邮箱格式不正确！"
+    echo "${PreciseTime} ${init_user} ${user_email} ErrAction:\"邮箱格式不正确\" " >> $Errlog
     exit 1;
   fi
 elif [ "$#" != "5" ]; then
@@ -27,6 +29,7 @@ elif [ "$#" != "5" ]; then
 4).文件类型：若为web类型可支持ftp、svn，若为app类型默认无;
 5).邮件提醒：部署成功后会发给用户一封服务信息邮件(确保不在垃圾邮件中)，包括服务到期、服务续费、服务停止提醒。
 HELP
+  echo "${PreciseTime} ${init_user} ${user_email} ErrAction:\"入参错误, args is $#\"" >> $Errlog
   exit 1
 fi
 
@@ -37,7 +40,8 @@ export init_passwd=`MD5PASSWD`
 export init_service_type=$3
 export init_file_type=$4
 export user_email=$5
-export INIT_HOME=/data/SDI.Sdp
+export DataHome="/data/PaaSdp"
+export INIT_HOME="${DataHome}/USERS"
 export uidfile=${INIT_HOME}/.uid                        #file
 export Sdpuc=${INIT_HOME}/.Ucenter                      #file
 export init_user_home=${INIT_HOME}/$init_user           #directory
@@ -46,11 +50,17 @@ export init_user_home_root=${init_user_home}/root       #directory
 
 #创建Sdp数据根目录
 if [ -d $INIT_HOME ]; then
-  [ -d $init_user_home ] && echo -e "\033[31mThe user already exists\033[0m" 2>&1 && exit 1
+  if [ -d $init_user_home ]; then
+    echo -e "\033[31mThe user already exists\033[0m" 2>&1
+    echo "${PreciseTime} ${init_user} ${user_email} ErrAction:\"The user already exists\"" >> $Errlog
+	exit 1
+  fi
 else
   mkdir -p $INIT_HOME
 fi
 
+#Logs
+[ -d $LogDir ] || mkdir -p $LogDir
 #创建Sdp用户数据文件，JSON格式，方便tools工具后续工作。
 [ -f $Sdpuc ] || cat > $Sdpuc <<EOF
 {
@@ -79,6 +89,7 @@ if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
   if [[ `echo "$init_file_type"` == "-" ]]; then
     echo -e -n "\033[31mUnsupported file type:\033[0m" 2>&1 ;\
     echo -e "\033[31mAppsTypeService need svn or ftp\033[0m" 2>&1
+    echo "${PreciseTime} ${init_user} ${user_email} ErrAction:\"Unsupported file type\"" >> $Errlog
     exit 1
   else
     source ${SDP_HOME}/boot/web.sh
@@ -94,6 +105,7 @@ elif echo "${apps[@]}" | grep -w $init_service_type &> /dev/null ;then
 else
   echo -e "\033[31mUnsupported service type:\033[0m" 2>&1 ;\
   echo -e "\033[31mSupported service:redis,mongodb,memcached,mysql,nginx,httpd,tomcat.\033[0m" 2>&1
+  echo "${PreciseTime} ${init_user} ${user_email} ErrAction:\"Unsupported service type\"" >> $Errlog
   exit 1
 fi
 

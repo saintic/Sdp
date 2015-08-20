@@ -2,10 +2,8 @@
 #Backup user data
 ScriptDIR=$(cd `dirname $0`; pwd)
 source ${ScriptDIR}/functions.sh
-
-BakDir="/data/backup"
 DateTime=$(date +"%Y%m%d")
-LogFile="${BakDir}/backup.log"
+
 #Log Format:
 #PreciseTime user service:create_time~exp_time backup_file
 
