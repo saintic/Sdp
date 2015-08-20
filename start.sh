@@ -2,10 +2,15 @@
 #need: $0 user use_time service_type file_type email;
 export LANG=zh_CN.UTF-8
 export SDP_HOME=$(cd `dirname $0`; pwd)
+source ${SDP_HOME}/global.func
+export DataHome="/data/PaaSdp"
+export INIT_HOME="${DataHome}/USERS"
+export uidfile=${INIT_HOME}/.uid
+export Sdpuc=${INIT_HOME}/.Ucenter
 export LogDir="${INIT_HOME}/logs"
 export Suclog="${LogDir}/access.log"
 export Errlog="${LogDir}/error.log"
-source ${SDP_HOME}/global.func
+
 #Logs
 [ -d $LogDir ] || mkdir -p $LogDir
 
@@ -45,10 +50,6 @@ export init_passwd=`MD5PASSWD`
 export init_service_type=$3
 export init_file_type=$4
 export user_email=$5
-export DataHome="/data/PaaSdp"
-export INIT_HOME="${DataHome}/USERS"
-export uidfile=${INIT_HOME}/.uid                        #file
-export Sdpuc=${INIT_HOME}/.Ucenter                      #file
 export init_user_home=${INIT_HOME}/$init_user           #directory
 export init_user_home_info=${init_user_home}/info       #file
 export init_user_home_root=${init_user_home}/root       #directory
