@@ -12,14 +12,18 @@ LogFile="${BakDir}/backup.log"
 [ -d ${BakDir} ] || mkdir -p $BakDir
 for user in $Users
 do
-  userbackupfile="${BakDir}/${DateTime}.tar.gz"
+  userbackupfile="${BakDir}/${user}/${DateTime}.tar.gz"
   userjson=${SdpDataHOME}/${user}/user.json
   UHome=$(jq '.home' ${userjson})
   UService=$(jq '.service' $userjson)
   UCreateTime=$(jq '.CreateTime' $userjson|awk -F \" '{print $2}')
   UExpirationTime=$(jq '.ExpirationTime' $userjson|awk -F \" '{print $2}')
-  mkdir -p ${BakDir}/${user}
-  tar zcf ${userbackupfile} $UHome
-  echo "
-${PreciseTime} ${user} ${UService}:${UCreateTime}~${UExpirationTime} ${userbackupfile}" >> ${LogFile}
+  mkdir -p ${BakDir}/${user} ; tar zcf ${userbackupfile} $UHome
+  if [ -z $user ] && [ -e $userbackupfile ]; then
+    echo "
+${PreciseTime} ${user}:${UHome} ${UService}:${UCreateTime}~${UExpirationTime} ${userbackupfile}" >> ${LogFile}
+  else
+    echo "不存在备份数据，脚本退出！"
+	exit 1
+  fi
 done
