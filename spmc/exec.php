@@ -23,7 +23,7 @@ $email = $_POST['email'];
 
 system("echo password | sudo -u root -S /data/sdp/start.sh $user $time $service $file $email",$status);
 if($status == 'true') {
-  echo "<script>alert('Build Seccuss!');</script>";
+  echo "<script>alert('Build Success!');</script>";
 } else {
   echo "<script>alert('Build Wrong!');</script>";
 }
