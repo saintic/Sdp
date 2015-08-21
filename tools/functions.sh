@@ -7,6 +7,6 @@ export SdpDataHOME="${DataHome}/USERS"
 export SdpUC="${SdpDataHOME}/.Ucenter"
 export PreciseTime=$(date +"%Y-%m-%d_%H:%M:%S")
 export Users=$(ls -l ${SdpDataHOME} | awk '/^d/ {print $NF}')
-export BakDir="${DataHome}/backup"
-export LogFile="${DataHome}/logs/backup.log"
-
+export LogDIR="${DataHome}/logs"
+export BackupLogFile="${LogDIR}/backup.log"
+export RenewLogFile="${LogDIR}/renew.log"
