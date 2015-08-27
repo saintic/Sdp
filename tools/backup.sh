@@ -1,6 +1,7 @@
 #!/bin/bash
 #Backup user data
-source $(cd `dirname $0`; pwd)/functions.sh
+sd=$(cd `dirname $0`; pwd)
+source ${sd}/functions.sh
 DateTime=$(date +"%Y%m%d")
 
 #Log Format:
