@@ -2,8 +2,8 @@
 #crontab: run per 1min
 #手工执行续费脚本，在用户目录创建renew文件，更新user.json和SdpUC
 #获取user time
-ScriptDIR=$(cd `dirname $0`; pwd)
-source ${ScriptDIR}/functions.sh
+sd=$(cd `dirname $0`; pwd)
+source ${sd}/functions.sh
 
 #判断入参及入参要求是否符合。
 if [ "$#" != 2 ]; then
