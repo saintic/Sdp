@@ -58,4 +58,4 @@ getExpirationTime=$(jq '.ExpirationTime' $userjson | awk -F \" '{print $2}')
 getContainer_ID=$(jq '.container_id' $userjson | awk -F \" '{print $2}')
 
 touch ${SdpDataHOME}/${user}/renew
-
+UpdateUserInfo
