@@ -40,7 +40,7 @@ cat > ${SdpDataHOME}/${user}/user.json <<EOF
   "email": "$getEmail",
   "service": "$getService",
   "file": "$getFileType",
-  "CreateTime": "$(date +%Y-%m-%d)",
+  "CreateTime": "$getExpirationTime",
   "ExpirationTime": "$updateExpirationTime",
   "container_id": "$getContainer_ID"
 }
