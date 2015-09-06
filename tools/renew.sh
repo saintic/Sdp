@@ -40,7 +40,7 @@ cat > ${SdpDataHOME}/${user}/user.json <<EOF
   "email": "$getEmail",
   "service": "$getService",
   "file": "$getFileType",
-  "CreateTime": "$getCreateTime",
+  "CreateTime": "$(date +%Y-%m-%d)",
   "ExpirationTime": "$updateExpirationTime",
   "container_id": "$getContainer_ID"
 }
@@ -54,7 +54,6 @@ getHome=$(jq '.home' $userjson | awk -F \" '{print $2}')
 getEmail=$(jq '.email' $userjson | awk -F \" '{print $2}')
 getService=$(jq '.service' $userjson | awk -F \" '{print $2}')
 getFileType=$(jq '.file' $userjson | awk -F \" '{print $2}')
-getCreateTime=$(jq '.CreateTime' $userjson | awk -F \" '{print $2}')
 getExpirationTime=$(jq '.ExpirationTime' $userjson | awk -F \" '{print $2}')
 getContainer_ID=$(jq '.container_id' $userjson | awk -F \" '{print $2}')
 
