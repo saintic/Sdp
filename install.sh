@@ -70,10 +70,10 @@ http {
             include        fastcgi.conf;
         }
     }
-    include vhost/*.conf;
+    include SdpConf/*.conf;
 }
 EOF
-mkdir -p ${DATA}/app/nginx/conf/vhost
+mkdir -p ${DATA}/app/nginx/conf/SdpConf
 if [ `netstat -anptl|grep php-fpm|wc -l` = 0 ];then /etc/init.d/php-fpm start fi
 if [ `netstat -anptl|grep nginx|wc -l` = 0 ];then ${DATA}/app/nginx/sbin/nginx fi
 if [ `netstat -anptl|grep httpd|wc -l` = 0 ];then /etc/init.d/httpd start fi

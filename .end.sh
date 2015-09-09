@@ -1,6 +1,6 @@
 #!/bin/bash
 source ${SDP_HOME}/global.func
-export LANG=zh_CN.UTF-8
+export LANG="zh_CN.UTF-8"
 
 [ -z $INIT_HOME ] && DoubleError
 [ -z $init_user ] && DoubleError
@@ -21,7 +21,7 @@ EOF
 
 if [ $init_file_type == svn ]; then
 cat >> $init_user_home_info <<EOF
-  版本库地址: https://svn.saintic.com/sdi/${init_user}
+  版本库地址: https://saintic.top/sdi/${init_user}
 EOF
 elif [ $init_file_type == ftp ]; then
 cat >> $init_user_home_info <<EOF
@@ -68,7 +68,7 @@ cat >> $Sdpuc <<USERINFO
   "container_ip": "$container_ip",
   "userinfo": "${init_user_home}/user.json",
   "SVN": "https://svn.saintic.com/sdi/${init_user}",
-  "FTP": "ftp://${init_user}@182.92.106.104",
+  "FTP": "ftp://${init_user}@${SERVER_IP}",
   "Notes": "############################"
   },
 }

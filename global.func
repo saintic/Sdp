@@ -1,8 +1,20 @@
 #!/bin/bash
 #global.functions
 
+function getip_2() {
+  myip=$(curl ifconfig.me)
+}
+
+function getip_1() {
+  myip=$(echo $SSH_CONNECTION | awk '{print $3}')
+}
+
+getip_1
+if [ -z $myip ];then
+  getip_2
+fi
 #tools
-export SERVER_IP="182.92.106.104"
+export SERVER_IP="$myip"
 #webs can use svn,ftp;
 #apps can't use anyone,only -.
 export DataHome="/data/PaaSdp"
@@ -23,7 +35,6 @@ export LogDir="${DataHome}/logs"
 export Suclog="${LogDir}/sdp.access.log"
 export Errlog="${LogDir}/sdp.error.log"
 export PreciseTime=$(date +"%Y-%m-%d_%H:%M:%S")
-
 
 function ERROR() {
   echo "Error:Please check this script and input/output!" >&2
