@@ -1,16 +1,21 @@
 #!/bin/bash
 #SaintIC Sdp svn.
 source /etc/profile
-yum -y install httpd subversion mod_ssl mod_dav_svn
-sed -i "s/#ServerName www.example.com:80/ServerName ${HOSTNAME}/g" /etc/httpd/conf/httpd.conf
-svnconf=/etc/httpd/conf.d/subversion.conf
-mv $svnconf ${svnconf}.bak
-cat > $svnconf<<EOF
+httpconf="/etc/httpd/conf/httpd.conf"
+svnconf="/etc/httpd/conf.d/subversion.conf"
+yum -y install httpd subversion mod_ssl mod_dav_svn openssl openssl-devel
+sed -i "s/#ServerName www.example.com:80/ServerName ${HOSTNAME}/g" $httpconf
+sed -i "s/Listen 80/#Listen 80/g" $httpconf
+openssl req -new -x509 -days 3650 -keyout server.key -out server.crt -subj '/CN=Test-only certificate' -node
+mv -f server.key /etc/pki/tls/private/localhost.key 
+mv -f server.crt /etc/pki/tls/certs/localhost.crt
+mv ${svnconf} ${svnconf}.bak
+cat > $svnconf <<EOF
 LoadModule dav_svn_module     modules/mod_dav_svn.so
 LoadModule authz_svn_module   modules/mod_authz_svn.so
 <Directory "/data/">
-	Order allow,deny
-	Allow from all
+  Order allow,deny
+  Allow from all
 </Directory>
 <Location /sdi/test>
    DAV svn
@@ -18,7 +23,6 @@ LoadModule authz_svn_module   modules/mod_authz_svn.so
    AuthType Basic
    AuthName "SDI Code Service"
    AuthUserFile /data/repos/.passwd
-   #SSLRequireSSL
   <LimitExcept GET PROPFIND OPTIONS REPORT>
     Require valid-user
   </LimitExcept>
@@ -26,5 +30,9 @@ LoadModule authz_svn_module   modules/mod_authz_svn.so
 EOF
 mkdir -p /data/repos/ && svnadmin create /data/repos/test
 htpasswd -bc /data/repos/.passwd test test
-echo "Ending,Succeed!!!"
-echo "Please install SSL certs and enable SSLRequireSSL in 22 line."
+/etc/init.d/httpd start
+if [ `netstat -anptl|grep httpd|wc -l` -ge 1 ];then
+  echo "Ending,Succeed!!!"
+else
+  echo "Start Fail"
+fi
