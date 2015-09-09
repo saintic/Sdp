@@ -74,10 +74,10 @@ http {
 }
 EOF
 mkdir -p ${DATA}/app/nginx/conf/SdpConf
-if [ `netstat -anptl|grep php-fpm|wc -l` = 0 ];then /etc/init.d/php-fpm start fi
-if [ `netstat -anptl|grep nginx|wc -l` = 0 ];then ${DATA}/app/nginx/sbin/nginx fi
-if [ `netstat -anptl|grep httpd|wc -l` = 0 ];then /etc/init.d/httpd start fi
-if [ `ps aux|grep -v grep|grep docker|wc -l` = 0 ];then /etc/init.d/docker start fi
-if [ `netstat -anptl|grep vsftpd|wc -l` = 0 ];then /etc/init.d/vsftpd start fi
+if [ `netstat -anptl|grep php-fpm|wc -l` = 0 ];then /etc/init.d/php-fpm start; fi
+if [ `netstat -anptl|grep nginx|wc -l` = 0 ];then ${DATA}/app/nginx/sbin/nginx; fi
+if [ `netstat -anptl|grep httpd|wc -l` = 0 ];then /etc/init.d/httpd start; fi
+if [ `ps aux|grep -v grep|grep docker|wc -l` = 0 ];then /etc/init.d/docker start; fi
+if [ `netstat -anptl|grep vsftpd|wc -l` = 0 ];then /etc/init.d/vsftpd start; fi
 
 
