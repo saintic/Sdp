@@ -6,7 +6,7 @@ source ${SDP_HOME}/global.func
 
 #Logs
 [ -d $LogDir ] || mkdir -p $LogDir
-[ -d $INIT_HOME] || mkdir -p $INIT_HOME
+[ -d $INIT_HOME ] || mkdir -p $INIT_HOME
 
 #判断入参及入参要求是否符合。
 if [ "$#" = 5 ]; then
