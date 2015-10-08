@@ -1,17 +1,8 @@
 #!/bin/bash
 #global.functions
-
-function getip_2() {
-  myip=$(curl ifconfig.me)
-}
-
-function getip_1() {
-  myip=$(echo $SSH_CONNECTION | awk '{print $3}')
-}
-
-getip_1
+myip=$(echo $SSH_CONNECTION|awk '{print $3}')
 if [ -z $myip ];then
-  getip_2
+  myip=$(python -c "import socket;print socket.gethostbyname(socket.gethostname())")
 fi
 #tools
 export SERVER_IP="$myip"
