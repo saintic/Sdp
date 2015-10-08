@@ -126,7 +126,7 @@ EOF
 }
 
 function AutoUpdateSvn() {
-cd $init_user_home ; svn co https://svn.saintic.com/sdi/$init_user root;
+cd $init_user_home ; svn co https://saintic.top/sdi/$init_user root;
 cd ${init_user_home_svnroot}/hooks/;
 cat > post-commit <<EOF
 #!/bin/bash
