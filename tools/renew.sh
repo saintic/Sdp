@@ -13,7 +13,7 @@ if [ "$#" != 2 ]; then
 else
   user=$1
   time=$2
-  if [ `jq .${user} $SdpUC` = "null" ]; then
+  if [ `jq .${user} $SdpUC | head -1 | cut -b 1-4` = "null" ]; then
     echo -e "\033[31mUsers do not exist\033[0m" 2>&1
     echo "${PreciseTime} ${user} ErrAction:\"Users do not exist\"" >> $RenewLogFile
 	exit 1
