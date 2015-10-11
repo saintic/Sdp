@@ -23,13 +23,13 @@ EOF
 
 if [ $init_file_type == svn ]; then
 cat >> $init_user_home_info <<EOF
-版本库地址: https://${SERVER_IP}/sdi/${init_user}<br/>
+&nbsp;&nbsp;版本库地址: https://${SERVER_IP}/sdi/${init_user}<br/>
 </body>
 </html>
 EOF
 elif [ $init_file_type == ftp ]; then
 cat >> $init_user_home_info <<EOF
-FTP地址: ftp://${init_user_dns}<br/>
+&nbsp;&nbsp;FTP地址: ftp://${init_user_dns}<br/>
 </body>
 </html>
 EOF
