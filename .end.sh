@@ -10,34 +10,46 @@ export LANG="zh_CN.UTF-8"
 
 WebsUserInfo() {
 cat > $init_user_home_info <<EOF
-Sdp应用信息:
-  用户名: $init_user
-  密码: $init_passwd
-  验证邮箱: $user_email
-  服务类型: $init_service_type
-  免费域名: http://${init_user_dns}
-  请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问https://saintic.com/sdp，您的文件系统访问类型地址是：
+<html>
+<body>
+<h1>Sdp应用信息:</h1>
+&nbsp;&nbsp;用户名: $init_user<br/>
+&nbsp;&nbsp;密码: $init_passwd<br/>
+&nbsp;&nbsp;验证邮箱: $user_email<br/>
+&nbsp;&nbsp;服务类型: $init_service_type<br/>
+&nbsp;&nbsp;免费域名: <a href="http://${init_user_dns}" target="_blank">http://${init_user_dns}</a><br/>
+&nbsp;&nbsp;请将您的域名做别名解析到我们提供的免费域名"${init_user_dns}"上，详情请访问<a href="https://saintic.com/sdp" target="_blank">https://saintic.com/sdp</a>，您的文件系统访问类型地址是：<br/>
 EOF
 
 if [ $init_file_type == svn ]; then
 cat >> $init_user_home_info <<EOF
-  版本库地址: https://saintic.top/sdi/${init_user}
+版本库地址: https://${SERVER_IP}/sdi/${init_user}<br/>
+</body>
+</html>
 EOF
 elif [ $init_file_type == ftp ]; then
 cat >> $init_user_home_info <<EOF
-  FTP地址: ftp://${init_user_dns}
+FTP地址: ftp://${init_user_dns}<br/>
+</body>
+</html>
 EOF
 fi
 }
 
 AppsUserInfo() {
 cat > $init_user_home_info <<EOF
-Sdp应用信息:
-  用户名: $init_user
-  密码: $init_passwd
-  验证邮箱: $user_email
-  服务类型: $init_service_type
-  IP和端口: ${SERVER_IP}:${portmap} 应用连接信息即IP和端口，若您的服务中有任何需要密码的部分均为"${init_passwd}"，详情文档请访问https://saintic.com/sdp
+<html>
+<body>
+<h1>Sdp应用信息:</h1>
+&nbsp;&nbsp;用户名: $init_user<br/>
+&nbsp;&nbsp;密码: $init_passwd<br/>
+&nbsp;&nbsp;验证邮箱: $user_email<br/>
+&nbsp;&nbsp;服务类型: $init_service_type<br/>
+&nbsp;&nbsp;免费域名: <a href="http://${init_user_dns}" target="_blank">http://${init_user_dns}</a><br/>
+&nbsp;&nbsp;IP和端口: ${SERVER_IP}:${portmap}<br/>
+&nbsp;&nbsp;应用连接信息即IP和端口，若您的服务中有任何需要密码的部分均为"${init_passwd}"，详情请访问<a href="https://saintic.com/sdp" target="_blank">https://saintic.com/sdp</a><br/>
+</body>
+</html>
 EOF
 }
 
@@ -100,11 +112,18 @@ cat > ${init_user_home}/user.json <<EOF
 }
 EOF
 
-email() {
+shellemail() {
   local admin_email=staugur@vip.qq.com
   #tail $init_user_home_info | mail -r "SdpCenter@saintic.com" -s "欢迎您，$init_user" $user_email
   tail $init_user_home_info | mail -s "欢迎您，$init_user" $user_email
   #tail -20 $Sdpuc | head -19 | mail -r "SdpCenter@saintic.com" -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" $admin_email
+  tail -20 $Sdpuc | head -19 | mail -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" $admin_email
+}
+
+pythonemail() {
+  local admin_email=staugur@vip.qq.com
+  #user_name user_email and content_file
+  python ${SDP_HOME}/.python_email.py $init_user $user_email $init_user_home_info
   tail -20 $Sdpuc | head -19 | mail -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" $admin_email
 }
 
