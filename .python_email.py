@@ -11,6 +11,7 @@ def _format_addr(s):
 
 from_addr='SdpCenter@saintic.com'
 smtp_server='127.0.0.1'
+
 if len(sys.argv) == 4:
   #user_name user_email and content_file
   user=sys.argv[1]
