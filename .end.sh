@@ -137,7 +137,7 @@ if [ -d $init_user_home ]; then
     grep $init_user_dns	$dnmap_file &> /dev/null || DoubleError
   fi
   echo "Ending,Succeed!!!"
-  pythonemail
+  shellemail
   echo "{\"${PreciseTime}\":{\"user\": \"${init_user}\",\"id\": \"${user_id}\",\"email\": \"${user_email}\",\"service\": \"${init_service_type}\",\"container\": \"${container_id}\",\"time\": \"${CreateTime}~${ExpirationTime}\",\"code\": \"${init_file_type}\"}}" >> $Suclog
   echo >> $Suclog
 else
