@@ -79,8 +79,8 @@ cat >> $Sdpuc <<USERINFO
   "container_id": "$container_id",
   "container_ip": "$container_ip",
   "userinfo": "${init_user_home}/user.json",
-  "SVN": "https://svn.saintic.com/sdi/${init_user}",
-  "FTP": "ftp://${init_user}@${SERVER_IP}",
+  "svn": "https://svn.saintic.com/sdi/${init_user}",
+  "ftp": "ftp://${init_user}@${SERVER_IP}",
   "Notes": "############################"
   },
 }
@@ -114,10 +114,8 @@ EOF
 
 shellemail() {
   local admin_email=staugur@vip.qq.com
-  #tail $init_user_home_info | mail -r "SdpCenter@saintic.com" -s "欢迎您，$init_user" $user_email
-  tail $init_user_home_info | mail -s "欢迎您，$init_user" $user_email
-  #tail -20 $Sdpuc | head -19 | mail -r "SdpCenter@saintic.com" -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" $admin_email
-  tail -20 $Sdpuc | head -19 | mail -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" $admin_email
+  tail $init_user_home_info | mail -r "SdpCenter@saintic.com" -s "欢迎您，$init_user" $user_email
+  tail -20 $Sdpuc | head -19 | mail -r "SdpCenter@saintic.com" -s "Sdpv1.UserInfo:${init_user}(UID:${user_id})" $admin_email
 }
 
 pythonemail() {
