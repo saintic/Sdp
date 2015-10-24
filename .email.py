@@ -10,6 +10,7 @@ def _format_addr(s):
   return formataddr((Header(name, 'utf-8').encode(), addr))
 
 from_addr='SdpCenter@saintic.com'
+#password
 smtp_server='127.0.0.1'
 
 if len(sys.argv) == 4:
