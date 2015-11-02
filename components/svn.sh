@@ -6,7 +6,7 @@ svnconf="/etc/httpd/conf.d/subversion.conf"
 yum -y install httpd subversion mod_ssl mod_dav_svn openssl openssl-devel
 sed -i "s/#ServerName www.example.com:80/ServerName ${HOSTNAME}/g" $httpconf
 sed -i "s/Listen 80/#Listen 80/g" $httpconf
-openssl req -new -x509 -days 3650 -keyout server.key -out server.crt -subj '/CN=Test-only certificate' -node
+openssl req -new -x509 -days 3650 -keyout server.key -out server.crt -subj '/CN=Test-only certificate' -nodes
 mv -f server.key /etc/pki/tls/private/localhost.key 
 mv -f server.crt /etc/pki/tls/certs/localhost.crt
 mv ${svnconf} ${svnconf}.bak
