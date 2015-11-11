@@ -21,9 +21,10 @@ tools:其他工具类脚本，如续费功能、服务到期邮件提醒功能�
 spmc:Sdp持续集成简易管理控制台。
 
 #Note:
+
     这是Shell编写发布的1.0版本，基本PAAS功能已经完成，提供APP和WEB型应用支持和网页版SPMC控制台。
 
     实现的功能：创建、更新用户信息和应用容器、邮件发送、备份、续费(即更新用户信息)等已经完成，此Shell版日后不在维护，请关注v1.1及此后版本。
 
 
-More content and Using method: [SaintIC Sdp](http://saintic.com/sdp)
+More content and Using method: [SaintIC Sdp](http://saintic.com/)
