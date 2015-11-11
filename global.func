@@ -30,7 +30,7 @@ export PreciseTime=$(date +"%Y-%m-%d_%H:%M:%S")
 function ERROR() {
   echo "Error:Please check this script and input/output!" >&2
   [ -d $init_user_home ] && rm -rf $init_user_home ;
-  [ -f $user_nginx_conf ] && rm -f $user_nginx_conf ;
+  #[ -f $user_nginx_conf ] && rm -f $user_nginx_conf ;
   if echo "${webs[@]}" | grep -w $init_service_type &> /dev/null ;then
 	[ -f $dnmap_file ] && sed -i "/$init_user_dns/d" $dnmap_file
   fi

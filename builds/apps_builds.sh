@@ -7,10 +7,10 @@ source ${SDP_HOME}/global.func
 [ -z $init_passwd ] && ERROR
 [ -z $init_service_type ] && ERROR
 
-container_memcached=staugur/memcache
-container_mongodb=staugur/mongodb
-container_mysql=staugur/mysql
-container_redis=staugur/redis
+container_memcached=registry.saintic.com/memcache
+container_mongodb=registry.saintic.com/mongodb
+container_mysql=registry.saintic.com/mysql
+container_redis=registry.saintic.com/redis
 
 case $init_service_type in
 memcached)

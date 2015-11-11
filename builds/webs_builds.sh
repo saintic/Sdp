@@ -6,9 +6,9 @@ source ${SDP_HOME}/global.func
 [ -z $init_user_dns ] && ERROR
 [ -z $init_service_type ] && ERROR
 
-container_nginx=staugur/nginx
-container_httpd=staugur/httpd
-container_tomcat=staugur/tomcat
+container_nginx=registry.saintic.com/nginx
+container_httpd=registry.saintic.com/httpd
+container_tomcat=registry.saintic.com/tomcat
 
 #Ask:/data include wwwroot,logs.
 case $init_service_type in
