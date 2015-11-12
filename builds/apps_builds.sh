@@ -39,7 +39,7 @@ redis)
   ;;
 esac
 
-container_ip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $init_user)
-container_pid=$(sudo docker inspect --format '{{.State.Pid}}' $init_user)
+container_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $init_user)
+container_pid=$(docker inspect --format '{{.State.Pid}}' $init_user)
 
 source ${SDP_HOME}/.end.sh
