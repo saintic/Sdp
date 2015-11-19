@@ -18,8 +18,9 @@ That is Docker PaaS Simple, the current version is the stable version 1.0, the v
 
 Its current version is a set of small PaaS platform deployed on a fixed environment, support httpd, tomcat, mongodb, mysql, redis, memcached, nginx services, can be written by SPMC PHP web page to trigger, unfortunately, can not be through the web application resources, management, audit, etc..
 
-## Two: requirements and use
+## Two:requirements and use
 **1. system requirements**
+
 Because it is a stand-alone deployment, and the development of the time is a personal server for the environment, so the switch server has the following requirements:
 
 >1. server itself has Nginx services, which can refer to https://github.com/staugur/CoreWeb;
@@ -34,6 +35,7 @@ Https://software.saintic.com/core/docker/staugur.tar; or through the pull staugu
 >5. software package: jq, mailx, subversion, some pypi
 
 **2. installation documentation**
+
 Tip: the following setup is based on a certain level of Linux (CentOS) personnel.
 
 1) yum -y install subversion mailx jq
@@ -49,10 +51,13 @@ Tip: the following setup is based on a certain level of Linux (CentOS) personnel
 6) more documents please pay attention to official documents, the docs address is [http://www.saintic.com][1].
 
 **3. Use Document**
-1 switch to Sdo directory;
+
+(switch to Sdo directory;)
+
 sh start.sh user time service codetype email
 
 Notes:
+
 Sdp starts with the start.sh script, the script needs five parameters, namely user (user) use_time (use time, unit month) service_type (service) file_type (file type) email (user mailbox).
 
 **If there is a problem, please go to [https://github.com/staugur/Sdp/issues][2].**
@@ -98,6 +103,7 @@ https://software.saintic.com/core/docker/staugur.tar；或通过docker pull stau
 **2.安装文档**
 
   提示：以下安装是基于拥有一定基础水平Linux(CentOS)人员进行的。
+
   1.) yum –y install subversion mailx
 
   2.) svn co https://github.com/staugur/Sdp/tags/stable-0.1 sdp
@@ -111,7 +117,8 @@ https://software.saintic.com/core/docker/staugur.tar；或通过docker pull stau
   6.) 更多文档请关注官方文档，地址是[http://www.saintic.com][3]。
 
 **3.使用文档**
-  1. 切换到sdp目录；
+  (切换到sdp目录:)
+
   sh start.sh user time service codetype email
  
 Sdp以start.sh脚本开始，此脚本需要五个参数，分别是user(用户) use_time(使用时间，单位月) service_type(服务) file_type(文件类型) email(用户邮箱)。
@@ -125,7 +132,8 @@ Sdp以start.sh脚本开始，此脚本需要五个参数，分别是user(用户)
   [4]: https://github.com/staugur/Sdp/issues
 
 
-###
+###原理
+
   泛解析一个域名(eg:*.saintic.com)到PaaS主服务器，用户的域名cname到不同的uid.sdipaas.comt三级域名，由nginx反向代理提供一对一http路由映射到真正的docker容器上，容器即服务，而所有的docker建立在hdfs或其他分布式存储上，建立统一的数据容器，提供FTP svn git任意一种方式文件，代码上传功能，这样一个简单的PaaS。
 
   所有关键文件均保存为隐藏文件，将所有用户信息保存成一个JSON文件，而后由tools工具读取JSON用户文件进行相应操作。
