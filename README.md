@@ -1,5 +1,5 @@
-# Sdp
-*Simle Docker PaaS, Version Stable 1.0; Written by Python.*
+# Sdp.sh
+*Simle Docker PaaS, Version Stable 1.0; Written by Shell.*
 
 **[English]**
 -------------
@@ -8,12 +8,6 @@
 Sdp1.0 has a large limitation, still only supports single environment, low degree of freedom, it is suitable for individual users;
 
 Sdp2.0 (SPC) fully distributed environment, large-scale deployment, high degree of freedom, is suitable for organization and enterprise application.
-
-All profiles are complied with ini or JSON format!
-
-All of the code is completed by Python!
-
-They walked through the entire system of community-based RHEL version!
 
 Quick start:
 >1. svn export https://github.com/staugur/Sdp/tags/stable-v1.0/ sdp && sh sdp/components/install_sdp.sh
@@ -72,11 +66,6 @@ Sdp1.0局限性很大，尚只支持单机环境，自由度低，适用于个�
 
 Sdp2.0(SPC)完全分布式环境、大规模部署，自由度高，适用于组织及企业级应用。
 
-所有的配置文件皆遵从ini或JSON格式！
-
-所有的代码均由Python完成！
-
-整个系统要跑通基于RHEL的社区版！
 
 **快速开始：**
 ---------
