@@ -33,6 +33,11 @@ def read_conf(f,i):
   except:
     print 'Get configuration information failure.'
     return 1
+'''
+import socket
+SERVER_IP=socket.gethostbyname(socket.gethostname())
+SERVER_IP=os.environ['SSH_CONNECTION'].split()[2]
+'''
 
 CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
