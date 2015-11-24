@@ -14,6 +14,12 @@ except ImportError as errmsg:
     print __file__,"import module failed, because %s" % errmsg
     sys.exit(1)
 
+def getversion():
+    BASE=os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(BASE, 'VERSION')) as f:
+        version = f.read()
+    return version
+
 def main(**user):
     reload(sys)
     sys.setdefaultencoding(LANG)
@@ -33,4 +39,5 @@ if __name__ == "__main__":
         print "\033[0;31;40mThis program must be run as root. Aborting.\033[0m"
         sys.exit(1)
     else:
+        print "Sdp version: %s" % getversion()
         main(**args_check())
