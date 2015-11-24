@@ -40,6 +40,7 @@ local_root=%s''' % self.userhome
       with open(os.path.join(Config.FTP_VFTPUSERDIR, self.name), 'w') as f:
         f.write(ftp_content_conf)
 
+      #The module sh.
       subprocess.call(['db_load -T -t hash -f ' + Config.FTP_VFTPUSERFILE + ' ' + Config.FTP_VFTPUSERDBFILE], shell=True)
       subprocess.call(['/etc/init.d/vsftpd restart'], shell=True)
       subprocess.call(['chown -R ' + Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER + ' ' + self.userhome], shell=True)
