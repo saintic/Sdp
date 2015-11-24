@@ -7,7 +7,7 @@ __version__ = 'sdp1.1'
 
 try:
   import redis
-  from Public import REDIS_HOST,REDIS_PORT,REDIS_DATADB,REDIS_PASSWORD
+  from Config import REDIS_HOST,REDIS_PORT,REDIS_DATADB,REDIS_PASSWORD
 except ImportError as Errmsg:
   print __file__, "import redis module failed, because %s" % Errmsg
   exit(1)

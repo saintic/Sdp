@@ -5,7 +5,7 @@ __date__ = '2015-11-12'
 __doc__ = 'If type = WEBS, next nginx and code manager(ftp,svn)'
 __version__ = 'sdp1.1'
 
-import os,Public,Redis,subprocess,commands
+import os,Config,Redis,subprocess,commands
 
 class CodeManager():
   def __init__(self, index):
@@ -22,7 +22,7 @@ class CodeManager():
       return 1
 
   def ftp(self):
-    if Public.FTP_TYPE == 'virtual':
+    if Config.FTP_TYPE == 'virtual':
       ftp_user_list = r'''%s
 %s
 ''' %(self.name, self.passwd)
@@ -34,19 +34,19 @@ anon_mkdir_write_enable=YES
 anon_other_write_enable=YES
 local_root=%s''' % self.userhome
 
-      with open(Public.FTP_VFTPUSERFILE, 'a+') as f:
+      with open(Config.FTP_VFTPUSERFILE, 'a+') as f:
         f.write(ftp_user_list)
 
-      with open(os.path.join(Public.FTP_VFTPUSERDIR, self.name), 'w') as f:
+      with open(os.path.join(Config.FTP_VFTPUSERDIR, self.name), 'w') as f:
         f.write(ftp_content_conf)
 
-      subprocess.call(['db_load -T -t hash -f ' + Public.FTP_VFTPUSERFILE + ' ' + Public.FTP_VFTPUSERDBFILE], shell=True)
+      subprocess.call(['db_load -T -t hash -f ' + Config.FTP_VFTPUSERFILE + ' ' + Config.FTP_VFTPUSERDBFILE], shell=True)
       subprocess.call(['/etc/init.d/vsftpd restart'], shell=True)
-      subprocess.call(['chown -R ' + Public.FTP_VFTPUSER + ':' + Public.FTP_VFTPUSER + ' ' + self.userhome], shell=True)
+      subprocess.call(['chown -R ' + Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER + ' ' + self.userhome], shell=True)
       subprocess.call(['chmod -R a+t ' + self.userhome], shell=True)
 
   def Proxy(self):
-    ngx_user_conf = os.path.join(Public.PROXY_DIR, self.name) + '.conf'
+    ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'
     ngx_conf_content = r'''server {
     listen %s:80;
     server_name %s;
@@ -62,7 +62,7 @@ local_root=%s''' % self.userhome
     
     with open(ngx_user_conf, 'w') as f:
       f.write(ngx_conf_content)
-    status,output = commands.getstatusoutput(Public.NGINX_EXEC + ' -s reload')
+    status,output = commands.getstatusoutput(Config.NGINX_EXEC + ' -s reload')
     if status == 0:
       if os.environ['LANG'].split('.')[0] == 'zh_CN':
         print '\033[0;32;40mSuccess:Reload Nginx\033[0m' + ' ' * 39 +'[' + '\033[0;32;40m确定\033[0m' + ']'
