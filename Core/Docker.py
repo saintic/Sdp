@@ -7,7 +7,7 @@ __doc__ = 'docker functions, for images, for containers'
 
 try:
   import docker
-  from Public import DOCKER_PUSH
+  import Config
 except ImportError as errmsg:
   print __file__, 'import docker module failed, because %s' % errmsg
 
@@ -53,7 +53,7 @@ class Docker():
   def Ci(self, image):
     if not isinstance(image, (str)):
       raise TypeError('Bad type, ask an image')
-    if DOCKER_PUSH == On or DOCKER_PUSH == on:
+    if Config.DOCKER_PUSH == 'On' or Config.DOCKER_PUSH == 'on':
       self.connect.push(image)
     return
 
