@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python -O
 #-*- coding=utf8 -*-
 __author__ = 'taochengwei'
 __date__ = '2015.11.25'
