@@ -5,10 +5,16 @@
     4.Nginx代理实现；
 
 2015-11 Release Pre 1.1.x
-    1.在补充版本中添加pre_check类，针对user预检测;
+    1.在补充版本中添加check for all，针对user预检测;
     2.读取redis等以防止存在已注册用户;
     3.日志功能;
     4.服务使用期限
+
+2015-11-25 Release Pre 1.1.1
+    1.pypi
+    2.End info
+    3.Design modules name
+    r.class Precheck
 
 Release 1.2
     主要是PythonWeb用户注册管理服务系统和SVN+FTP集成代码管理

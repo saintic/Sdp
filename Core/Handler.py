@@ -3,7 +3,7 @@
 __author__ = 'taochengwei'
 __date__ = '2015.11.25'
 __doc__ = 'Core file, handle functions and class, for Webs And Apps.'
-__version__ = '1.1.1'
+
 
 import sys,os
 import Docker
@@ -120,7 +120,6 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
     #start write data
     if rc.ping():
         rc.hashset(**userinfo_admin)
-        #print '\033[0;32;40m' + 'UserInfo Output:', rc.hashget(name), '\033[0m'
         ec.send(*userconn)
         #ec.send(*adminconn)
         with open(Config.SDP_UC, 'a+') as f:

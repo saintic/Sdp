@@ -3,7 +3,7 @@
 __author__ = 'saintic'
 __date__ = '2015-11-12'
 __doc__ = 'If type = WEBS, next nginx and code manager(ftp,svn)'
-__version__ = 'sdp1.1'
+
 
 import os,Config,Redis,subprocess,commands
 

@@ -2,13 +2,20 @@
 #-*- coding:utf8 -*-
 __author__ = 'saintic'
 __date__ = '2015-10-12'
-__version__ = 'sdp1.1'
+
 __doc__ = 'some functions'
 
-import re,sys
+import re,sys,psutil,platform
 from Config import SERVICES
 
-def MonthsAgo(m=None):
+class Sysinfo():
+    Hostname=platform.uname()[1]
+    Kernel=platform.uname()[2]
+    CPUs=int(psutil.cpu_count())
+    Total=psutil.virtual_memory().total
+    Mem=str(Total / 1024 / 1024) + 'M'
+
+def Time(m=None):
     import datetime
     time = datetime.datetime.now()
     if m:
