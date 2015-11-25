@@ -42,4 +42,4 @@ Hostname:%s
 Kernel:%s
 CPUs:%d
 Total Mem:%s
-Result:User(%s,%s) build sucessfully.\033[m"""%(Time(), __version__, Sysinfo.Hostname, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem, user['name'], user['email'])
+Result:User(%s, %s, %s) build sucessfully.\033[m"""%(Time(), __version__, Sysinfo.Hostname, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem, user['name'], user['email'], user['service'])
