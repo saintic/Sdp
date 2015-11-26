@@ -16,7 +16,7 @@ def read_conf(f,i):
         return ConfigObj(f)[i]
     except ImportError:
         print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
-        exit 1
+        exit(1)
 
 CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
