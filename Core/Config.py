@@ -2,7 +2,6 @@
 #-*- coding:utf8 -*-
 __author__ = 'taochengwei'
 __date__ = '2015-11-25'
-
 __doc__ = 'Config file parser'
 
 import os
@@ -15,9 +14,9 @@ def read_conf(f,i):
     try:
         from configobj import ConfigObj
         return ConfigObj(f)[i]
-    except:
-        print 'Get configuration information failure.'
-        return 1
+    except ImportError:
+        print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
+        exit 1
 
 CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
