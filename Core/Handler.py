@@ -4,7 +4,6 @@ __author__ = 'taochengwei'
 __date__ = '2015.11.25'
 __doc__ = 'Core file, handle functions and class, for Webs And Apps.'
 
-
 import sys,os
 import Docker
 import Config

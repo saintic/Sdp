@@ -4,8 +4,6 @@ __author__ = 'taochengwei'
 __date__ = '2015-11-25'
 __doc__ = 'Config file parser'
 
-import os
-
 def read_conf(f,i):
     if not isinstance(f, (str)):
         raise TypeError('Bad operand type, ask a file.')
@@ -18,6 +16,7 @@ def read_conf(f,i):
         print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
         exit(1)
 
+import os
 CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_CONF = os.path.join(BASE_DIR, str(CONF_NAME))

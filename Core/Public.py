@@ -24,16 +24,16 @@ def Time(m=None):
     return time.strftime("%Y:%m:%d %H:%M:%S")
 
 def genpasswd(L=12):
-  if not isinstance(L, (int)):
-    raise TypeError('Bad operand type, ask Digital.')
-  from random import Random
-  passstr = ''
-  chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789~!@#$%^&*()'
-  length = len(chars) - 1
-  random = Random()
-  for i in range(L):
-    passstr+=chars[random.randint(0, length)]
-  return passstr
+    if not isinstance(L, (int)):
+        raise TypeError('Bad operand type, ask Digital.')
+    from random import Random
+    passstr = ''
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789~!@#$%^&*'
+    length = len(chars) - 1
+    random = Random()
+    for i in range(L):
+        passstr+=chars[random.randint(0, length)]
+    return passstr
 
 def args_check(num=5):
   if len(sys.argv) == num:
@@ -69,3 +69,6 @@ def args_check(num=5):
   else:
     print "\033[0;31;40mUsage:user time service email\033[0m"
     exit(1)
+
+class Precheck:
+    pass

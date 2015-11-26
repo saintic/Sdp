@@ -2,7 +2,7 @@
 #-*- coding=utf8 -*-
 __author__ = 'taochengwei'
 __date__ = '2015.11.25'
-__doc__ = 'Entry file, all the start.'
+__doc__ = 'Sdp entry file, all the start.'
 
 import sys,os
 try:
@@ -14,7 +14,7 @@ except ImportError as errmsg:
     print __file__,"import module failed, because %s" % errmsg
     sys.exit(1)
 
-def main(**user):
+def CloudMain(**user):
     reload(sys)
     sys.setdefaultencoding(LANG)
     if not isinstance(user, (dict)):
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         sys.exit(1)
     else:
         user = args_check()
-        main(**user)
+        CloudMain(**user)
         print """\033[0;32;40m
 Now Time:%s
 Sdp Version:%s

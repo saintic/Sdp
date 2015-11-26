@@ -14,7 +14,7 @@
     1.pypi
     2.End info
     3.Design modules name
-    r.class Precheck
+    4.class Precheck
 
 Release 1.2
     主要是PythonWeb用户注册管理服务系统和SVN+FTP集成代码管理
