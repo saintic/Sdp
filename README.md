@@ -34,12 +34,10 @@ Sdp1.1.1功能:
 
 3.cd sdp ; python sdp.py (以root身份运行)
 
-**如果还有问题，请到[https://github.com/saintic/Sdp/issues][4]提问。**
+**如果还有问题，请到[https://github.com/saintic/Sdp/issues][2]提问。**
 
   [1]: http://www.saintic.com
-  [2]: https://github.com/staugur/Sdp/issues
-  [3]: http://www.saintic.com
-  [4]: https://github.com/saintic/Sdp/issues
+  [2]: https://github.com/saintic/Sdp/issues
 
 Version question: VersionChange.log
 Documents: [www.saintic.com](http://www.saintic.com/)

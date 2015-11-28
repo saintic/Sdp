@@ -6,7 +6,7 @@ __doc__ = 'Sdp entry file, all the start.'
 
 import sys,os
 try:
-    from Core.Public import args_check,Sysinfo,Time
+    from Core.Public import Sysinfo,Time,Precheck,genuserinfo
     from Core.Config import LANG,WEBS,APPS
     from Core.Handler import StartAll
     from Core import __version__
@@ -14,7 +14,7 @@ except ImportError as errmsg:
     print __file__,"import module failed, because %s" % errmsg
     sys.exit(1)
 
-def CloudMain(**user):
+def SdpCloudRun(**user):
     reload(sys)
     sys.setdefaultencoding(LANG)
     if not isinstance(user, (dict)):
@@ -33,8 +33,9 @@ if __name__ == "__main__":
         print "\033[0;31;40mAborting:this program must be run as root.\033[0m"
         sys.exit(1)
     else:
-        user = args_check()
-        CloudMain(**user)
+        user = genuserinfo()
+        Precheck(**user).checkargs()
+        SdpCloudRun(**user)
         print """\033[0;32;40mTime => %s
 Name => %s
 Sdp Version => %s
