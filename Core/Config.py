@@ -16,6 +16,7 @@ def read_conf(f,i):
         print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
         exit(1)
 
+import Public
 import os
 CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

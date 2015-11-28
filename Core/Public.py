@@ -3,8 +3,6 @@
 __author__ = 'saintic'
 __date__ = '2015-10-12'
 
-__doc__ = 'some functions'
-
 import re,sys,psutil,platform
 from Config import SERVICES
 

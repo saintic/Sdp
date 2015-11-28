@@ -126,8 +126,8 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
         if SdpType == "web" or SdpType == "WEB":
             with open(os.path.join(userhome, 'index.html'), 'w') as f:
                 f.write(userinfo_welcome)
-            import Nginx #Only ftp
-            Code = Nginx.CodeManager(name)
+            import Success
+            Code = Success.CodeManager(name)
             Code.ftp()
             Code.Proxy()
     else:

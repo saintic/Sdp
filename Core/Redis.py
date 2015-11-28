@@ -4,7 +4,6 @@ __author__ = 'saintic'
 __date__ = '2015-10-18'
 __doc__ = 'read or write redis'
 
-
 try:
   import redis
   from Config import REDIS_HOST,REDIS_PORT,REDIS_DATADB,REDIS_PASSWORD
