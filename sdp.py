@@ -35,11 +35,10 @@ if __name__ == "__main__":
     else:
         user = args_check()
         CloudMain(**user)
-        print """\033[0;32;40m
-Now Time:%s
-Sdp Version:%s
-Hostname:%s
-Kernel:%s
-CPUs:%d
-Total Mem:%s
-Result:User(%s, %s, %s) build sucessfully.\033[m"""%(Time(), __version__, Sysinfo.Hostname, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem, user['name'], user['email'], user['service'])
+        print """\033[0;32;40mTime => %s
+Name => %s
+Sdp Version => %s
+Kernel Version => %s
+CPUs => %d
+Total Memory => %s
+Result => User(%s, %s, %s) build sucessfully.\033[m"""%(Time(), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem, user['name'], user['email'], user['service'])

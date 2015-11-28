@@ -28,11 +28,11 @@ Sdp1.1.1功能:
 
 **快速开始：**
 ---------
-1.pip install -r requirements.txt
+1.pip install -r requirements.txt (运行中发现提示docker-py版本过高或过低，请尝试安装具体版本)
 
 2.git clone https://github.com/saintic/Sdp sdp
 
-3.cd sdp ; python sdp.py(root)
+3.cd sdp ; python sdp.py (以root身份运行)
 
 **如果还有问题，请到[https://github.com/saintic/Sdp/issues][4]提问。**
 
@@ -41,6 +41,6 @@ Sdp1.1.1功能:
   [3]: http://www.saintic.com
   [4]: https://github.com/saintic/Sdp/issues
 
-
+Version question: VersionChange.log
 Documents: [www.saintic.com](http://www.saintic.com/)
 

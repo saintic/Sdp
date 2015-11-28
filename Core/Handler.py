@@ -86,7 +86,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
 祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
 邮箱: staugur@saintic.com
-官网: https://saintic.com/
+官网: http://www.saintic.com/
 微博: http://weibo.com/staugur/
 淘宝: https://shop126877887.taobao.com/
 ''' %(name, name, passwd, int(time), service, email, str(conn))
