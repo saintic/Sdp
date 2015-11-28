@@ -10,11 +10,15 @@
     3.日志功能;
     4.服务使用期限
 
-2015-11-25 Release Pre 1.1.1
+2015-11-25 Release 1.1.1
     1.pypi(Deleted)
     2.End info(Completed)
     3.Design modules name(Completed)
-    4.class Precheck(Testing)
+    4.class Precheck(Complated)
+
+2015-11-29 Release Pre 1.1.2
+    1.time
+    2.log
 
 Release 1.2
     主要是PythonWeb用户注册管理服务系统和SVN+FTP集成代码管理
