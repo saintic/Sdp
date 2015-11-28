@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 #-*- coding:utf8 -*-
-__author__ = 'saintic'
 __date__ = '2015-10-12'
 
 import re,sys,psutil,platform
-from Config import SERVICES
-
+import Config
 class Sysinfo():
     Hostname=platform.uname()[1]
     Kernel=platform.uname()[2]
@@ -44,7 +42,7 @@ def args_check(num=5):
       raise ValueError('Bad Value, demand is greater than 0 of the number.')
       sys.exit(127)
 
-    if not user_service in SERVICES:
+    if not user_service in Config.SERVICES:
       print "\033[0;31;40mUnsupport service\033[0m"
       sys.exit(128)
 
@@ -69,4 +67,35 @@ def args_check(num=5):
     exit(1)
 
 class Precheck:
-    pass
+    def __init__(self, *args):
+        if not isinstance(args, (list)):
+            raise TypeError('The class Precheck asks a list. ')
+        self.name    = args[0]
+        self.time    = args[1]
+        self.service = args[2]
+        self.email   = args[3]
+
+    def checkargs(self):
+        try:
+            from Redis import RedisObject
+            rc = RedisObject()
+            if rc.ping():
+                if not rc.exists(name):
+                    return False
+            else:
+                print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"
+                sys.exit(7)
+        except:
+            pass
+        if re.match(r'[a-zA-Z\_][0-9a-zA-Z\_]{1,19}', self.name) == None:
+            raise TypeError('user_name illegal:A letter is required to begin with a letter or number, and the range number is 1-19.')
+            sys.exit(129)
+        if not self.time <= 0:
+            raise ValueError('Bad Value, demand is greater than 0 of the number.')
+            sys.exit(127)
+        if not self.service in Config.SERVICES:
+            raise TypeError('Unsupport service')
+            sys.exit(128)
+        if re.match(r'([0-9a-zA-Z\_*\.*\-*]+)@([a-zA-Z0-9\-*\_*\.*]+)\.([a-zA-Z]+$)', self.email) == None:
+            raise TypeError('Mail format error.')
+            sys.exit(130)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 #-*- coding:utf8 -*-
-__author__ = 'taochengwei'
 __date__ = '2015-11-25'
 __doc__ = 'Config file parser'
 
@@ -18,6 +17,7 @@ def read_conf(f,i):
 
 import Public
 import os
+
 CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_CONF = os.path.join(BASE_DIR, str(CONF_NAME))
@@ -29,8 +29,8 @@ PORTNAT = {
     'mysql': 3306,
     'redis': 6379,
     'memcache': 11211,
-    'web': 80,
-}
+    'web': 80
+    }
 
 #get variables from sdp.conf, format is dict.
 GLOBAL_CONF = read_conf(BASE_CONF, 'globals')

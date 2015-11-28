@@ -5,11 +5,11 @@ __date__ = '2015-10-18'
 __doc__ = 'read or write redis'
 
 try:
-  import redis
-  from Config import REDIS_HOST,REDIS_PORT,REDIS_DATADB,REDIS_PASSWORD
+    import redis
+    from Config import REDIS_HOST,REDIS_PORT,REDIS_DATADB,REDIS_PASSWORD
 except ImportError as Errmsg:
-  print __file__, "import redis module failed, because %s" % Errmsg
-  exit(1)
+    print __file__, "import redis module failed, because %s" % Errmsg
+    exit(1)
 
 class RedisObject():
   '''read or write redis, set or get, mset or mget.'''
@@ -21,6 +21,9 @@ class RedisObject():
 
   def ping(self):
     return self.redis_object.ping()
+
+  def exists(self, k):
+    return self.redis_object.exists(k)
 
   def set(self, k, v):
     if k == None or v == None:
@@ -60,4 +63,13 @@ class RedisObject():
       return self.redis_object.keys(index)
     else:
       return 1
+
+if __name__ == '__main__':
+    rc = RedisObject()
+    if rc.ping():
+        if rc.exists('saintic'):
+          print rc.hashget('saintic')
+    else:
+        print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"
+        sys.exit(7)
 
