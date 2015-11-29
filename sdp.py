@@ -36,10 +36,12 @@ if __name__ == "__main__":
         user = genuserinfo()
         Precheck(**user).checkargs()
         SdpCloudRun(**user)
-        print """\033[0;32;40mTime => %s
-Name => %s
-Sdp Version => %s
-Kernel Version => %s
-CPUs => %d
-Total Memory => %s
-Result => User(%s, %s, %s) build sucessfully.\033[m"""%(Time(), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem, user['name'], user['email'], user['service'])
+        print """\033[0;32;40mCreateTime      => %s
+ExpireTime      => %s
+Name            => %s
+Sdp Version     => %s
+Kernel Version  => %s
+CPUs            => %d
+Total Memory    => %s
+Result          => User(%s, %s, %s) build sucessfully.\033[m"""%(Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem, user['name'], user['email'], user['service'])
+

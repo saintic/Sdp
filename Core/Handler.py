@@ -1,27 +1,23 @@
 #!/usr/bin/env python
 #-*- coding=utf8 -*-
-__author__ = 'taochengwei'
 __date__ = '2015.11.25'
 __doc__ = 'Core file, handle functions and class, for Webs And Apps.'
 
-import sys,os
+import sys,os,json
 import Docker
 import Config
-import json
+import Public
 from Redis import RedisObject
 from Mail import SendMail
 
 def StartAll(SdpType, **user):
     if not isinstance(SdpType, (str)):
-        raise TypeError('%s need a type, app or web.' % __name__)
-        sys.exit(1)
-    if isinstance(user, (dict)):
-        name, passwd, time, service, email = user['name'], user['passwd'], str(user['time']), user['service'], user['email']
-        dn = name + Config.DN_BASE
-        portfile = os.path.join(Config.SDP_DATA_HOME, 'port')
-    else:
-        print "Error:No dict input in the function StartAll."
-        sys.exit(2)
+        raise TypeError('StartAll need a type, app or web.')
+    if not isinstance(user, (dict)):
+        raise TypeError('StartAll need a dict(user).')
+    name, passwd, time, service, email = user['name'], user['passwd'], str(user['time']), user['service'], user['email']
+    dn = name + Config.DN_BASE
+    portfile = os.path.join(Config.SDP_DATA_HOME, 'port')
 
     if not os.path.isdir(Config.SDP_DATA_HOME):
         os.mkdir(Config.SDP_DATA_HOME)

@@ -18,7 +18,7 @@ def Time(m=None):
     if m:
         days = 30 * m
         time = time + datetime.timedelta(days=days)
-    return time.strftime("%Y:%m:%d %H:%M:%S")
+    return time.strftime("%Y-%m-%d %H:%M:%S")
 
 def genpasswd(L=12):
     if not isinstance(L, (int)):
