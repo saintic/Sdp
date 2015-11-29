@@ -64,13 +64,14 @@ def StartAll(SdpType, **user):
         userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':Config.SERVER_IP, 'port':int(PORT)}
         conn = Config.SERVER_IP + ':' + str(PORT)
     else:
-        return 1
+        return 127
 
     #Run and Start Docker, should build.
     C = Docker.Docker()
     cid = C.Create(**dockerinfo)
     C.Start(cid)
     userinfo_admin['container'] = cid
+    userinfo_admin['expiretime'] = Public.Time(m=time)
     userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
 账号: %s;

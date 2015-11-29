@@ -10,8 +10,6 @@ except ImportError as errmsg:
   print __file__, 'import docker module failed, because %s' % errmsg
 
 class Docker():
-  '''Operation docker, maybe json format'''
-
   def __init__(self):
     self.connect = docker.Client(base_url='unix://var/run/docker.sock')
     #self.connect = docker.Client(base_url='tcp://127.0.0.1:2375')
