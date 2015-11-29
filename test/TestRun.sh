@@ -10,6 +10,8 @@ fi
 Ss=("mongodb" "mysql" "redis" "memcache" "nginx" "tengine" "httpd" "lighttpd" "tomcat" "resin")
 for s in ${Ss[@]}
 do
-    ${sdpexec}/../sdp.py $s 12 $s ${s}@saintic.com
+    user=Test_$s
+    ${sdpexec}/../sdp.py $user 12 $s ${user}@saintic.com
+    echo
 done
 
