@@ -16,6 +16,7 @@ def Time(m=None):
     import datetime
     time = datetime.datetime.now()
     if m:
+        m = int(m)
         days = 30 * m
         time = time + datetime.timedelta(days=days)
     return time.strftime("%Y-%m-%d %H:%M:%S")
