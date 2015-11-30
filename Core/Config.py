@@ -22,7 +22,7 @@ CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_CONF = os.path.join(BASE_DIR, str(CONF_NAME))
 APPS = ("mongodb", "mysql", "redis", "memcache")
-WEBS = ("nginx", "tengine", "httpd", "lighttpd", "tomcat", "resin")
+WEBS = ("nginx", "tengine", "httpd", "lighttpd", "tomcat")
 SERVICES = APPS + WEBS
 PORTNAT = {
     'mongodb': 27017,
