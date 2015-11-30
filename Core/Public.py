@@ -62,7 +62,6 @@ class Precheck:
             print "Assignment error:%s" % kv
 
     def checkargs(self):
-        import sys
         from Redis import RedisObject
         rc = RedisObject()
         if rc.ping():
@@ -82,7 +81,7 @@ class Precheck:
             sys.exit(127)
 
         if not self.service in Config.SERVICES:
-            raise TypeError('Unsupport service')
+            raise TypeError('Unsupport service:%s' % self.service)
             sys.exit(128)
 
         if re.match(r'([0-9a-zA-Z\_*\.*\-*]+)@([a-zA-Z0-9\-*\_*\.*]+)\.([a-zA-Z]+$)', self.email) == None:
