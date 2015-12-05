@@ -5,12 +5,15 @@ __doc__ = "log report class or function, deco."
 
 import logging
 def SdpLog(msg):
-    logging.basicConfig(level=logging.DEBUG,
-        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-        #atefmt='%a, %d %b %Y %H:%M:%S',
-        filename='/var/log/sdp.log',
-        filemode='a+')
-    return logging.debug(msg)
+    try:
+        logging.basicConfig(level=logging.DEBUG,
+            format = '%(asctime)s %(pathname)s->[line:%(lineno)d func:%(funcName)s] %(levelname)s %(message)s',
+            datefmt = '%Y-%m-%d %H:%M:%S',
+            filename = '/var/log/sdp.log',
+            filemode = 'a+')
+    except IOError as e:
+        raise IOError("Write error, %s" % e)
+    #return logging.debug(msg)
 
 class Logreport:
     def __init__(self, msg, log='/var/log/sdp.log'):
@@ -42,4 +45,4 @@ class Logreport:
 
 if __name__ == "__main__":
     #print Logreport('this is an error msg')
-    print SdpLog('hello world')
+    print SdpLog('hello world!This is a test log msg.')
