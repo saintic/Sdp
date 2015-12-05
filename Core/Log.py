@@ -11,7 +11,7 @@ def SdpLog(msg):
             datefmt = '%Y-%m-%d %H:%M:%S',
             filename = '/var/log/sdp.log',
             filemode = 'a+')
-            return logging.debug(msg)
+        return logging.debug(msg)
     except IOError as e:
         raise IOError("Write error, %s" % e)
 
