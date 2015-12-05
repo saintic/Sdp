@@ -7,9 +7,10 @@ if [ `whoami` != 'root' ];then
     exit
 fi
 
-Ss=("mongodb" "mysql" "redis" "memcache" "nginx" "tengine" "httpd" "lighttpd" "tomcat")
+#Ss=("mongodb" "mysql" "redis" "memcache" "nginx" "tengine" "httpd" "lighttpd" "tomcat")
 webs=("nginx" "tengine" "httpd" "lighttpd" "tomcat")
 apps=("mongodb" "mysql" "redis" "memcache")
+Ss=webs + apps
 for s in ${Ss[@]}
 do
   user=MyTest_$s

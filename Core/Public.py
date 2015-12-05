@@ -60,6 +60,7 @@ class Precheck:
             self.email   = kwargs['email']
         except KeyError as kv:
             print "Assignment error:%s" % kv
+            sys.exit(1)
 
     def checkargs(self):
         from Redis import RedisObject
@@ -67,7 +68,6 @@ class Precheck:
         if rc.ping():
             if rc.exists(self.name):
                 raise KeyError("Existing user name, exit!")
-                sys.exit(1)
         else:
             print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"
             sys.exit(7)

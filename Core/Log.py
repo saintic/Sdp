@@ -45,4 +45,4 @@ class Logreport:
 
 if __name__ == "__main__":
     #print Logreport('this is an error msg')
-    print SdpLog('hello world!This is a test log msg.')
+    print SdpLog('hello world! This is a test log msg.')
