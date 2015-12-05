@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 #-*- coding=utf8 -*-
-__author__ = 'saintic'
 __date__ = '2015-11-12'
 __doc__ = 'If type = WEBS, next nginx and code manager(ftp,svn)'
 
@@ -45,7 +44,7 @@ local_root=%s
     def Proxy(self):
         ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'
         ngx_conf_content = r'''server {
-    listen %s:80;
+    listen 80;
     server_name %s;
     index index.htm index.html index.php index.jsp;
     location / {
@@ -54,7 +53,7 @@ local_root=%s
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-}''' %('0.0.0.0', self.dn, self.ip, int(self.port))
+}''' %(self.dn, self.ip, int(self.port))
         with open(ngx_user_conf, 'w') as f:
             f.write(ngx_conf_content)
         status,output = commands.getstatusoutput(Config.NGINX_EXEC + ' -s reload')

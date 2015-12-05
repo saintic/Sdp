@@ -51,4 +51,3 @@ class SendMail():
     server.login(self.from_addr, self.password)
     server.sendmail(self.from_addr, [to_addr], msg.as_string())
     server.quit()
-
