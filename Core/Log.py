@@ -3,17 +3,20 @@
 __date__ = '2015-11-30'
 __doc__ = "log report class or function, deco."
 
+import logging
 def SdpLog(msg):
-    import logging
-    logging.basicConfig(level=logging.DEBUG,
-        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-        datefmt='%a, %d %b %Y %H:%M:%S',
-        filename='sdp.log',
-        filemode='a+')
-    return logging.debug(msg)
+    try:
+        logging.basicConfig(level=logging.DEBUG,
+            format = '%(asctime)s %(pathname)s->[line:%(lineno)d func:%(funcName)s] %(levelname)s %(message)s',
+            datefmt = '%Y-%m-%d %H:%M:%S',
+            filename = '/var/log/sdp.log',
+            filemode = 'a+')
+            return logging.debug(msg)
+    except IOError as e:
+        raise IOError("Write error, %s" % e)
 
 class Logreport:
-    def __init__(self, log='/var/log/sdp.log', msg):
+    def __init__(self, msg, log='/var/log/sdp.log'):
         #create a logger
         self.logger = logging.getLogger('sdp')
         self.logger.setLevel(logging.DEBUG)
@@ -32,11 +35,14 @@ class Logreport:
         self.console.setFormatter(self.formatter)
 
         #add handler for logger
-        logger.addHandler(self.fileout)
-        logger.addHandler(self.console)
+        self.logger.addHandler(self.fileout)
+        self.logger.addHandler(self.console)
 
         #report(print)
-        #logger.info('foorbar')
-        #logger.debug('foorbar')
-        return logger.debug(msg)
+        #self.logger.info('foorbar')
+        #self.logger.debug('foorbar')
+        return self.logger.debug(msg)
 
+if __name__ == "__main__":
+    #print Logreport('this is an error msg')
+    print SdpLog('hello world!This is a test log msg.')
