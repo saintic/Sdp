@@ -1,7 +1,7 @@
 #!/usr/bin/python -O
 #-*- coding=utf8 -*-
 __author__ = 'taochengwei'
-__date__ = '2015.11.25'
+__date__ = '2015-12-6'
 __doc__ = 'Sdp entry file, all the start.'
 
 import sys,os
@@ -36,11 +36,11 @@ if __name__ == "__main__":
         user = genuserinfo()
         Precheck(**user).checkargs()
         SdpCloudRun(**user)
-        print """\033[0;32;40mCreateTime      => %s
-ExpireTime      => %s
-Name            => %s
-Sdp Version     => %s
-Kernel Version  => %s
-CPUs            => %d
-Total Memory    => %s
-Result          => User(%s, %s, %s) build sucessfully.\033[m"""%(Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem, user['name'], user['email'], user['service'])
+        print """\033[0;32;40mUser(%s, %s, %s) build sucessfully.
+    CreateTime      => %s
+    ExpireTime      => %s
+    Name            => %s
+    Sdp Version     => %s
+    Kernel Version  => %s
+    CPUs            => %d
+    Total Memory    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem)

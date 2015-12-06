@@ -1,9 +1,8 @@
-# Sdp.py
-*Simle Docker PaaS, version 1.1.2*
+# Sdp
+*Simle Docker PaaS, version 1.1.3, by Python.*
 
 **[中文]**
 --------
-Sdp1.1.1功能:
 
 **快速开始：**
 ---------
@@ -23,4 +22,3 @@ Sdp1.1.1功能:
 Version question: VersionChange.log
 
 Documents: [www.saintic.com](http://www.saintic.com/)
-
