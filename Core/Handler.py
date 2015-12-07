@@ -76,7 +76,7 @@ def StartAll(SdpType, **user):
 Dear %s, 以下是您的SdpCloud服务使用信息！
 账号: %s;
 密码: %s;
-使用期: %d;
+使用期: %d个月;
 服务类型: %s;
 验证邮箱: %s;
 服务连接信息: %s
@@ -96,7 +96,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 <h1><center>Welcome %s:</center></h1>
 <p>账号: %s;</p>
 <p>密码: %s;</p>
-<p>使用期: %d;</p>
+<p>使用期: %d个月;</p>
 <p>服务类型: %s;</p>
 <p>验证邮箱: %s;</p>
 <p>服务连接信息: %s</p>
