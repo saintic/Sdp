@@ -73,7 +73,7 @@ class Precheck:
             sys.exit(7)
 
         if re.match(r'[a-zA-Z\_][0-9a-zA-Z\_]{1,19}', self.name) == None:
-            raise TypeError('user_name illegal:A letter is required to begin with a letter or number, and the range number is 1-19.')
+            raise ValueError('user_name illegal:A letter is required to begin with a letter or number, and the range number is 1-19.')
             sys.exit(129)
 
         if not self.time > 0:

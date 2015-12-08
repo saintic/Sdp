@@ -22,6 +22,8 @@
 
 2015-11-29 Release Pre 1.1.3
     1.docker
+    2.network mode
+    3.精简代码输出，丰富结果输出
 
 2015-12-07 Release Pre 1.1.4
     1.Error
