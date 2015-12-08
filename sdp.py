@@ -31,6 +31,7 @@ def SdpCloudRun(**user):
 
 if __name__ == "__main__":
     try:
+
         if os.geteuid() != 0:
             print "\033[0;31;40mAborting:this program must be run as root.\033[0m"
             sys.exit(1)
@@ -46,9 +47,17 @@ if __name__ == "__main__":
     Kernel Version  => %s
     CPUs            => %d
     Total Memory    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem)
-    except KeyboardInterrupt, e:
-        print "捕获到终止信号，程序非正常退出! %s" % e
-    except IOError, e:
+
+    except KeyboardInterrupt:
+        SdpLog("捕获到终止信号，程序非正常退出!")
+        print "捕获到终止信号，程序非正常退出!"
+        exit(1)
+
+    except IOError as e:
+        SdpLog(e)
         raise IOError('System IO Error, %s' % e)
-    except EOFError, e:
-        raise EOFError('无效终止符, %s' % e)
+
+    except EOFError as e:
+        SdpLog(e)
+        raise EOFError('意外终止, %s' % e)
+
