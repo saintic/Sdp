@@ -12,7 +12,7 @@
 
 3.git clone https://github.com/saintic/Sdp sdp
 
-4.cd sdp ; python sdp.py username time service email(以root身份运行)
+4.cd sdp ; python sdp.py username time service email(以root身份运行) or 软链到PATH可执行。
 
 **如果还有问题，请到[https://github.com/saintic/Sdp/issues][2]提问。**
 
