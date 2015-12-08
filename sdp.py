@@ -1,7 +1,7 @@
 #!/usr/bin/python -O
 #-*- coding=utf8 -*-
 __author__ = 'taochengwei'
-__date__ = '2015-12-6'
+__date__ = '2015-12-08'
 __doc__ = 'Sdp entry file, all the start.'
 
 import sys,os
