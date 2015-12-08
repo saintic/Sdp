@@ -37,13 +37,13 @@ class Docker:
         else:
             cfs=None
         cid=self.connect.create_container(image=image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings), mem_limit=None, memswap_limit=None, cpu_shares=None)['Id'][:12]
-        print '\033[0;32;40mSuccess to create container, id => %s\033[0m' % cid
+        #print '\033[0;32;40mSuccess to create container, id => %s\033[0m' % cid
         return cid
 
     def Start(self, cid):
         __r=self.connect.start(resource_id=cid)
         if __r == None:
-            print '\033[0;32;40mSuccess to start container, id => %s\033[0m' % cid
+            #print '\033[0;32;40mSuccess to start container, id => %s\033[0m' % cid
             return 0
         else:
             print "\033[0;31;40mStart failed, id => %s\033[0m" % cid

@@ -23,12 +23,6 @@ class RedisObject:
     def exists(self, k):
         return self.redis_object.exists(k)
 
-    def set(self, k, v):
-        pass
-
-    def get(self, k):
-        return self.redis_object.get(k)
-
     def hashset(self, **kw):
         if not isinstance(kw, (dict)):
             raise TypeError('Bad Type, ask a dict for user_info.')
@@ -37,19 +31,16 @@ class RedisObject:
             self.redis_object.hset(name, k, v)
         return self.redis_object.hgetall(name)
 
-    def hashget(self, index, method='value'):
-        if method == 'value':
-            return self.redis_object.hgetall(index)
-        elif method == 'key':
-            return self.redis_object.keys(index)
-        else:
-            return
+    def hashget(self, index):
+        return self.redis_object.hgetall(index)
 
 if __name__ == '__main__':
     rc = RedisObject()
     if rc.ping():
         if rc.exists('saintic'):
-            print rc.hashget('saintic')
+            d=rc.hashget('saintic')
+            import json
+            print json.dumps(d)
         else:
             print "no exist"
     else:

@@ -10,7 +10,7 @@ import Config
 Errlogfile=os.path.join(Config.SDP_LOGS_DATA_HOME,'error.log')
 Logfile=os.path.join(Config.SDP_LOGS_DATA_HOME,'sdp.log')
 
-def SdpLog(msg. logfile=Logfile):
+def SdpLog(msg, logfile=Logfile):
     try:
         logging.basicConfig(level=logging.DEBUG,
             format = '%(asctime)s %(pathname)s->[line:%(lineno)d func:%(funcName)s] %(levelname)s %(message)s',
