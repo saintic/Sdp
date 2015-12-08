@@ -3,13 +3,19 @@
 __date__ = '2015-11-30'
 __doc__ = "log report class or function, deco."
 
+import os
 import logging
-def SdpLog(msg):
+import Config
+
+Errlogfile=os.path.join(Config.SDP_LOGS_DATA_HOME,'error.log')
+Logfile=os.path.join(Config.SDP_LOGS_DATA_HOME,'sdp.log')
+
+def SdpLog(msg. logfile=Logfile):
     try:
         logging.basicConfig(level=logging.DEBUG,
             format = '%(asctime)s %(pathname)s->[line:%(lineno)d func:%(funcName)s] %(levelname)s %(message)s',
             datefmt = '%Y-%m-%d %H:%M:%S',
-            filename = '/var/log/sdp.log',
+            filename = logfile,
             filemode = 'a+')
         return logging.debug(msg)
     except IOError as e:

@@ -39,7 +39,7 @@ if __name__ == "__main__":
         print """\033[0;32;40mUser(%s, %s, %s) build sucessfully.
     CreateTime      => %s
     ExpireTime      => %s
-    Name            => %s
+    Hostname        => %s
     Sdp Version     => %s
     Kernel Version  => %s
     CPUs            => %d
