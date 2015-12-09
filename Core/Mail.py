@@ -26,28 +26,28 @@ import smtplib,sys
 from os.path import isfile
 
 class SendMail():
-  def __init__(self):
-    self.from_addr = 'sdp@saintic.net'
-    self.smtp_server = 'smtp.saintic.net'
-    self.password = 'SaintAugur910323'
+    def __init__(self):
+        self.from_addr = 'sdp@saintic.net'
+        self.smtp_server = 'smtp.saintic.net'
+        self.password = 'SaintAugur910323'
 
-  def _format_addr(self, s):
-    name, addr = parseaddr(s)
-    return formataddr((Header(name, 'utf-8').encode(), addr))
+    def _format_addr(self, s):
+        name, addr = parseaddr(s)
+        return formataddr((Header(name, 'utf-8').encode(), addr))
 
-  def send(self, *args):
-    if len(args) != 3:
-      print "\033[0;31;40mEmailErro,quit!!!\033[0m"
-      sys.exit(1)
-    user = args[0]
-    to_addr = args[1]
-    content = args[2]
-    msg = MIMEText(content, 'plain', 'utf-8')
-    msg['From'] = self._format_addr('SdpCloud运营团队 <%s>' % self.from_addr)
-    msg['To'] = self._format_addr('%s <%s>' % (user, to_addr))
-    msg['Subject'] = Header('用户信息', 'utf-8').encode()
-    server=smtplib.SMTP(self.smtp_server, 25)
-    #server.set_debuglevel(1)
-    server.login(self.from_addr, self.password)
-    server.sendmail(self.from_addr, [to_addr], msg.as_string())
-    server.quit()
+    def send(self, *args):
+        if len(args) != 3:
+            print "\033[0;31;40mEmailErro,quit!!!\033[0m"
+            sys.exit(1)
+        user = args[0]
+        to_addr = args[1]
+        content = args[2]
+        msg = MIMEText(content, 'plain', 'utf-8')
+        msg['From'] = self._format_addr('SdpCloud运营团队 <%s>' % self.from_addr)
+        msg['To'] = self._format_addr('%s <%s>' % (user, to_addr))
+        msg['Subject'] = Header('用户信息', 'utf-8').encode()
+        server=smtplib.SMTP(self.smtp_server, 25)
+        #server.set_debuglevel(1)
+        server.login(self.from_addr, self.password)
+        server.sendmail(self.from_addr, [to_addr], msg.as_string())
+        server.quit()

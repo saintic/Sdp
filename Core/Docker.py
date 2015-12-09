@@ -14,22 +14,25 @@ class Docker:
     def __init__(self):
         self.connect = docker.Client(base_url='unix://var/run/docker.sock')
 
-    def images(self, image=None):
-        return self.connect.images(image)
+    def Images(self, image=None):
+        return json.dumps(self.connect.images(image))
 
-    def pull(self, image, repo=Config.DOCKER_REGISTRY, tag=None):
-        if self.connect.images(name=image):
-            return True
-        else:
-            for __line in self.connect.pull(image, repository=repo, tag=tag, stream=True):  #a generator
-                print json.dumps(json.loads(__line), indent=4)
-                return True
+    def Logs(self):
+        pass
 
-    def push(self, image):
+    def Top(self):
+        pass
+
+    def Pull(self, image, repo=Config.DOCKER_REGISTRY, tag=None):
+        if not self.connect.images(name=image):
+            for line in self.connect.pull(image, stream=True):  #a generator
+                print json.dumps(json.loads(line), indent=4)
+
+    def Push(self, image):
         if self.connect.images(name=image):
             if Config.DOCKER_PUSH == 'On' or Config.DOCKER_PUSH == 'on':
                 for line in self.connect.push(image, stream=True):
-                    print json.dumps(json.loads(line))
+                    print json.dumps(json.loads(line), indent=4)
         else:
             raise ValueError('%s, no such image.' % image)
 
@@ -72,5 +75,5 @@ class Docker:
             raise
 
 if __name__ == '__main__':
-    i=Docker
-    print i.images('registry.saintic.com/base')
+    i=Docker()
+    print i.Images('registry.saintic.com/jenkins')

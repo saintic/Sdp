@@ -42,10 +42,6 @@ local_root=%s
             vsftpd('restart')
             chown('-R', Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER, self.userhome)
             chmod('-R', 'a+t', self.userhome)
-            #subprocess.call(['db_load -T -t hash -f ' + Config.FTP_VFTPUSERFILE + ' ' + Config.FTP_VFTPUSERDBFILE], shell=True)
-            #subprocess.call(['/etc/init.d/vsftpd restart'], shell=True)
-            #subprocess.call(['chown -R ' + Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER + ' ' + self.userhome], shell=True)
-            #subprocess.call(['chmod -R a+t ' + self.userhome], shell=True)
 
     def Proxy(self):
         ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'
@@ -64,13 +60,3 @@ local_root=%s
             f.write(ngx_conf_content)
         from sh import nginx
         nginx('-s', 'reload')
-        '''
-        status,output = commands.getstatusoutput(Config.NGINX_EXEC + ' -s reload')
-        if status == 0:
-            if os.environ['LANG'].split('.')[0] == 'zh_CN':
-                print 'Success:Reload Nginx' + ' ' * 39 + '[' + '\033[0;32;40m确定\033[0m' + ']'
-            else:
-                print 'Success:Reload Nginx' + ' ' * 39 + '[ ' + '\033[0;32;40m OK \033[0m' + ' ]'
-        else:
-            print "\033[0;31;40mRelod Nginx Error:\033[0m", output
-        '''
