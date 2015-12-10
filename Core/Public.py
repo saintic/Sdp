@@ -54,7 +54,7 @@ class Precheck:
         if not isinstance(kwargs, (dict)):
             raise TypeError('The class Precheck asks a list. ')
         try:
-            self.name    = kwargs['name']
+            self.name    = kwargs['name'].lower()
             self.time    = kwargs['time']
             self.service = kwargs['service']
             self.email   = kwargs['email']
