@@ -3,7 +3,7 @@
 __date__ = '2015-11-25'
 __doc__ = 'Config file parser'
 
-def read_conf(f,i):
+def read_conf(f, i):
     if not isinstance(f, (str)):
         raise TypeError('Bad operand type, ask a file.')
     if not isinstance(i, (str)):
