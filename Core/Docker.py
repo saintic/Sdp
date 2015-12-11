@@ -11,18 +11,14 @@ except ImportError as errmsg:
     raise ImportError('import failed, %s' % errmsg)
 
 class Docker:
-
     def __init__(self, **kw):
-
         if not isinstance(kw, (dict)):
             raise TypeError('Bad Type, ask a dict.')
-
         try:
             self.kw    = kw
             self.image = kw['image']
         except  KeyError as e:
             raise KeyError('%s' % e)
-
         self.connect = docker.Client(base_url='unix://var/run/docker.sock')
 
     def Images(self):
@@ -48,7 +44,6 @@ class Docker:
                 raise ValueError('%s, no such image.' % self.image)
 
     def Create(self):
-
         name=self.kw.get('name', None)
         container_port=self.kw.get('port', None)   #container open port,int,attach cports.
         host_ip_port=self.kw.get('bind', None)     #should be tuple,(host_ip,host_port),all is {container_port, (host_ip, host_port)}.
