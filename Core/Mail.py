@@ -51,3 +51,33 @@ class SendMail():
         server.login(self.from_addr, self.password)
         server.sendmail(self.from_addr, [to_addr], msg.as_string())
         server.quit()
+
+
+if __name__ == '__main__':
+    #When the replacement did not receive mail
+    import sys
+    from Redis import RedisObject
+
+    if len(sys.argv) == 2:
+        user = sys.argv[1]
+    else:
+        raise KeyError('Args is not enough.')
+
+    sinfo = {"Username":user}
+    rc = RedisObject()
+    if rc.ping() and rc.exists(user):
+        uinfo = rc.hashget(user)
+        email = uinfo['email']
+        sinfo['Service'] = uinfo['service']
+        sinfo['Password'] = uinfo['passwd']
+        if uinfo.get('dn', None):  #if true, is web, or app.
+            sinfo['Connection'] = uinfo['dn']
+        else:
+            sinfo['Connection'] = uinfo['ip'] + ':' + uinfo['port']
+        sinfo['other'] = '补发邮件'
+        ec = SendMail()
+        import json
+        ec.send(user, email, json.dumps(sinfo))
+    else:
+        print "No user or connect fail"
+        sys.exit(1)
