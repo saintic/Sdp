@@ -67,9 +67,9 @@ def StartAll(SdpType, **user):
         return 127
 
     #Run and Start Docker, should build.
-    C = Docker.Docker()
-    cid = C.Create(**dockerinfo)
-    C.Start(cid)
+    D = Docker.Docker(**dockerinfo)
+    cid = D.Create()
+    D.Start(cid)
     userinfo_admin['container'] = cid
     userinfo_admin['expiretime'] = Public.Time(m=time)
     userinfo_user = r'''
@@ -108,7 +108,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
     #define connection for redis and mailserver.
     userconn = (name, email, userinfo_user)
-    #adminconn = ('Administrator', Config.ADMIN_EMAIL, userinfo_admin)
+    #define instances
     rc = RedisObject()
     ec = SendMail()
 
@@ -116,7 +116,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
     if rc.ping():
         rc.hashset(**userinfo_admin)
         ec.send(*userconn)
-        #ec.send(*adminconn)
+        #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
         with open(Config.SDP_UC, 'a+') as f:
             f.write(json.dumps(userinfo_admin))
         if SdpType == "web" or SdpType == "WEB":
@@ -127,5 +127,6 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             Code.ftp()
             Code.Proxy()
     else:
+        #raise an error for RedisConnectError(Error.py)
         print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"
         sys.exit(7)
