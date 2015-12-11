@@ -9,7 +9,9 @@ class SdpError(Exception):
         self.kwargs = kwargs
 
 class DockerError(SdpError):
-    pass
+
+    def StartError(self):
+        raise StartError()
 
 class FtpError(SdpError):
     pass

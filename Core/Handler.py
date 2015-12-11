@@ -67,24 +67,23 @@ def StartAll(SdpType, **user):
         return 127
 
     #Run and Start Docker, should build.
-    C = Docker.Docker()
-    cid = C.Create(**dockerinfo)
-    C.Start(cid)
+    D = Docker.Docker(**dockerinfo)
+    cid = D.Create()
+    D.Start(cid)
     userinfo_admin['container'] = cid
     userinfo_admin['expiretime'] = Public.Time(m=time)
     userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
-账号: %s;
-密码: %s;
-使用期: %d个月;
-服务类型: %s;
-验证邮箱: %s;
+账号: %s
+密码: %s
+使用期: %d个月
+服务类型: %s
+验证邮箱: %s
 服务连接信息: %s
 
 祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
 邮箱: staugur@saintic.com
 官网: http://www.saintic.com/
-淘宝: https://shop126877887.taobao.com/
 ''' %(name, name, passwd, int(time), service, email, str(conn))
 
     userinfo_welcome = r'''<!DOCTYPE html>
@@ -94,11 +93,11 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 </head>
 <body>
 <h1><center>Welcome %s:</center></h1>
-<p>账号: %s;</p>
-<p>密码: %s;</p>
-<p>使用期: %d个月;</p>
-<p>服务类型: %s;</p>
-<p>验证邮箱: %s;</p>
+<p>账号: %s</p>
+<p>密码: %s</p>
+<p>使用期: %d个月</p>
+<p>服务类型: %s</p>
+<p>验证邮箱: %s</p>
 <p>服务连接信息: %s</p>
 <p>这是一个欢迎页面，请尽快使用FTP覆盖此页面!</p>
 <p><em>Thank you for using SdpCloud.</em></p>
@@ -108,7 +107,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
     #define connection for redis and mailserver.
     userconn = (name, email, userinfo_user)
-    #adminconn = ('Administrator', Config.ADMIN_EMAIL, userinfo_admin)
+    #define instances
     rc = RedisObject()
     ec = SendMail()
 
@@ -116,7 +115,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
     if rc.ping():
         rc.hashset(**userinfo_admin)
         ec.send(*userconn)
-        #ec.send(*adminconn)
+        #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
         with open(Config.SDP_UC, 'a+') as f:
             f.write(json.dumps(userinfo_admin))
         if SdpType == "web" or SdpType == "WEB":
@@ -127,5 +126,6 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             Code.ftp()
             Code.Proxy()
     else:
+        #raise an error for RedisConnectError(Error.py)
         print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"
         sys.exit(7)

@@ -11,40 +11,43 @@ except ImportError as errmsg:
     raise ImportError('import failed, %s' % errmsg)
 
 class Docker:
-    def __init__(self):
+    def __init__(self, **kw):
+        if not isinstance(kw, (dict)):
+            raise TypeError('Bad Type, ask a dict.')
+        try:
+            self.kw    = kw
+            self.image = kw['image']
+        except  KeyError as e:
+            raise KeyError('%s' % e)
         self.connect = docker.Client(base_url='unix://var/run/docker.sock')
 
-    def Images(self, image=None):
-        return json.dumps(self.connect.images(image))
+    def Images(self):
+        return self.connect.images(self.image)
 
     def Logs(self):
         pass
 
     def Top(self):
-        pass
+        return self.connect.top(self.image)
 
-    def Pull(self, image, repo=Config.DOCKER_REGISTRY, tag=None):
-        if not self.connect.images(name=image):
-            for line in self.connect.pull(image, stream=True):  #a generator
-                print json.dumps(json.loads(line), indent=4)
+    def Pull(self):
+        if not self.Images():
+            for line in self.connect.pull(self.image, stream=True):  #a generator
+                return json.dumps(json.loads(line), indent=4)
 
-    def Push(self, image):
-        if self.connect.images(name=image):
-            if Config.DOCKER_PUSH == 'On' or Config.DOCKER_PUSH == 'on':
-                for line in self.connect.push(image, stream=True):
-                    print json.dumps(json.loads(line), indent=4)
-        else:
-            raise ValueError('%s, no such image.' % image)
+    def Push(self):
+        if Config.DOCKER_PUSH == 'On' or Config.DOCKER_PUSH == 'on':
+            if self.Images():
+                for line in self.connect.push(self.image, stream=True):
+                    return json.dumps(json.loads(line), indent=4)
+            else:
+                raise ValueError('%s, no such image.' % self.image)
 
-    def Create(self, **kw):
-        if not isinstance(kw, (dict)):
-            raise TypeError('Bad Type, ask a dict.')
-
-        image=kw['image']
-        name=kw.get('name', None)
-        container_port=kw.get('port', None)   #container open port,int,attach cports.
-        host_ip_port=kw.get('bind', None)     #should be tuple,(host_ip,host_port),all is {container_port, (host_ip, host_port)}.
-        volume=kw.get('volume', None)         #host_dir, default binding /data/wwwroot in container.
+    def Create(self):
+        name=self.kw.get('name', None)
+        container_port=self.kw.get('port', None)   #container open port,int,attach cports.
+        host_ip_port=self.kw.get('bind', None)     #should be tuple,(host_ip,host_port),all is {container_port, (host_ip, host_port)}.
+        volume=self.kw.get('volume', None)         #host_dir, default binding /data/wwwroot in container.
 
         cports=[]
         if container_port:
@@ -61,18 +64,15 @@ class Docker:
         else:
             cfs=None
 
-        cid=self.connect.create_container(image=image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings), mem_limit=None, memswap_limit=None, cpu_shares=None)['Id'][:12]
-        print 'Success to create container, id => %s' % cid
+        cid=self.connect.create_container(image=self.image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings), mem_limit=None, memswap_limit=None, cpu_shares=None)['Id'][:12]
         return cid
 
     def Start(self, cid):
         __r=self.connect.start(resource_id=cid)
-        if __r == None:
-            print 'Success to start container, id => %s' % cid
-            return True
-        else:
-            #print "\033[0;31;40mStart failed, id => %s\033[0m" % cid
-            raise
+        if __r != None:
+            #raise an error DockerStartError(Error.py)
+            print "\033[0;31;40mStart failed, id => %s\033[0m" % cid
+            exit()
 
 if __name__ == '__main__':
     i=Docker()

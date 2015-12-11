@@ -21,6 +21,10 @@ import os
 CONF_NAME = 'sdp.cfg'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_CONF = os.path.join(BASE_DIR, str(CONF_NAME))
+
+if not os.path.exists(BASE_CONF):
+    raise OSError('No config file sdp.cfg')
+
 APPS = ("mongodb", "mysql", "redis", "memcache")
 WEBS = ("nginx", "tengine", "httpd", "lighttpd", "tomcat")
 SERVICES = APPS + WEBS
