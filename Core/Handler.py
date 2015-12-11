@@ -74,17 +74,16 @@ def StartAll(SdpType, **user):
     userinfo_admin['expiretime'] = Public.Time(m=time)
     userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
-账号: %s;
-密码: %s;
-使用期: %d个月;
-服务类型: %s;
-验证邮箱: %s;
+账号: %s
+密码: %s
+使用期: %d个月
+服务类型: %s
+验证邮箱: %s
 服务连接信息: %s
 
 祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
 邮箱: staugur@saintic.com
 官网: http://www.saintic.com/
-淘宝: https://shop126877887.taobao.com/
 ''' %(name, name, passwd, int(time), service, email, str(conn))
 
     userinfo_welcome = r'''<!DOCTYPE html>
@@ -94,11 +93,11 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 </head>
 <body>
 <h1><center>Welcome %s:</center></h1>
-<p>账号: %s;</p>
-<p>密码: %s;</p>
-<p>使用期: %d个月;</p>
-<p>服务类型: %s;</p>
-<p>验证邮箱: %s;</p>
+<p>账号: %s</p>
+<p>密码: %s</p>
+<p>使用期: %d个月</p>
+<p>服务类型: %s</p>
+<p>验证邮箱: %s</p>
 <p>服务连接信息: %s</p>
 <p>这是一个欢迎页面，请尽快使用FTP覆盖此页面!</p>
 <p><em>Thank you for using SdpCloud.</em></p>
