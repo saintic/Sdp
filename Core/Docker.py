@@ -42,7 +42,7 @@ class Docker:
             else:
                 raise ValueError('%s, no such image.' % self.image)
 
-    def Create(self):
+    def Create(self, mode='bridge'):
         name=self.kw.get('name', None)
         container_port=self.kw.get('port', None)   #container open port,int,attach cports.
         host_ip_port=self.kw.get('bind', None)     #should be tuple,(host_ip,host_port),all is {container_port, (host_ip, host_port)}.
@@ -66,7 +66,7 @@ class Docker:
         if not self.Images():
             self.Pull()
 
-        cid=self.connect.create_container(image=self.image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings), mem_limit=None, memswap_limit=None, cpu_shares=None)['Id'][:12]
+        cid=self.connect.create_container(image=self.image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings, network_mode=mode), mem_limit=None, memswap_limit=None, cpu_shares=None)['Id'][:12]
         return cid
 
     def Start(self, cid):

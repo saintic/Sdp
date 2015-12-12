@@ -22,9 +22,9 @@ def SdpCloudRun(**user):
         raise('Bae Parameter, ask dict.')
 
     if user['service'] in WEBS:
-        StartAll('web', **user)
+        StartAll('WEB', **user)
     elif user['service'] in APPS:
-        StartAll('app', **user)
+        StartAll('APP', **user)
     else:
         print "\033[0;31;40mError,Quit!!!\033[0m"
         sys.exit(3)
@@ -39,6 +39,12 @@ if __name__ == "__main__":
             user = genuserinfo()
             Precheck(**user).checkargs()
             SdpCloudRun(**user)
+            #user append for idetail
+            print "\033[0;32;40m"
+            for (k,v) in user.iteritems():
+                print k + '    => ' + v
+            print "\033[m"
+            '''
             print """\033[0;32;40mUser(%s, %s, %s) build sucessfully.
     CreateTime      => %s
     ExpireTime      => %s
@@ -47,6 +53,7 @@ if __name__ == "__main__":
     Kernel Version  => %s
     CPUs            => %d
     Total Memory    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem)
+            '''
 
     except KeyboardInterrupt:
         SdpLog("捕获到终止信号，程序非正常退出!")
@@ -60,4 +67,3 @@ if __name__ == "__main__":
     except EOFError as e:
         SdpLog(e)
         raise EOFError('意外终止, %s' % e)
-
