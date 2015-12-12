@@ -31,9 +31,8 @@ class Docker:
         return self.connect.top(self.image)
 
     def Pull(self):
-        if not self.Images():
-            for line in self.connect.pull(self.image, stream=True):  #a generator
-                return json.dumps(json.loads(line), indent=4)
+        for line in self.connect.pull(self.image, stream=True):  #a generator
+            print json.dumps(json.loads(line), indent=4)
 
     def Push(self):
         if Config.DOCKER_PUSH == 'On' or Config.DOCKER_PUSH == 'on':
@@ -64,7 +63,9 @@ class Docker:
         else:
             cfs=None
 
-        self.Pull()
+        if not self.Images():
+            self.Pull()
+
         cid=self.connect.create_container(image=self.image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings), mem_limit=None, memswap_limit=None, cpu_shares=None)['Id'][:12]
         return cid
 
@@ -76,5 +77,8 @@ class Docker:
             exit()
 
 if __name__ == '__main__':
-    i=Docker()
-    print i.Images('registry.saintic.com/jenkins')
+    i=Docker(image='registry.saintic.com/nginx')
+    if i.Pull():
+        print i.Images()
+    else:
+        print 'error pull'
