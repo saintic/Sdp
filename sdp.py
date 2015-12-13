@@ -22,9 +22,9 @@ def SdpCloudRun(**user):
         raise('Bae Parameter, ask dict.')
 
     if user['service'] in WEBS:
-        StartAll('web', **user)
+        StartAll('WEB', **user)
     elif user['service'] in APPS:
-        StartAll('app', **user)
+        StartAll('APP', **user)
     else:
         print "\033[0;31;40mError,Quit!!!\033[0m"
         sys.exit(3)
@@ -60,4 +60,3 @@ if __name__ == "__main__":
     except EOFError as e:
         SdpLog(e)
         raise EOFError('意外终止, %s' % e)
-

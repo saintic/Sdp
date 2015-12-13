@@ -47,7 +47,7 @@ def StartAll(SdpType, **user):
 
     #Web start dockerinfo
     dockerinfo = {"image":image, "name":name}
-    if SdpType == "web" or SdpType == "WEB":
+    if SdpType == "WEB":
         userhome = os.path.join(Config.SDP_USER_DATA_HOME, name)
         os.chdir(Config.SDP_USER_DATA_HOME)
         if not os.path.isdir(name):
@@ -58,7 +58,7 @@ def StartAll(SdpType, **user):
         userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome}
         conn = dn
     #App start dockerinfo
-    elif SdpType == "app" or SdpType == "APP":
+    elif SdpType == "APP":
         dockerinfo["port"] = Config.PORTNAT[service]
         dockerinfo["bind"] = (Config.SERVER_IP, PORT)
         userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':Config.SERVER_IP, 'port':int(PORT)}
@@ -68,7 +68,7 @@ def StartAll(SdpType, **user):
 
     #Run and Start Docker, should build.
     D = Docker.Docker(**dockerinfo)
-    cid = D.Create()
+    cid = D.Create(mode='bridge')    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
     D.Start(cid)
     userinfo_admin['container'] = cid
     userinfo_admin['expiretime'] = Public.Time(m=time)

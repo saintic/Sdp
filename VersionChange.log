@@ -22,12 +22,15 @@
 
 2015-11-29 Release Pre 1.1.3
     1.docker(Complated)
-    2.network mode(Bridge or Host)
-    3.精简代码输出，丰富结果输出, 用户名小写
+    2.network mode(Bridge or Host)(Complated)
+    3.精简代码输出，丰富结果输出, 用户名小写(Complated)
 
 2015-12-07 Release Pre 1.1.4
     1.Error
-    2.Subversion or Git
+    2.Subversion
+
+2015-12-12 Release Pre 1.1.5
+    1.Git(svn or git)
 
 Release 1.2
     打包成一个相匹配shell版本的完成品。
