@@ -27,7 +27,7 @@
 
 2015-12-07 Release Pre 1.1.4
     1.Error,错误处理、回滚
-    2.Subversion
+    2.Subversion(svn https https)
 
 2015-12-12 Release Pre 1.1.5
     1.Git(svn or git)
