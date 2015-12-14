@@ -70,6 +70,7 @@ DOCKER_TAG = DOCKER_CONF['imgtag']
 DOCKER_REGISTRY = DOCKER_CONF['registry']
 
 #set svn variables
+SVN_TYPE = SVN_CONF['SvnType']
 HTTPD_USER = SVN_CONF['HttpdUser']
 HTTPD_GROUP = SVN_CONF['HttpdGroup']
 SVN_PASSFILE = SVN_CONF['PassFile']
