@@ -34,7 +34,7 @@ PORTNAT = {
     'redis': 6379,
     'memcache': 11211,
     'web': 80
-    }
+}
 
 #get variables from sdp.conf, format is dict.
 GLOBAL_CONF = read_conf(BASE_CONF, 'globals')
@@ -62,21 +62,28 @@ REDIS_PORT = int(REDIS_CONF['port'])
 REDIS_QUEUEDB = int(REDIS_CONF['QueueDB'])
 REDIS_DATADB = int(REDIS_CONF['DataDB'])
 REDIS_PASSWORD = REDIS_CONF['password']
-if REDIS_PASSWORD == "None":REDIS_PASSWORD = None
+if REDIS_PASSWORD == "None":
+    REDIS_PASSWORD = None
 
 #set docker variables
 DOCKER_PUSH = DOCKER_CONF['push']
 DOCKER_TAG = DOCKER_CONF['imgtag']
 DOCKER_REGISTRY = DOCKER_CONF['registry']
+DOCKER_NETWORK = DOCKER_CONF['network']
 
 #set svn variables
+SVN_TYPE = SVN_CONF['SvnType']
 HTTPD_USER = SVN_CONF['HttpdUser']
 HTTPD_GROUP = SVN_CONF['HttpdGroup']
+HTTPD_CMD = SVN_CONF['HttpdCmd']
 SVN_PASSFILE = SVN_CONF['PassFile']
-SVN_CONF = SVN_CONF['SvnConf']
+SVN_ROOT = SVN_CONF['SvnRoot']
+SVN_ADDR = SVN_CONF['SvnAddr']
+SVN_CONFIG = SVN_CONF['SvnConfig']
 
 #set ftp variables
 FTP_TYPE = FTP_CONF['FtpType']
+FTP_SCRIPT = FTP_CONF['FtpScript']
 FTP_VFTPUSER = FTP_CONF['VFtpUser']
 FTP_VFTPUSERFILE = FTP_CONF['VFtpUserFile']
 FTP_VFTPUSERDBFILE= FTP_CONF['VFtpUserDBFile']

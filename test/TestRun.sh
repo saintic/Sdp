@@ -6,11 +6,7 @@ if [ `whoami` != 'root' ];then
     echo "Warning:must be root"
     exit
 fi
-if [ -z $1 ];then
-    exit 1
-else
-    pre=$1
-fi
+[ -z $1 ] && exit 1 || pre=$1
 
 Ss=("mongodb" "mysql" "redis" "memcache" "nginx" "tengine" "httpd" "lighttpd" "tomcat")
 webs=("nginx" "tengine" "httpd" "lighttpd" "tomcat")

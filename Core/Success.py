@@ -3,7 +3,7 @@
 __date__ = '2015-11-12'
 __doc__ = 'If type = WEBS, next nginx and code manager(ftp,svn)'
 
-import os,Config,Redis
+import os, Config, Redis
 
 class CodeManager():
     def __init__(self, index):
@@ -16,6 +16,7 @@ class CodeManager():
             self.ip = self.user['ip']
             self.port = self.user['port']
             self.dn = self.user.get('dn', None)
+            self.user_repo = os.path.join(Config.SVN_ROOT, self.name)
         else:
             pass
 
@@ -36,9 +37,9 @@ local_root=%s
             with open(os.path.join(Config.FTP_VFTPUSERDIR, self.name), 'w') as f:
                 f.write(ftp_content_conf)
             #The module sh, not subprocess
-            from sh import db_load,Command,chown,chmod
+            from sh import db_load, Command, chown, chmod
             db_load("-T", "-t", "hash", "-f", Config.FTP_VFTPUSERFILE, Config.FTP_VFTPUSERDBFILE)
-            vsftpd=Command('/etc/init.d/vsftpd')
+            vsftpd=Command(Config.FTP_SCRIPT)
             vsftpd('restart')
             chown('-R', Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER, self.userhome)
             chmod('-R', 'a+t', self.userhome)
@@ -61,41 +62,43 @@ local_root=%s
         from sh import nginx
         nginx('-s', 'reload')
 
-    def CreateSvn(self): 
-#arg:$init_user $init_passwd
-init_user_home_svnroot=${init_user_home}/$init_user
-svnadmin create $init_user_home_svnroot ; chown -R apache:apache $init_user_home_svnroot
-[ "$#" != "2" ] && ERROR
-cat >> $svnconf <<EOF
-
-<Location /sdi/$1>
-   DAV svn
-   SVNPath $init_user_home_svnroot
-   AuthType Basic
-   AuthName "Welcome to Sdp CodeSourceRoot."
-   AuthUserFile $httpasswd
-   #SSLRequireSSL
-  <LimitExcept GET PROPFIND OPTIONS REPORT>
-    Require valid-user
-  </LimitExcept>
+    def CreateHttpSvn(self): 
+        from sh import svnadmin, chown, htpasswd, apachectl
+        svnadmin('create', self.user_repo)
+        chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.user_repo)
+        user_repo_content = r'''
+<Location /sdp/%s>
+    DAV svn
+    SVNPath %s
+    AuthType Basic
+    AuthName "Welcome to Sdp CodeRoot!"
+    AuthUserFile %s
+    #SSLRequireSSL
+    <LimitExcept GET PROPFIND OPTIONS REPORT>
+        Require valid-user
+    </LimitExcept>
 </Location>
-EOF
-[ -e $httpasswd ] && htpasswd -mb $httpasswd $1 $2 || htpasswd -bc $httpasswd $1 $2
-/etc/init.d/httpd reload
-}
+''' % (self.name, self.user_repo, Config.SVN_PASSFILE)
+        with open(Config.SVN_CONF, 'a') as f:
+            f.write(user_repo_content)
+        if os.path.exists(Config.SVN_PASSFILE):
+            htpasswd('-mb', Config.SVN_PASSFILE, self.name, self.passwd)
+        else:
+            htpasswd('-cb', Config.SVN_PASSFILE, self.name, self.passwd)
+        apachectl('reload')  #sh.Command(script)
 
-function AutoUpdateSvn() {
-cd $init_user_home ; svn co https://saintic.top/sdi/$init_user root;
-cd ${init_user_home_svnroot}/hooks/;
-cat > post-commit <<EOF
-#!/bin/bash
+    def initSvn(self):
+        from sh import svn, chmod, chown
+        repourl = Config.SvnAddr + self.name
+        svn('co', repourl, self.userhome)
+        hook_content = r'''#!/bin/bash
 export LC_CTYPE=en_US.UTF-8
 export LANG=en_US.UTF-8
-cd $init_user_home_root ;  svn up
-EOF
-chmod -R 777 post-commit
-chown -R apache.apache post-commit
-chmod -R 777 $init_user_home_root
-}
-
-
+svn up %s
+''' % self.userhome 
+        os.chdir(os.path.join(self.user_repo, 'hooks'))
+        with open('post-commit', 'w') as f:
+            f.write(hook_content)
+        chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.userhome)
+        chmod('-R', 'a+t', self.userhome)
+        chmod('-R', 777, self.userhome)
