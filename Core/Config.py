@@ -69,6 +69,7 @@ if REDIS_PASSWORD == "None":
 DOCKER_PUSH = DOCKER_CONF['push']
 DOCKER_TAG = DOCKER_CONF['imgtag']
 DOCKER_REGISTRY = DOCKER_CONF['registry']
+DOCKER_NETWORK = DOCKER_CONF['network']
 
 #set svn variables
 SVN_TYPE = SVN_CONF['SvnType']
@@ -77,8 +78,8 @@ HTTPD_GROUP = SVN_CONF['HttpdGroup']
 HTTPD_CMD = SVN_CONF['HttpdCmd']
 SVN_PASSFILE = SVN_CONF['PassFile']
 SVN_ROOT = SVN_CONF['SvnRoot']
-SVN_CONF = SVN_CONF['SvnConf']
 SVN_ADDR = SVN_CONF['SvnAddr']
+SVN_CONFIG = SVN_CONF['SvnConfig']
 
 #set ftp variables
 FTP_TYPE = FTP_CONF['FtpType']

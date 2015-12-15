@@ -124,6 +124,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             import Success
             Code = Success.CodeManager(name)
             Code.ftp()
+            #Code.svn()
             Code.Proxy()
     else:
         #raise an error for RedisConnectError(Error.py)
