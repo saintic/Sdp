@@ -62,9 +62,9 @@ local_root=%s
         nginx('-s', 'reload')
 
     def CreateSvn(self): 
-#arg:$init_user $init_passwd
-init_user_home_svnroot=${init_user_home}/$init_user
-svnadmin create $init_user_home_svnroot ; chown -R apache:apache $init_user_home_svnroot
+        from sh import svnadmin, chown
+        svnadmin('create', self.userhome)
+        chown -R apache:apache $init_user_home_svnroot
 [ "$#" != "2" ] && ERROR
 cat >> $svnconf <<EOF
 
