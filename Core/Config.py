@@ -34,7 +34,7 @@ PORTNAT = {
     'redis': 6379,
     'memcache': 11211,
     'web': 80
-    }
+}
 
 #get variables from sdp.conf, format is dict.
 GLOBAL_CONF = read_conf(BASE_CONF, 'globals')
@@ -62,7 +62,8 @@ REDIS_PORT = int(REDIS_CONF['port'])
 REDIS_QUEUEDB = int(REDIS_CONF['QueueDB'])
 REDIS_DATADB = int(REDIS_CONF['DataDB'])
 REDIS_PASSWORD = REDIS_CONF['password']
-if REDIS_PASSWORD == "None":REDIS_PASSWORD = None
+if REDIS_PASSWORD == "None":
+    REDIS_PASSWORD = None
 
 #set docker variables
 DOCKER_PUSH = DOCKER_CONF['push']
