@@ -42,7 +42,7 @@ class Docker:
             else:
                 raise ValueError('%s, no such image.' % self.image)
 
-    def Create(self, mode=Config.DOCKER_NETWORK):
+    def Create(self, mode='bridge'):
         name=self.kw.get('name', None)
         container_port=self.kw.get('port', None)   #container open port,int,attach cports.
         host_ip_port=self.kw.get('bind', None)     #should be tuple,(host_ip,host_port),all is {container_port, (host_ip, host_port)}.

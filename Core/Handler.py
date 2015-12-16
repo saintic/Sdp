@@ -15,7 +15,9 @@ def StartAll(SdpType, **user):
         raise TypeError('StartAll need a type, app or web.')
     if not isinstance(user, (dict)):
         raise TypeError('StartAll need a dict(user).')
+
     name, passwd, time, service, email = user['name'], user['passwd'], str(user['time']), user['service'], user['email']
+
     dn = name + Config.DN_BASE
     portfile = os.path.join(Config.SDP_DATA_HOME, 'port')
 
@@ -68,7 +70,7 @@ def StartAll(SdpType, **user):
 
     #Run and Start Docker, should build.
     D = Docker.Docker(**dockerinfo)
-    cid = D.Create(mode='bridge')    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
+    cid = D.Create(mode=Config.DOCKER_NETWORK)    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
     D.Start(cid)
     userinfo_admin['container'] = cid
     userinfo_admin['expiretime'] = Public.Time(m=time)
@@ -119,12 +121,17 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
         with open(Config.SDP_UC, 'a+') as f:
             f.write(json.dumps(userinfo_admin))
         if SdpType == "web" or SdpType == "WEB":
-            with open(os.path.join(userhome, 'index.html'), 'w') as f:
-                f.write(userinfo_welcome)
             import Success
             Code = Success.CodeManager(name)
             Code.ftp()
-            #Code.svn()
+            Code.CreateApacheSvn(connect=Config.SVN_TYPE)
+            Code.initSvn()
+            with open(os.path.join(userhome, 'index.html'), 'w') as f:
+                f.write(userinfo_welcome)
+            from sh import svn
+            os.chdir(userhome)
+            svn('add', 'index.html')
+            svn('ci', '--username', name, '--password', passwd, '-m', 'init commit', '--force-log')
             Code.Proxy()
     else:
         #raise an error for RedisConnectError(Error.py)
