@@ -18,6 +18,7 @@ class CodeManager():
             self.dn = self.user.get('dn', None)
             self.user_repo = os.path.join(Config.SVN_ROOT, self.name)
         else:
+            #raise RedisConnectionError
             pass
 
     def ftp(self):
@@ -62,34 +63,62 @@ local_root=%s
         from sh import nginx
         nginx('-s', 'reload')
 
-    def CreateHttpSvn(self): 
+    def CreateApacheSvn(self, connect='https'):
         from sh import svnadmin, chown, htpasswd, apachectl
+        if not os.path.exists(Config.SVN_ROOT):
+            os.mkdir(Config.SVN_ROOT)
         svnadmin('create', self.user_repo)
         chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.user_repo)
-        user_repo_content = r'''
+        http_user_repo_content = r'''
 <Location /sdp/%s>
     DAV svn
     SVNPath %s
     AuthType Basic
     AuthName "Welcome to Sdp CodeRoot!"
     AuthUserFile %s
-    #SSLRequireSSL
     <LimitExcept GET PROPFIND OPTIONS REPORT>
         Require valid-user
     </LimitExcept>
 </Location>
 ''' % (self.name, self.user_repo, Config.SVN_PASSFILE)
-        with open(Config.SVN_CONF, 'a') as f:
+
+        https_user_repo_content = r'''
+<Location /sdp/%s>
+    DAV svn
+    SVNPath %s
+    AuthType Basic
+    AuthName "Welcome to Sdp CodeRoot!"
+    AuthUserFile %s
+    SSLRequireSSL
+    <LimitExcept GET PROPFIND OPTIONS REPORT>
+        Require valid-user
+    </LimitExcept>
+</Location>
+''' % (self.name, self.user_repo, Config.SVN_PASSFILE)
+
+        if connect == 'http':
+            user_repo_content = http_user_repo_content
+        elif connect == 'https':
+            user_repo_content = https_user_repo_content
+        else:
+            raise TypeError('Only support http or https.')
+
+        with open(Config.SVN_CONFIG, 'a+') as f:
             f.write(user_repo_content)
+
         if os.path.exists(Config.SVN_PASSFILE):
             htpasswd('-mb', Config.SVN_PASSFILE, self.name, self.passwd)
         else:
             htpasswd('-cb', Config.SVN_PASSFILE, self.name, self.passwd)
-        apachectl('reload')  #sh.Command(script)
+
+        apachectl('restart')  #sh.Command(script)
 
     def initSvn(self):
         from sh import svn, chmod, chown
-        repourl = Config.SvnAddr + self.name
+        repourl = Config.SVN_ADDR + self.name
+        #import svn.remote
+        #r = svn.remote.RemoteClient(repourl)
+        #r.checkout(self.userhome)
         svn('co', repourl, self.userhome)
         hook_content = r'''#!/bin/bash
 export LC_CTYPE=en_US.UTF-8
@@ -99,6 +128,5 @@ svn up %s
         os.chdir(os.path.join(self.user_repo, 'hooks'))
         with open('post-commit', 'w') as f:
             f.write(hook_content)
+        chmod('-R', 777, self.user_repo)
         chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.userhome)
-        chmod('-R', 'a+t', self.userhome)
-        chmod('-R', 777, self.userhome)
