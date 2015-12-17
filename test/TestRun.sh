@@ -12,7 +12,7 @@ Ss=("mongodb" "mysql" "redis" "memcache" "nginx" "tengine" "httpd" "lighttpd" "t
 webs=("nginx" "tengine" "httpd" "tomcat")
 apps=("mongodb" "mysql" "redis" "memcache")
 
-for s in ${webs[@]}
+for s in ${Ss[@]}
 do
   user=${pre}_$s
   ${sdpexec}/../sdp.py $user 12 $s ${user}@saintic.com
