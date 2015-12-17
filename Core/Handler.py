@@ -57,7 +57,8 @@ def StartAll(SdpType, **user):
         dockerinfo["port"] = Config.PORTNAT['web']
         dockerinfo["bind"] = ('127.0.0.1', PORT)
         dockerinfo["volume"] = userhome
-        userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome}
+        #user_repo
+        userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome, 'repo':Config.SVN_ADDR + name}
         conn = dn
     #App start dockerinfo
     elif SdpType == "APP":
@@ -115,24 +116,24 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
     #start write data
     if rc.ping():
-        rc.hashset(**userinfo_admin)
-        ec.send(*userconn)
         #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
         with open(Config.SDP_UC, 'a+') as f:
             f.write(json.dumps(userinfo_admin))
         if SdpType == "web" or SdpType == "WEB":
             import Success
+            from sh import svn
             Code = Success.CodeManager(name)
             Code.ftp()
             Code.CreateApacheSvn(connect=Config.SVN_TYPE)
             Code.initSvn()
             with open(os.path.join(userhome, 'index.html'), 'w') as f:
                 f.write(userinfo_welcome)
-            from sh import svn
             os.chdir(userhome)
             svn('add', 'index.html')
-            svn('ci', '--username', name, '--password', passwd, '-m', 'init commit', '--force-log')
+            svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
             Code.Proxy()
+        rc.hashset(**userinfo_admin)
+        ec.send(*userconn)
     else:
         #raise an error for RedisConnectError(Error.py)
         print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"
