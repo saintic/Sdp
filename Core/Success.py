@@ -119,7 +119,7 @@ local_root=%s
         #import svn.remote  #python2.7+
         #r = svn.remote.RemoteClient(repourl)
         #r.checkout(self.userhome)
-        svn('co', repourl, self.userhome)
+        svn('co', '--non-interactive', '--trust-server-cert', repourl, self.userhome)
         hook_content = r'''#!/bin/bash
 export LC_CTYPE=en_US.UTF-8
 export LANG=en_US.UTF-8
