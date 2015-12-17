@@ -116,7 +116,7 @@ local_root=%s
     def initSvn(self):
         from sh import svn, chmod, chown
         repourl = Config.SVN_ADDR + self.name
-        #import svn.remote
+        #import svn.remote  #python2.7+
         #r = svn.remote.RemoteClient(repourl)
         #r.checkout(self.userhome)
         svn('co', repourl, self.userhome)
@@ -129,4 +129,5 @@ svn up %s
         with open('post-commit', 'w') as f:
             f.write(hook_content)
         chmod('-R', 777, self.user_repo)
+        #chmod('-R' 777, self.userhome)   #When you need to open FTP's write permissions
         chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.userhome)
