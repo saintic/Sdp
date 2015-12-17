@@ -51,14 +51,14 @@ def StartAll(SdpType, **user):
     dockerinfo = {"image":image, "name":name}
     if SdpType == "WEB":
         userhome = os.path.join(Config.SDP_USER_DATA_HOME, name)
+        userrepo = Config.SVN_ADDR + name
         os.chdir(Config.SDP_USER_DATA_HOME)
         if not os.path.isdir(name):
             os.mkdir(name)
         dockerinfo["port"] = Config.PORTNAT['web']
         dockerinfo["bind"] = ('127.0.0.1', PORT)
         dockerinfo["volume"] = userhome
-        #user_repo
-        userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome, 'repo':Config.SVN_ADDR + name}
+        userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome, 'repo':userrepo}
         conn = dn
     #App start dockerinfo
     elif SdpType == "APP":
@@ -116,6 +116,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
     #start write data
     if rc.ping():
+        rc.hashset(**userinfo_admin)
         #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
         with open(Config.SDP_UC, 'a+') as f:
             f.write(json.dumps(userinfo_admin))
@@ -132,7 +133,6 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             svn('add', 'index.html')
             svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
             Code.Proxy()
-        rc.hashset(**userinfo_admin)
         ec.send(*userconn)
     else:
         #raise an error for RedisConnectError(Error.py)
