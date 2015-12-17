@@ -9,7 +9,7 @@ fi
 [ -z $1 ] && exit 1 || pre=$1
 
 Ss=("mongodb" "mysql" "redis" "memcache" "nginx" "tengine" "httpd" "lighttpd" "tomcat")
-webs=("nginx" "tengine" "httpd" "lighttpd" "tomcat")
+webs=("nginx" "tengine" "httpd" "tomcat")
 apps=("mongodb" "mysql" "redis" "memcache")
 
 for s in ${Ss[@]}
