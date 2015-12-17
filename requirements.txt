@@ -2,4 +2,3 @@ docker-py
 redis
 configobj
 sh
-svn
