@@ -18,7 +18,7 @@ def SdpLog(logfile=Logfile, *args, **kw):
         #logging.debug(msg)
         if args:
             logging.debug(args)
-        if args:
+        if kw:
             logging.debug(kw)
     except IOError as e:
         raise IOError("Write error, %s" % e)
