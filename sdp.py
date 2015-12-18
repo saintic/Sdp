@@ -1,7 +1,5 @@
 #!/usr/bin/python -O
 #-*- coding=utf8 -*-
-__author__ = 'taochengwei'
-__date__ = '2015-12-08'
 __doc__ = 'Sdp entry file, all the start.'
 
 import sys,os
@@ -46,7 +44,8 @@ if __name__ == "__main__":
     Sdp Version     => %s
     Kernel Version  => %s
     CPUs            => %d
-    Total Memory    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.Mem)
+    Memory Usage    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.MemPerc)
+            SdpLog(**user)
 
     except KeyboardInterrupt:
         SdpLog("捕获到终止信号，程序非正常退出!")
@@ -54,9 +53,9 @@ if __name__ == "__main__":
         exit(1)
 
     except IOError as e:
-        SdpLog(e)
+        SdpLog('System IO Error, %s' % e)
         raise IOError('System IO Error, %s' % e)
 
     except EOFError as e:
-        SdpLog(e)
+        SdpLog('意外终止 %s' % e)
         raise EOFError('意外终止, %s' % e)

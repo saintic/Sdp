@@ -9,8 +9,16 @@ class Sysinfo():
     Hostname=platform.uname()[1]
     Kernel=platform.uname()[2]
     CPUs=int(psutil.cpu_count())
-    Total=psutil.virtual_memory().total
-    Mem=str(Total / 1024 / 1024) + 'M'
+    #mem used percent
+    mem=psutil.virtual_memory()
+    total=mem.total
+    free=mem.free
+    buffers=mem.buffers
+    cached=mem.cached
+    UsedPerc=100 * int(total - free - cached - buffers) / int(total)
+    mem_total=str(total / 1024 / 1024) + 'M'
+    mem_free=str(free / 1024 / 1024) + 'M'
+    MemPerc=str(UsedPerc)+'%'
 
 def Time(m=None):
     import datetime

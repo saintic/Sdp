@@ -8,15 +8,18 @@ import logging
 import Config
 
 Logfile=os.path.join(Config.SDP_LOGS_DATA_HOME,'sdp.log')
-def SdpLog(msg, logfile=Logfile):
+def SdpLog(logfile=Logfile, *args, **kw):
     try:
-        
         logging.basicConfig(level=logging.DEBUG,
             format = '%(asctime)s %(pathname)s->[line:%(lineno)d] %(levelname)s %(message)s',
             datefmt = '%Y-%m-%d %H:%M:%S',
             filename = logfile,
             filemode = 'a+')
-        return logging.debug(msg)
+        #logging.debug(msg)
+        if args:
+            logging.debug(args)
+        if args:
+            logging.debug(kw)
     except IOError as e:
         raise IOError("Write error, %s" % e)
 
