@@ -75,7 +75,9 @@ def StartAll(SdpType, **user):
     D.Start(cid)
     userinfo_admin['container'] = cid
     userinfo_admin['expiretime'] = Public.Time(m=time)
-    userinfo_user = r'''
+
+    if SdpType == "APP":
+        userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
 账号: %s
 密码: %s
@@ -86,10 +88,25 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
 祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
 邮箱: staugur@saintic.com
-官网: http://www.saintic.com/
-''' %(name, name, passwd, int(time), service, email, str(conn))
+官网: http://www.saintic.com/''' %(name, name, passwd, int(time), service, email, str(conn))
 
-    userinfo_welcome = r'''<!DOCTYPE html>
+    else:
+        userinfo_user = r'''
+Dear %s, 以下是您的SdpCloud服务使用信息！
+账号: %s
+密码: %s
+使用期: %d个月
+服务类型: %s
+验证邮箱: %s
+连接域名: http://%s
+版本库地址: %s
+
+祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
+邮箱: staugur@saintic.com
+官网: http://www.saintic.com/
+问题: https://github.com/SaintIC/Sdp/issues''' %(name, name, passwd, int(time), service, email, str(conn), userrepo)
+
+        userinfo_welcome = r'''<!DOCTYPE html>
 <html>
 <head>
 <title>User information for SdpCloud!</title>
@@ -101,14 +118,14 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 <p>使用期: %d个月</p>
 <p>服务类型: %s</p>
 <p>验证邮箱: %s</p>
-<p>服务连接信息: %s</p>
-<p>这是一个欢迎页面，请尽快使用FTP覆盖此页面!</p>
+<p>连接域名: %s</p>
+<p>版本库地址: <a href="%s" target="__blank">%s</a></p>
+
+<p>这是一个欢迎页面，请尽快使用SVN覆盖此页面!</p>
 <p><em>Thank you for using SdpCloud.</em></p>
 </body>
-</html>
-''' %(name, name, passwd, int(time), service, email, str(conn))
+</html>''' %(name, name, passwd, int(time), service, email, str(conn), userrepo, userrepo)
 
-    #define connection for redis and mailserver.
     userconn = (name, email, userinfo_user)
     #define instances
     rc = RedisObject()
@@ -120,7 +137,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
         #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
         with open(Config.SDP_UC, 'a+') as f:
             f.write(json.dumps(userinfo_admin))
-        if SdpType == "web" or SdpType == "WEB":
+        if SdpType == "WEB":
             import Success
             from sh import svn
             Code = Success.CodeManager(name)
