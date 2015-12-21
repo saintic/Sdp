@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 #-*- coding=utf8 -*-
-__date__ = '2015-10-12'
 __doc__ = '''
-If you don't have a mail server, try local mail service, this requires that your local mail service is turned on.
+1. If you don't have a mail server, try local mail service, this requires that your local mail service is turned on.
 The following is a part of the change.
 
 Modify this line:
@@ -12,7 +11,7 @@ Comment on this line:
 #password='xxxx'
 #server.login(from_addr, password)
 
-If you need't html, please modify:
+2. If you need't html, please modify:
 msg = MIMEText(content, 'html', 'utf-8')
 change to(for plain):
 msg = MIMEText(content, 'utf-8')
@@ -23,13 +22,16 @@ from email.header import Header
 from email.mime.text import MIMEText
 from email.utils import parseaddr,formataddr
 import smtplib,sys
-from os.path import isfile
 
 class SendMail():
     def __init__(self):
         self.from_addr = 'sdp@saintic.net'
         self.smtp_server = 'smtp.saintic.net'
-        self.password = 'SaintAugur910323'
+        self.password = 'SaintIC.com'
+        """
+        self.from_addr = 'staugur@saintic.com'
+        self.smtp_server = '127.0.0.1'
+        """
 
     def _format_addr(self, s):
         name, addr = parseaddr(s)
@@ -52,7 +54,6 @@ class SendMail():
         server.sendmail(self.from_addr, [to_addr], msg.as_string())
         server.quit()
 
-
 if __name__ == '__main__':
     #When the replacement did not receive mail
     import sys
@@ -74,7 +75,7 @@ if __name__ == '__main__':
             sinfo['Connection'] = uinfo['dn']
         else:
             sinfo['Connection'] = uinfo['ip'] + ':' + uinfo['port']
-        sinfo['other'] = '补发邮件'
+        sinfo['other'] = 'This is a supplemental email.'
         ec = SendMail()
         import json
         ec.send(user, email, json.dumps(sinfo))

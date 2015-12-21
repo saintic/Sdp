@@ -9,7 +9,7 @@ import Config
 
 Logfile=os.path.join(Config.SDP_LOGS_DATA_HOME,'sdp.log')
 Logfile='sdp.log'
-def SdpLog(msg, level_name=Config.LOGLEVEL, logfile=Logfile):
+def SdpLog(level_name=Config.LOGLEVEL, logfile=Logfile, *args, **kw):
     LEVELS = {'DEBUG':logging.DEBUG,
         'INFO':logging.INFO,
         'WARNING':logging.WARNING,
@@ -28,7 +28,8 @@ def SdpLog(msg, level_name=Config.LOGLEVEL, logfile=Logfile):
         datefmt = '%Y-%m-%d %H:%M:%S',
         filename = logfile,
         filemode = 'a+')
-    logging.debug(msg)
+    logging.debug(args)
+    logging.debug(kw)
 
 if __name__ == "__main__":
     print SdpLog('This is a test log msg.')
