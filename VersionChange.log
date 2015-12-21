@@ -25,9 +25,8 @@
     2.network mode(Bridge or Host)(Complated)
     3.精简代码输出，丰富结果输出, 用户名小写(Complated)
 
-2015-12-07 Release Pre 1.1.4
-    1.Error,错误处理、回滚
-    2.Subversion(svn https https)
+2015-12-07 Release 1.1.4
+    1.Subversion(svn http https)
 
 2015-12-12 Release Pre 1.1.5
     1.Git(svn or git)

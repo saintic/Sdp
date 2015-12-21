@@ -44,7 +44,8 @@ if __name__ == "__main__":
     Sdp Version     => %s
     Kernel Version  => %s
     CPUs            => %d
-    Memory Usage    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.MemPerc)
+    Memory Free     => %s
+    Memory Usage    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.mem_free, Sysinfo.MemPerc)
             SdpLog(**user)
 
     except KeyboardInterrupt:
@@ -59,3 +60,4 @@ if __name__ == "__main__":
     except EOFError as e:
         SdpLog('意外终止 %s' % e)
         raise EOFError('意外终止, %s' % e)
+

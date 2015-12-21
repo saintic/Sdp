@@ -113,6 +113,9 @@ local_root=%s
 
         apachectl('restart')  #sh.Command(script)
 
+    def Svn(self):
+        pass
+
     def initSvn(self):
         from sh import svn, chmod, chown
         repourl = Config.SVN_ADDR + self.name
