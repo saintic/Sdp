@@ -8,7 +8,7 @@ try:
     from Core.Config import LANG,WEBS,APPS
     from Core.Handler import StartAll
     from Core import __version__
-    from Core.Log import SdpLog
+    from Core.Log import Sdplog
 except ImportError as errmsg:
     print __file__,"import module failed, because %s" % errmsg
     sys.exit(1)
@@ -46,18 +46,14 @@ if __name__ == "__main__":
     CPUs            => %d
     Memory Free     => %s
     Memory Usage    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.mem_free, Sysinfo.MemPerc)
-            SdpLog(**user)
+            Sdplog(**user)
 
     except KeyboardInterrupt:
-        SdpLog("捕获到终止信号，程序非正常退出!")
         print "捕获到终止信号，程序非正常退出!"
         exit(1)
 
     except IOError as e:
-        SdpLog('System IO Error, %s' % e)
         raise IOError('System IO Error, %s' % e)
 
     except EOFError as e:
-        SdpLog('意外终止 %s' % e)
         raise EOFError('意外终止, %s' % e)
-

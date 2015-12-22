@@ -118,6 +118,7 @@ local_root=%s
         user_repo_authz = r'''
 [%s:/]
 %s=rw
+*=r
 '''     %(self.name, self.name)
         user_pass_content = "%s=%s\n" %(self.name, self.passwd)
 
