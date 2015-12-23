@@ -2,3 +2,4 @@ docker-py
 redis
 configobj
 sh
+psutil

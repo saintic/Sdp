@@ -28,7 +28,7 @@ do
           fi
       fi
   else
-      echo "执行结果非0，非正常推出。"
+      echo "执行结果非0，非正常退出。"
       exit
   fi
 done

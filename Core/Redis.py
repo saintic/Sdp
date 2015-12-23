@@ -11,6 +11,8 @@ except ImportError as Errmsg:
     exit(1)
 
 class RedisObject:
+
+
     def __init__(self):
         self.redis_object = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DATADB, password=REDIS_PASSWORD)
 

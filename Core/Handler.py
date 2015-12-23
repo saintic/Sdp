@@ -11,6 +11,7 @@ from Redis import RedisObject
 from Mail import SendMail
 
 def StartAll(SdpType, **user):
+
     if not isinstance(SdpType, (str)):
         raise TypeError('StartAll need a type, app or web.')
     if not isinstance(user, (dict)):
@@ -133,16 +134,19 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
     #start write data
     if rc.ping():
-        rc.hashset(**userinfo_admin)
         #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
         with open(Config.SDP_UC, 'a+') as f:
             f.write(json.dumps(userinfo_admin))
         if SdpType == "WEB":
             import Success
             from sh import svn
-            Code = Success.CodeManager(name)
+            Code = Success.CodeManager(**userinfo_admin)
             Code.ftp()
-            Code.CreateApacheSvn(connect=Config.SVN_TYPE)
+            if Config.SVN_TYPE == 'svn':
+                Code.Svn()
+                #raise TypeError('Code type unsupport.')
+            else:
+                Code.CreateApacheSvn()
             Code.initSvn()
             with open(os.path.join(userhome, 'index.html'), 'w') as f:
                 f.write(userinfo_welcome)
@@ -150,6 +154,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             svn('add', 'index.html')
             svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
             Code.Proxy()
+        rc.hashset(**userinfo_admin)
         ec.send(*userconn)
     else:
         #raise an error for RedisConnectError(Error.py)

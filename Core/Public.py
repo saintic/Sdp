@@ -5,7 +5,7 @@ __date__ = '2015-10-12'
 import re,sys,psutil,platform
 import Config
 
-class Sysinfo():
+class Sysinfo:
     Hostname=platform.uname()[1]
     Kernel=platform.uname()[2]
     CPUs=int(psutil.cpu_count())
@@ -57,7 +57,10 @@ def genuserinfo(num=5):
         print "\033[0;31;40mUsage:user time service email\033[0m"
         sys.exit(1)
 
+
 class Precheck:
+
+
     def __init__(self, **kwargs):
         if not isinstance(kwargs, (dict)):
             raise TypeError('The class Precheck asks a list. ')
