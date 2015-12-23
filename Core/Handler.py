@@ -11,6 +11,7 @@ from Redis import RedisObject
 from Mail import SendMail
 
 def StartAll(SdpType, **user):
+
     if not isinstance(SdpType, (str)):
         raise TypeError('StartAll need a type, app or web.')
     if not isinstance(user, (dict)):
@@ -143,6 +144,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             Code.ftp()
             if Config.SVN_TYPE == 'svn':
                 Code.Svn()
+                #raise TypeError('Code type unsupport.')
             else:
                 Code.CreateApacheSvn()
             Code.initSvn()

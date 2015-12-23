@@ -46,7 +46,6 @@ if __name__ == "__main__":
     CPUs            => %d
     Memory Free     => %s
     Memory Usage    => %s\033[m"""%(user['name'], user['email'], user['service'], Time(), Time(user['time']), Sysinfo.Hostname,  __version__, Sysinfo.Kernel, Sysinfo.CPUs, Sysinfo.mem_free, Sysinfo.MemPerc)
-            Sdplog(**user)
 
     except KeyboardInterrupt:
         print "捕获到终止信号，程序非正常退出!"

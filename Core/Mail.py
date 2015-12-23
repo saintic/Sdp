@@ -23,7 +23,9 @@ from email.mime.text import MIMEText
 from email.utils import parseaddr,formataddr
 import smtplib,sys
 
-class SendMail():
+class SendMail:
+
+
     def __init__(self):
         self.from_addr = 'sdp@saintic.net'
         self.smtp_server = 'smtp.saintic.net'
