@@ -13,6 +13,8 @@ except ImportError as errmsg:
     print __file__,"import module failed, because %s" % errmsg
     sys.exit(1)
 
+logger = Sdplog.getLogger()
+
 def SdpCloudRun(**user):
     reload(sys)
     sys.setdefaultencoding(LANG)
@@ -49,10 +51,13 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print "捕获到终止信号，程序非正常退出!"
+        logger.warn("捕获到终止信号，程序非正常退出!")
         exit(1)
 
     except IOError as e:
+        logger.error('IO Error! %s' % e)
         raise IOError('System IO Error, %s' % e)
 
     except EOFError as e:
+        logger.info('EOFError')
         raise EOFError('意外终止, %s' % e)
