@@ -52,7 +52,7 @@ Tip: the following setup is based on a certain level of Linux (CentOS) personnel
 
 **3. Use Document**
 
-(switch to Sdo directory;)
+(switch to Sdp directory;)
 
 sh start.sh user time service codetype email
 
