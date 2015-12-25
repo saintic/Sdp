@@ -1,24 +1,5 @@
-# Sdp
-*Simle Docker PaaS, version 1.1.4, by Python.*
+# Sdp Tools
 
-**[中文]**
---------
-
-**快速开始：**
----------
-1.基础环境部署，官方文档：http://www.saintic.com/sdpv1.0/autodeploy.html
-
-2.pip install -r requirements.txt (运行中发现提示docker-py版本过高或过低，请尝试安装具体版本)
-
-3.git clone git@github.com:SaintIC/Sdp.git sdp
-
-4.cd sdp ; ./sdp.py username time service email(以root身份运行) or 软链到PATH可执行。
-
-**如果还有问题，请到[https://github.com/saintic/Sdp/issues][2]提问。**
-
-  [1]: http://www.saintic.com
-  [2]: https://github.com/saintic/Sdp/issues
-
-Version question: VersionChange.log
+tools:其他工具类脚本，如续费功能、服务到期邮件提醒功能等；
 
 Documents: [www.saintic.com](http://www.saintic.com/)
