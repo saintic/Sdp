@@ -27,37 +27,36 @@ def SdpCloudRun(**kwargs):
         print "\033[0;31;40mError,Quit!!!\033[0m"
         sys.exit(3)
 
-def SOA():
+if __name__== '__main__':
+
     usage = """
-    user time service email code,
-    -u/--user, -t/--time, -s/--service, -e/--email, <svn> [arg], <git> [arg]"""
+    %prog user time service email code_type;
+    %prog -u|--user -t|--time -s|--service -e|--email [svn] arg [git] arg"""
 
     parser = OptionParser(usage=usage)
-    parser.add_option('-u', '--user', dest='user', help='User name')
-    parser.add_option("-t", "--time", type='int', dest='time', default=1, help="User service usage month")
-    parser.add_option('-s', '--service', dest='service', help='User service type, now support: %s' % str(SERVICES))
-    parser.add_option('-e', '--email', dest='email', help='User email')
+
+    parser.add_option('-u', '--user', dest='user', metavar='user', help='User name')
+    parser.add_option("-t", "--time", type='int', dest='time', metavar='time', default=1, help="User service usage month")
+    parser.add_option('-s', '--service', dest='service', metavar='service', help='User service type, now support: %s' % str(SERVICES))
+    parser.add_option('-e', '--email', dest='email', metavar='email', help='User email')
     parser.add_option("-v", "--version", action="store_false", dest="version", default=__version__, help="Show the Sdp version information and quit")
 
     svn_group = OptionGroup(parser, "Svn Options")
     parser.add_option_group(svn_group)
-    svn_group.add_option('--svntype', action="store_true", dest='svn_type', help="svn option, svn type for none, http, https")
+    svn_group.add_option("--enable-svn", action="store_true", dest="enable_svn", metavar="enable_svn", help="Enable svn support")
+    svn_group.add_option('--svntype', dest='svn_type', metavar='svn_type', help="svn option, svn type for none, http, https")
 
     git_group = OptionGroup(parser, "Git Options")
     parser.add_option_group(git_group)
-    git_group.add_option('--enable', action="store_true", dest='git_enable', help="Enable git support")
+    git_group.add_option('--enable-git', action="store_true", dest='enable_git', metavar='enable_git', help="Enable git support")
 
     (options, args) = parser.parse_args()
-    #print parser.parse_args()
-    #print "options:%s, args:%s" %(options, args)
+    print "options:%s, args:%s" %(options, args)
     if options.version != __version__:
         print __version__
 
-if __name__== '__main__':
-    SOA()
-
+    
     try:
-
         if os.geteuid() != 0:
             print "\033[0;31;40mAborting:this program must be run as root.\033[0m"
             sys.exit(1)
