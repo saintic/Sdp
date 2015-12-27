@@ -3,7 +3,7 @@
 __doc__ = 'Sdp entry file, all the start.'
 
 try:
-    import sys
+    import sys,os
     from Core.Public import Sysinfo,Time,Precheck,genuserinfo
     from Core.Config import LANG,WEBS,APPS,SERVICES
     from Core.Handler import StartAll
@@ -13,12 +13,26 @@ try:
 except ImportError as errmsg:
     raise ImportError("import module failed, because %s" % errmsg)
 
+def SdpCloudRun(**kwargs):
+    reload(sys)
+    sys.setdefaultencoding(LANG)
+    if not isinstance(kwargs, (dict)):
+        raise('Bad Parameter, ask dict.')
+
+    if kwargs['service'] in WEBS:
+        StartAll('WEB', **kwargs)
+    elif kwargs['service'] in APPS:
+        StartAll('APP', **kwargs)
+    else:
+        print "\033[0;31;40mError,Quit!!!\033[0m"
+        sys.exit(3)
+
 def SOA():
     usage = """
     user time service email code,
     -u/--user, -t/--time, -s/--service, -e/--email, <svn> [arg], <git> [arg]"""
-    parser = OptionParser(usage=usage)
 
+    parser = OptionParser(usage=usage)
     parser.add_option('-u', '--user', dest='user', help='User name')
     parser.add_option("-t", "--time", type='int', dest='time', default=1, help="User service usage month")
     parser.add_option('-s', '--service', dest='service', help='User service type, now support: %s' % str(SERVICES))
@@ -29,7 +43,12 @@ def SOA():
     parser.add_option_group(svn_group)
     svn_group.add_option('--svntype', action="store_true", dest='svn_type', help="svn option, svn type for none, http, https")
 
+    git_group = OptionGroup(parser, "Git Options")
+    parser.add_option_group(git_group)
+    git_group.add_option('--enable', action="store_true", dest='git_enable', help="Enable git support")
+
     (options, args) = parser.parse_args()
+    #print parser.parse_args()
     #print "options:%s, args:%s" %(options, args)
     if options.version != __version__:
         print __version__
@@ -37,22 +56,6 @@ def SOA():
 if __name__== '__main__':
     SOA()
 
-
-def SdpCloudRun(**user):
-    reload(sys)
-    sys.setdefaultencoding(LANG)
-    if not isinstance(user, (dict)):
-        raise('Bad Parameter, ask dict.')
-
-    if user['service'] in WEBS:
-        StartAll('WEB', **user)
-    elif user['service'] in APPS:
-        StartAll('APP', **user)
-    else:
-        print "\033[0;31;40mError,Quit!!!\033[0m"
-        sys.exit(3)
-
-if __name__ == "__main__":
     try:
 
         if os.geteuid() != 0:
