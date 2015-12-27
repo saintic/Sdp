@@ -24,10 +24,10 @@ def StartAll(SdpType, **user):
 
     if not os.path.isdir(Config.SDP_DATA_HOME):
         os.mkdir(Config.SDP_DATA_HOME)
+
     if not os.path.isdir(Config.SDP_USER_DATA_HOME):
         os.mkdir(Config.SDP_USER_DATA_HOME)
-    if not os.path.isdir(Config.SDP_LOGS_DATA_HOME):
-        os.mkdir(Config.SDP_LOGS_DATA_HOME)
+
     if not os.path.isdir(Config.PROXY_DIR):
         os.mkdir(Config.PROXY_DIR)
 
@@ -48,9 +48,8 @@ def StartAll(SdpType, **user):
     else:
         image = Config.DOCKER_REGISTRY + '/' + Config.DOCKER_TAG + '/' + service
 
-    #Web start dockerinfo
     dockerinfo = {"image":image, "name":name}
-    if SdpType == "WEB":
+    if SdpType == "WEB":  #Web dockerinfo
         userhome = os.path.join(Config.SDP_USER_DATA_HOME, name)
         userrepo = Config.SVN_ADDR + name
         os.chdir(Config.SDP_USER_DATA_HOME)
@@ -61,17 +60,19 @@ def StartAll(SdpType, **user):
         dockerinfo["volume"] = userhome
         userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome, 'repo':userrepo}
         conn = dn
-    #App start dockerinfo
-    elif SdpType == "APP":
+
+    elif SdpType == "APP": #App dockerinfo
         dockerinfo["port"] = Config.PORTNAT[service]
         dockerinfo["bind"] = (Config.SERVER_IP, PORT)
         userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':Config.SERVER_IP, 'port':int(PORT)}
         conn = Config.SERVER_IP + ':' + str(PORT)
     else:
-        return 127
+        return
 
     #Run and Start Docker, should build.
     D = Docker.Docker(**dockerinfo)
+    if Config.DOCKER_NETWORK not in ['bridge', 'host']:
+        raise TypeError('Unsupport docker network mode')
     cid = D.Create(mode=Config.DOCKER_NETWORK)    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
     D.Start(cid)
     userinfo_admin['container'] = cid
@@ -107,6 +108,20 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 官网: http://www.saintic.com/
 问题: https://github.com/SaintIC/Sdp/issues''' %(name, name, passwd, int(time), service, email, str(conn), userrepo)
 
+        userinfo_user_ftp = r'''
+Dear %s, 以下是您的SdpCloud服务使用信息！
+账号: %s
+密码: %s
+使用期: %d个月
+服务类型: %s
+验证邮箱: %s
+连接域名: %s
+
+祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
+邮箱: staugur@saintic.com
+官网: http://www.saintic.com/
+问题: https://github.com/SaintIC/Sdp/issues''' %(name, name, passwd, int(time), service, email, str(conn))
+
         userinfo_welcome = r'''<!DOCTYPE html>
 <html>
 <head>
@@ -120,12 +135,11 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 <p>服务类型: %s</p>
 <p>验证邮箱: %s</p>
 <p>连接域名: %s</p>
-<p>版本库地址: <a href="%s" target="__blank">%s</a></p>
 
-<p>这是一个欢迎页面，请尽快使用SVN覆盖此页面!</p>
+<p>这是一个欢迎页面，请尽快使用FTP或SVN覆盖此页面!</p>
 <p><em>Thank you for using SdpCloud.</em></p>
 </body>
-</html>''' %(name, name, passwd, int(time), service, email, str(conn), userrepo, userrepo)
+</html>''' %(name, name, passwd, int(time), service, email, str(conn))
 
     userconn = (name, email, userinfo_user)
     #define instances
@@ -134,28 +148,35 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
     #start write data
     if rc.ping():
-        #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
-        with open(Config.SDP_UC, 'a+') as f:
-            f.write(json.dumps(userinfo_admin))
+
         if SdpType == "WEB":
             import Success
             from sh import svn
+
             Code = Success.CodeManager(**userinfo_admin)
             Code.ftp()
-            if Config.SVN_TYPE == 'svn':
-                Code.Svn()
-                #raise TypeError('Code type unsupport.')
-            else:
-                Code.CreateApacheSvn()
-            Code.initSvn()
             with open(os.path.join(userhome, 'index.html'), 'w') as f:
                 f.write(userinfo_welcome)
-            os.chdir(userhome)
-            svn('add', 'index.html')
-            svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
+
+            if Config.SVN_TYPE == 'svn':
+                raise TypeError('Code type unsupport.')
+            elif Config.SVN_TYPE == 'none':
+                userconn = (name, email, userinfo_user_ftp)
+            else:
+                Code.CreateApacheSvn(connect=Config.SVN_TYPE)
+                Code.initSvn(svntype=Config.SVN_TYPE)
+                os.chdir(userhome)
+                svn('add', 'index.html')
+                svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
+
             Code.Proxy()
+
         rc.hashset(**userinfo_admin)
         ec.send(*userconn)
+        #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
+        with open(Config.SDP_UC, 'a+') as f:
+            f.write(json.dumps(userinfo_admin))
+
     else:
         #raise an error for RedisConnectError(Error.py)
         print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"

@@ -60,7 +60,7 @@ local_root=%s
         from sh import nginx
         nginx('-s', 'reload')
 
-    def CreateApacheSvn(self, connect=Config.SVN_TYPE):
+    def CreateApacheSvn(self, connect):
         from sh import svnadmin, chown, htpasswd, apachectl
         if not os.path.exists(Config.SVN_ROOT):
             os.mkdir(Config.SVN_ROOT)
@@ -100,7 +100,7 @@ local_root=%s
         else:
             raise TypeError('Only support http or https.')
 
-        with open(Config.HTTPD_CONFIG, 'a+') as f:
+        with open(Config.HTTPD_CONF, 'a+') as f:
             f.write(user_repo_content)
 
         if os.path.exists(Config.SVN_PASSFILE):
@@ -111,6 +111,7 @@ local_root=%s
         apachectl('restart')  #sh.Command(script)
 
     def Svn(self):
+        """
         from sh import svnadmin
         if not os.path.exists(Config.SVN_ROOT):
             raise IOError('Not such directory: %s' % Config.SVN_ROOT)
@@ -126,19 +127,23 @@ local_root=%s
             f.write(user_repo_authz)
         with open(Config.SVN_PASSFILE, 'a+') as f:
             f.write(user_pass_content)
+        """
+        pass
 
-    def initSvn(self, type=Config.SVN_TYPE):
+    def initSvn(self, svntype):
         from sh import svn, chmod, chown
         repourl = Config.SVN_ADDR + self.name
         if type == 'svn':
-            svn('co', '--username', self.name, '--password', self.passwd, repourl, self.userhome)
+            #svn('co', '--username', self.name, '--password', self.passwd, repourl, self.userhome)
+            raise TypeError('Unsupported type svn')
         else:
             svn('co', '--non-interactive', '--trust-server-cert', repourl, self.userhome)
         hook_content = r'''#!/bin/bash
 export LC_CTYPE=en_US.UTF-8
 export LANG=en_US.UTF-8
 svn up %s
-''' % self.userhome 
+''' % self.userhome
+
         os.chdir(os.path.join(self.user_repo, 'hooks'))
         with open('post-commit', 'w') as f:
             f.write(hook_content)

@@ -30,10 +30,8 @@
 
 2015-12-12 Release Pre 1.1.5
     1.Git(svn or git)
+    2.命令行参数支持两种，一是顺序方式，但增加了code type，代码管理方式只能是svn或git或none，即ftp；第二种是选项参数方式。
 
 Release 1.2
-    打包成一个相匹配shell版本的完成品。
-
-Release 1.3
-    主要是PythonWeb用户注册管理服务系统和SVN+FTP集成代码管理
+    主要是PythonWeb用户注册管理服务系统和集成代码管理
 

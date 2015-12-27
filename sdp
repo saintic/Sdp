@@ -1,16 +1,42 @@
 #!/usr/bin/python -O
-#-*- coding=utf8 -*-
+#coding:utf8
 __doc__ = 'Sdp entry file, all the start.'
 
-import sys,os
 try:
+    import sys
     from Core.Public import Sysinfo,Time,Precheck,genuserinfo
-    from Core.Config import LANG,WEBS,APPS
+    from Core.Config import LANG,WEBS,APPS,SERVICES
     from Core.Handler import StartAll
     from Core import __version__
+    from optparse import OptionParser
+    from optparse import OptionGroup
 except ImportError as errmsg:
-    print __file__,"import module failed, because %s" % errmsg
-    sys.exit(1)
+    raise ImportError("import module failed, because %s" % errmsg)
+
+def SOA():
+    usage = """
+    user time service email code,
+    -u/--user, -t/--time, -s/--service, -e/--email, <svn> [arg], <git> [arg]"""
+    parser = OptionParser(usage=usage)
+
+    parser.add_option('-u', '--user', dest='user', help='User name')
+    parser.add_option("-t", "--time", type='int', dest='time', default=1, help="User service usage month")
+    parser.add_option('-s', '--service', dest='service', help='User service type, now support: %s' % str(SERVICES))
+    parser.add_option('-e', '--email', dest='email', help='User email')
+    parser.add_option("-v", "--version", action="store_false", dest="version", default=__version__, help="Show the Sdp version information and quit")
+
+    svn_group = OptionGroup(parser, "Svn Options")
+    parser.add_option_group(svn_group)
+    svn_group.add_option('--svntype', action="store_true", dest='svn_type', help="svn option, svn type for none, http, https")
+
+    (options, args) = parser.parse_args()
+    #print "options:%s, args:%s" %(options, args)
+    if options.version != __version__:
+        print __version__
+
+if __name__== '__main__':
+    SOA()
+
 
 def SdpCloudRun(**user):
     reload(sys)

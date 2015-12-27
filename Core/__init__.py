@@ -1,17 +1,3 @@
-__doc__ = r'''
-Bottom modules:
-    Docker
-    Redis
-    Config
-    Success
+__version__ = 'Sdp 1.1.5'
 
-Application modules:
-    Handler
-    Public
-    Error
-    Log
-'''
-
-__version__ = '1.1.5'
-
-__all__ = ['Handler', 'Public', 'Error', 'Log', 'Config']
+__all__ = ['Handler', 'Public', 'Error', 'Config']
