@@ -42,21 +42,29 @@ def genpasswd(L=12):
     return passstr
 
 def genuserinfo(num=5):
+
     if len(sys.argv) == num:
         user_name         = str(sys.argv[1])
         user_passwd       = str(genpasswd())
+
         try:
             user_time     = int(sys.argv[2])
+
         except ValueError:
             print sys.argv[0],"demand is number and greater than 0"
             sys.exit(1)
+
         user_service      = str(sys.argv[3])
         user_email        = str(sys.argv[4])
+
         try:
             user_codetype = str(sys.argv[5])
             return {"name":user_name, "passwd":user_passwd, "time":user_time, "service":user_service, "email":user_email, "codetype":user_codetype}
+
         except IndexError:
             return {"name":user_name, "passwd":user_passwd, "time":user_time, "service":user_service, "email":user_email}
+
+ 
     else:
         print "\033[0;31;40mUsage:user time service email [code_type]\033[0m"
         sys.exit(1)
@@ -65,6 +73,7 @@ def genuserinfo(num=5):
 class Precheck:
 
     def __init__(self, **kwargs):
+
         if not isinstance(kwargs, (dict)):
             raise TypeError('The class Precheck asks a list. ')
         try:
@@ -101,4 +110,3 @@ class Precheck:
         if re.match(r'([0-9a-zA-Z\_*\.*\-*]+)@([a-zA-Z0-9\-*\_*\.*]+)\.([a-zA-Z]+$)', self.email) == None:
             raise TypeError('Mail format error.')
             sys.exit(130)
-

@@ -4,7 +4,7 @@ __doc__ = 'Sdp entry file, all the start.'
 
 try:
     import sys,os
-    from Core.Public import Sysinfo,Time,Precheck,genuserinfo
+    from Core.Public import Sysinfo,Time,Precheck,genuserinfo,genpasswd
     from Core.Config import LANG,WEBS,APPS,SERVICES
     from Core.Handler import StartAll
     from Core import __version__
@@ -30,41 +30,70 @@ def SdpCloudRun(**kwargs):
 if __name__== '__main__':
 
     usage = """
-    %prog user time service email code_type;
-    %prog -u|--user -t|--time -s|--service -e|--email [svn] arg [git] arg"""
+    %prog user time service email [code_type];
+    %prog -u|--user -t|--time -s|--service -e|--email [svn] [git]"""
 
     parser = OptionParser(usage=usage)
 
     parser.add_option('-u', '--user', dest='user', metavar='user', help='User name')
-    parser.add_option("-t", "--time", type='int', dest='time', metavar='time', default=1, help="User service usage month")
+    parser.add_option("-t", "--time", type='int', dest='time', metavar='time', default=1, help="User service usage month, defalt value is %default")
     parser.add_option('-s', '--service', dest='service', metavar='service', help='User service type, now support: %s' % str(SERVICES))
     parser.add_option('-e', '--email', dest='email', metavar='email', help='User email')
-    parser.add_option("-v", "--version", action="store_false", dest="version", default=__version__, help="Show the Sdp version information and quit")
+    parser.add_option("-v", "--version", action="store_false", dest="version", help="Show the Sdp version information and quit")
 
     svn_group = OptionGroup(parser, "Svn Options")
     parser.add_option_group(svn_group)
-    svn_group.add_option("--enable-svn", action="store_true", dest="enable_svn", metavar="enable_svn", help="Enable svn support")
-    svn_group.add_option('--svntype', dest='svn_type', metavar='svn_type', help="svn option, svn type for none, http, https")
+    svn_group.add_option("--enable-svn", action="store_true", dest="enable_svn", metavar="enable_svn", help="Enable svn support, default disable")
+    svn_group.add_option('--svn-type', action="store_true", dest='svn_type', help="svn option, svn type for none, http, https")
 
     git_group = OptionGroup(parser, "Git Options")
     parser.add_option_group(git_group)
-    git_group.add_option('--enable-git', action="store_true", dest='enable_git', metavar='enable_git', help="Enable git support")
+    git_group.add_option('--enable-git', action="store_true", dest='enable_git', help="Enable git support, default disable")
 
     (options, args) = parser.parse_args()
-    print "options:%s, args:%s" %(options, args)
-    if options.version != __version__:
-        print __version__
+    args_num = len(args)
 
-    
+    #print "options:%s, args:%s, len_args:%d, sys_argv:%d" %(options, args, len(args), len(sys.argv))
+
+    #-h|--help, default show help message
+    if len(sys.argv) == 1:
+        print parser.format_help()
+        sys.exit()
+
+    #-v|--version, print version information
+    if options.version == False:
+        print __version__
+        sys.exit()
+
+    #for command line args
+    if args_num == 4 or args_num == 5:
+        user = genuserinfo(num=args_num+1)
+        print "args userinfo:%s" % user
+    else:
+        print "\033[0;31;40mUsage:user time service email [code_type]\033[0m"
+        sys.exit(1)
+
+    #for option args
     try:
-        if os.geteuid() != 0:
-            print "\033[0;31;40mAborting:this program must be run as root.\033[0m"
-            sys.exit(1)
-        else:
-            user = genuserinfo()
-            Precheck(**user).checkargs()
-            SdpCloudRun(**user)
-            print """\033[0;32;40mUser(%s, %s, %s) build sucessfully.
+        name = options.user
+        time = options.time
+        service = options.service
+        email = options.email
+        user = {"name":name, "time":time, "service":service, "email":email}
+        print "option args userinfo:%s" % user
+    except:
+        print parser.format_help()
+        sys.exit(1)
+
+    #check exec user is root?
+    if os.geteuid() != 0:
+        print "\033[0;31;40mAborting:this program must be run as root.\033[0m"
+        sys.exit(1)
+
+    try:
+        Precheck(**user).checkargs()
+        #SdpCloudRun(**user)
+        print """\033[0;32;40mUser(%s, %s, %s) build sucessfully.
     CreateTime      => %s
     ExpireTime      => %s
     Hostname        => %s
@@ -76,7 +105,7 @@ if __name__== '__main__':
 
     except KeyboardInterrupt:
         print "捕获到终止信号，程序非正常退出!"
-        exit(1)
+        sys.exit(1)
 
     except IOError as e:
         raise IOError('System IO Error, %s' % e)
