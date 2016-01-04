@@ -11,7 +11,7 @@ from Redis import RedisObject
 from Mail import SendMail
 
 def StartAll(SdpType, **user):
-
+    print "StartAll, args is %s" % user
     if not isinstance(SdpType, (str)):
         raise TypeError('StartAll need a type, app or web.')
     if not isinstance(user, (dict)):
@@ -55,10 +55,10 @@ def StartAll(SdpType, **user):
         os.chdir(Config.SDP_USER_DATA_HOME)
         if not os.path.isdir(name):
             os.mkdir(name)
-        dockerinfo["port"] = Config.PORTNAT['web']
-        dockerinfo["bind"] = ('127.0.0.1', PORT)
+        dockerinfo["port"]   = Config.PORTNAT['web']
+        dockerinfo["bind"]   = ('127.0.0.1', PORT)
         dockerinfo["volume"] = userhome
-        userinfo_admin = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome, 'repo':userrepo}
+        userinfo_admin       = {"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':'127.0.0.1', 'port':int(PORT), 'dn':dn, 'userhome':userhome, 'repo':userrepo}
         conn = dn
 
     elif SdpType == "APP": #App dockerinfo
@@ -70,13 +70,20 @@ def StartAll(SdpType, **user):
         return
 
     #Run and Start Docker, should build.
-    D = Docker.Docker(**dockerinfo)
     if Config.DOCKER_NETWORK not in ['bridge', 'host']:
         raise TypeError('Unsupport docker network mode')
-    cid = D.Create(mode=Config.DOCKER_NETWORK)    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
-    D.Start(cid)
-    userinfo_admin['container'] = cid
+    else:
+        if user['network'] != None:
+            docker_network_mode = user['network']
+        else:
+            docker_network_mode = Config.DOCKER_NETWORK
+
+    Dk = Docker.Docker(**dockerinfo)
+    cid = Dk.Create(mode=docker_network_mode)    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
+    Dk.Start(cid)
+    userinfo_admin['container']  = cid
     userinfo_admin['expiretime'] = Public.Time(m=time)
+    userinfo_admin['network']    = docker_network_mode
 
     if SdpType == "APP":
         userinfo_user = r'''
@@ -148,7 +155,6 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
     #start write data
     if rc.ping():
-
         if SdpType == "WEB":
             import Success
             from sh import svn
@@ -158,16 +164,30 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             with open(os.path.join(userhome, 'index.html'), 'w') as f:
                 f.write(userinfo_welcome)
 
-            if Config.SVN_TYPE == 'svn':
-                raise TypeError('Code type unsupport.')
-            elif Config.SVN_TYPE == 'none':
-                userconn = (name, email, userinfo_user_ftp)
+            #define other code type, default is only ftp, disable svn and git.
+            if user['enable_svn'] != None:
+                enable_svn = user['enable_svn']
             else:
-                Code.CreateApacheSvn(connect=Config.SVN_TYPE)
-                Code.initSvn(svntype=Config.SVN_TYPE)
-                os.chdir(userhome)
-                svn('add', 'index.html')
-                svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
+                enable_svn = False
+
+            if user['svn_type'] != None:
+                svn_type = user['svn_type']
+            else:
+                svn_type = Config.SVN_TYPE
+
+            if enable_svn == True:
+                if svn_type == 'svn':
+                    raise TypeError('Code type unsupport.')
+                elif svn_type == 'none':
+                    userconn = (name, email, userinfo_user_ftp)
+                else:
+                    Code.CreateApacheSvn(connect=Config.SVN_TYPE)
+                    Code.initSvn(svntype=Config.SVN_TYPE)
+                    os.chdir(userhome)
+                    svn('add', 'index.html')
+                    svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
+
+            #git
 
             Code.Proxy()
 

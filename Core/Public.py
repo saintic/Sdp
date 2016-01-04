@@ -57,8 +57,8 @@ def SOA():
     #svn options group
     svn_group = OptionGroup(parser, "Svn Options")
     parser.add_option_group(svn_group)
-    svn_group.add_option("--enable-svn", action="store_true", dest="enable_svn", metavar="enable_svn", help="Enable svn support, default disable")
-    svn_group.add_option('--svn-type', dest='svn_type', metavar='svn_type', help="Svn type for http, https")
+    svn_group.add_option("--enable-svn", action="store_true", dest="enable_svn", metavar="enable svn", help="Enable svn support, default disable")
+    svn_group.add_option('--svn-type', dest='svn_type', metavar='svn type', help="Svn type for http, https")
 
     #git options group
     git_group = OptionGroup(parser, "Git Options")
@@ -68,13 +68,14 @@ def SOA():
     #docker options group
     docker_group = OptionGroup(parser, "Docker Options")
     parser.add_option_group(docker_group)
-    docker_group.add_option('--network-mode', dest='network', metavar='docker network', help="Docker network mode for bridge or host")
+    docker_group.add_option('--network', dest='network', metavar='docker network', help="Docker network mode for bridge or host")
 
     (options, args) = parser.parse_args()
     #-h|--help, default show the help message
     if len(sys.argv) == 1:
         print parser.format_help()
         sys.exit()
+
     #-v|--version, print version information
     if options.version == False:
         print __version__
@@ -87,34 +88,53 @@ def SOA():
     4. If "enable_svn" and "enable_git" is True both, will use 'svn' and 'git'.
     5. Whatever, ftp is enabled.
     """
-    print "options:%s, args:%s" %(options, args)
+    #print "options:%s, args:%s" %(options, args)
     user = {"name":options.name, "time":options.time, "service":options.service, "email":options.email}
-    for v in user:
-        if user[v] == None:
-            print "\033[0;31;40m%s -u|--user -t|--time -s|--service -e|--email [svn] [git]\033[0m" % sys.argv[0]
-            sys.exit()
-        if user['time'] == 0:
-           raise ValueError("demand is number and greater than 0")
+    opts = {"enable_svn":options.enable_svn, "svn_type":options.svn_type, "enable_git":options.enable_git, "network":options.network}
 
-        user['passwd'] = str(genpasswd())
-        return user
+    #check command line options
+    try:
+        for value in user:
+            if user.get(value, None) == None:
+                print "\033[0;31;40m%s -u|--user -t|--time -s|--service -e|--email [svn] [git]\033[0m" % sys.argv[0]
+                sys.exit()
+
+            if user['time'] == 0:
+                raise ValueError("demand is number and greater than 0")
+
+    except RuntimeError as e:
+        raise RuntimeError("Runtime error:%s" % e)
+
+    user['passwd'] = str(genpasswd())
+
+    for k,v in opts.items():
+        if k in user.keys():
+            user[k] += v
+        else:
+            user[k] = v
+
+    return user
 
 class Precheck:
+
 
     def __init__(self, **kwargs):
 
         if not isinstance(kwargs, (dict)):
             raise TypeError('The class Precheck asks a list. ')
+
         try:
             self.name    = kwargs['name'].lower()
             self.time    = kwargs['time']
             self.service = kwargs['service']
             self.email   = kwargs['email']
+
         except KeyError as kv:
             print "Assignment error:%s" % kv
             sys.exit(1)
 
     def checkargs(self):
+
         from Redis import RedisObject
         rc = RedisObject()
         if rc.ping():

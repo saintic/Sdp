@@ -9,14 +9,15 @@ class CodeManager():
 
 
     def __init__(self, **kw):
-        self.user = kw
-        self.name = self.user['name']
-        self.passwd = self.user['passwd']
-        self.userhome = self.user['userhome']
-        self.ip = self.user['ip']
-        self.port = self.user['port']
-        self.dn = self.user.get('dn', None)
-        self.user_repo = os.path.join(Config.SVN_ROOT, self.name)
+        self.user         = kw
+        self.name         = self.user['name']
+        self.passwd       = self.user['passwd']
+        self.userhome     = self.user['userhome']
+        self.ip           = self.user['ip']
+        self.port         = self.user['port']
+        self.dn           = self.user.get('dn', None)
+        self.user_repo    = os.path.join(Config.SVN_ROOT, self.name)
+        self.user_gitrepo = os.path.join(Config.GIT_ROOT, self.name) + '.git'
 
     def ftp(self):
         if Config.FTP_TYPE == 'virtual':
@@ -41,24 +42,6 @@ local_root=%s
             vsftpd('restart')
             chown('-R', Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER, self.userhome)
             chmod('-R', 'a+t', self.userhome)
-
-    def Proxy(self):
-        ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'
-        ngx_conf_content = r'''server {
-    listen 80;
-    server_name %s;
-    index index.htm index.html index.php index.jsp;
-    location / {
-        proxy_pass http://%s:%s/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-}''' %(self.dn, self.ip, int(self.port))
-        with open(ngx_user_conf, 'w') as f:
-            f.write(ngx_conf_content)
-        from sh import nginx
-        nginx('-s', 'reload')
 
     def CreateApacheSvn(self, connect):
         from sh import svnadmin, chown, htpasswd, apachectl
@@ -150,3 +133,32 @@ svn up %s
         chmod('-R', 777, self.user_repo)
         chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.userhome)
         #chmod('-R' 777, self.userhome)   #When you need to open FTP's write permissions
+
+    def Git(self):
+        from sh import git,chown
+        git('init', '--bare', self.user_gitrepo)
+        chown('-R', Config.GIT_USER, self.user_gitrepo)
+
+    def initGit(self):
+        from sh import git
+        git_repourl = 'git@' + Config.GIT_SVR + ':' + self.user_gitrepo
+        git('clone', git_repourl)
+        #hooks
+
+    def Proxy(self):
+        ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'
+        ngx_conf_content = r'''server {
+    listen 80;
+    server_name %s;
+    index index.htm index.html index.php index.jsp;
+    location / {
+        proxy_pass http://%s:%s/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}''' %(self.dn, self.ip, int(self.port))
+        with open(ngx_user_conf, 'w') as f:
+            f.write(ngx_conf_content)
+        from sh import nginx
+        nginx('-s', 'reload')

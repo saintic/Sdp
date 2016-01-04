@@ -30,7 +30,7 @@ def SdpCloudRun(**kwargs):
 
 if __name__ == '__main__':
     user = SOA()
-    print user
+    #print user
     Precheck(**user).checkargs()
 
     #check exec user is root?

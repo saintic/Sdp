@@ -26,9 +26,6 @@ class Docker:
     def Images(self):
         return self.connect.images(self.image)
 
-    def Logs(self):
-        pass
-
     def Top(self):
         return self.connect.top(self.image)
 
