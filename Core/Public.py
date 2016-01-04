@@ -44,28 +44,6 @@ def genpasswd(L=12):
         passstr+=chars[random.randint(0, length)]
     return passstr
 
-def genuserinfo_old(num=5):
-    if len(sys.argv) == num:
-        user_name         = str(sys.argv[1])
-        user_passwd       = str(genpasswd())
-        try:
-            user_time     = int(sys.argv[2])
-        except ValueError:
-            print sys.argv[0],"demand is number and greater than 0"
-            sys.exit(1)
-        user_service      = str(sys.argv[3])
-        user_email        = str(sys.argv[4])
-        try:
-            user_codetype = str(sys.argv[5])
-            return {"name":user_name, "passwd":user_passwd, "time":user_time, "service":user_service, "email":user_email, "codetype":user_codetype}
-        except IndexError:
-            return {"name":user_name, "passwd":user_passwd, "time":user_time, "service":user_service, "email":user_email}
-    else:
-        print r"""\033[0;31;40m
-Usage:
-    -u|--user -t|--time -s|--service -e|--email [svn] [git]\033[0m"""
-        sys.exit(1)
-
 def SOA():
     usage = "%prog [Options] [arg...]"
     parser = OptionParser(usage=usage)
@@ -74,25 +52,27 @@ def SOA():
     parser.add_option("-t", "--time", dest='time', type='int', metavar='time', default=1, help="User service usage month, defalt value is %default")
     parser.add_option('-s', '--service', dest='service', metavar='service', help='User service type, now support: %s' % str(Config.SERVICES))
     parser.add_option('-e', '--email', dest='email', metavar='email', help='User email')
-
     parser.add_option("-v", "--version", action="store_false", dest="version", help="Show the Sdp version information and quit")
 
     #svn options group
     svn_group = OptionGroup(parser, "Svn Options")
     parser.add_option_group(svn_group)
-
     svn_group.add_option("--enable-svn", action="store_true", dest="enable_svn", metavar="enable_svn", help="Enable svn support, default disable")
     svn_group.add_option('--svn-type', dest='svn_type', metavar='svn_type', help="Svn type for http, https")
 
     #git options group
     git_group = OptionGroup(parser, "Git Options")
     parser.add_option_group(git_group)
-
     git_group.add_option('--enable-git', action="store_true", dest='enable_git', help="Enable git support, default disable")
+
+    #docker options group
+    docker_group = OptionGroup(parser, "Docker Options")
+    parser.add_option_group(docker_group)
+    docker_group.add_option('--network-mode', dest='network', metavar='docker network', help="Docker network mode for bridge or host")
 
     (options, args) = parser.parse_args()
     #-h|--help, default show the help message
-    if len(sys.argv) >= 1:
+    if len(sys.argv) == 1:
         print parser.format_help()
         sys.exit()
     #-v|--version, print version information
@@ -107,7 +87,7 @@ def SOA():
     4. If "enable_svn" and "enable_git" is True both, will use 'svn' and 'git'.
     5. Whatever, ftp is enabled.
     """
-    #print "options:%s, args:%s" %(options, args)
+    print "options:%s, args:%s" %(options, args)
     user = {"name":options.name, "time":options.time, "service":options.service, "email":options.email}
     for v in user:
         if user[v] == None:
