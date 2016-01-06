@@ -174,7 +174,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
                     raise TypeError('Code type unsupport.')
                 else:
                     Code.CreateApacheSvn(connect=Config.SVN_TYPE)
-                    Code.initSvn(svntype=Config.SVN_TYPE)
+                    Code.initSvn(svntype=svn_type)
                     os.chdir(userhome)
                     svn('add', 'index.html')
                     svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')

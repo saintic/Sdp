@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 #-*- coding:utf8 -*-
-__date__ = '2015-10-12'
 
 import Config
 import re,sys,psutil,platform
@@ -8,20 +7,17 @@ from __init__ import __version__
 from optparse import OptionParser
 from optparse import OptionGroup
 
-class Sysinfo:
-    Hostname=platform.uname()[1]
-    Kernel=platform.uname()[2]
-    CPUs=int(psutil.cpu_count())
-    #mem used percent
-    mem=psutil.virtual_memory()
-    total=mem.total
-    free=mem.free
-    buffers=mem.buffers
-    cached=mem.cached
-    UsedPerc=100 * int(total - free - cached - buffers) / int(total)
-    mem_total=str(total / 1024 / 1024) + 'M'
-    mem_free=str(free / 1024 / 1024) + 'M'
-    MemPerc=str(UsedPerc)+'%'
+def read_conf(f, i):
+    if not isinstance(f, (str)):
+        raise TypeError('Bad operand type, ask a file.')
+    if not isinstance(i, (str)):
+        raise TypeError('bad operand type, ask string.')
+    try:
+        from configobj import ConfigObj
+        return ConfigObj(f)[i]
+    except ImportError:
+        print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
+        exit(1)
 
 def Time(m=None):
     import datetime
@@ -117,7 +113,7 @@ def SOA():
 
 class Precheck:
 
-
+    """precheck args and options"""
     def __init__(self, **kwargs):
 
         if not isinstance(kwargs, (dict)):
@@ -159,3 +155,48 @@ class Precheck:
         if re.match(r'([0-9a-zA-Z\_*\.*\-*]+)@([a-zA-Z0-9\-*\_*\.*]+)\.([a-zA-Z]+$)', self.email) == None:
             raise TypeError('Mail format error.')
             sys.exit(130)
+
+class Sysinfo:
+
+    Hostname=platform.uname()[1]
+    Kernel=platform.uname()[2]
+    CPUs=int(psutil.cpu_count())
+    #mem used percent
+    mem=psutil.virtual_memory()
+    total=mem.total
+    free=mem.free
+    buffers=mem.buffers
+    cached=mem.cached
+    UsedPerc=100 * int(total - free - cached - buffers) / int(total)
+    mem_total=str(total / 1024 / 1024) + 'M'
+    mem_free=str(free / 1024 / 1024) + 'M'
+    MemPerc=str(UsedPerc)+'%'
+
+def Handler():
+    if not os.path.isdir(Config.SDP_DATA_HOME):
+        os.mkdir(Config.SDP_DATA_HOME)
+
+    if not os.path.isdir(Config.SDP_USER_DATA_HOME):
+        os.mkdir(Config.SDP_USER_DATA_HOME)
+
+    if not os.path.isdir(Config.PROXY_DIR):
+        os.mkdir(Config.PROXY_DIR)
+
+    #set portfile, read and write(update)
+    if os.path.exists(portfile):
+        with open(portfile, 'r') as f:
+            PORT=f.read()
+            PORT=int(PORT) + 1
+    else:
+        PORT = Config.STARTPORT
+    with open(portfile, 'w') as f:
+        f.write(str(PORT))
+    PORT = int(PORT)
+
+    #define image_name
+    if not Config.DOCKER_TAG:
+        image = Config.DOCKER_REGISTRY + '/' + service
+    else:
+        image = Config.DOCKER_REGISTRY + '/' + Config.DOCKER_TAG + '/' + service
+
+    return (PORT,image)

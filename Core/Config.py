@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 #-*- coding:utf8 -*-
-__date__ = '2015-11-25'
 __doc__ = 'Config file parser'
-
+"""
 def read_conf(f, i):
     if not isinstance(f, (str)):
         raise TypeError('Bad operand type, ask a file.')
@@ -14,13 +13,12 @@ def read_conf(f, i):
     except ImportError:
         print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
         exit(1)
-
-import Public
+"""
+from Public import read_conf
 import os
 
-CONF_NAME = 'sdp.cfg'
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_CONF = os.path.join(BASE_DIR, str(CONF_NAME))
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_CONF = os.path.join(os.path.dirname(__file__), "sdp.cfg"
 
 if not os.path.exists(BASE_CONF):
     raise OSError('No config file sdp.cfg')
@@ -48,8 +46,7 @@ GIT_CONF      = read_conf(BASE_CONF, 'git')
 #set global variables
 LANG               = GLOBAL_CONF['LANG']
 SDP_DATA_HOME      = GLOBAL_CONF['SDP_DATA_HOME']
-SDP_USER_DATA_HOME = os.path.join(SDP_DATA_HOME, str(GLOBAL_CONF['SDP_USER_DATA_HOME']))
-SDP_UC             = os.path.join(SDP_DATA_HOME, str(GLOBAL_CONF['SDP_UC']))
+SDP_USER_DATA_HOME = os.path.join(SDP_DATA_HOME, 'users')
 STARTPORT          = GLOBAL_CONF['STARTPORT']
 SERVER_IP          = GLOBAL_CONF['ServerIp']
 DN_BASE            = GLOBAL_CONF['DN']
