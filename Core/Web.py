@@ -30,7 +30,7 @@ def StartWeb(**user):
         else:
             docker_network_mode = Config.DOCKER_NETWORK
 
-    Dk = Docker.Docker("image":image, "name":name, "port":Config.PORTNAT['web'], "bind":('127.0.0.1', PORT), "volume":userhome)
+    Dk = Docker.Docker(**{"image":image, "name":name, "port":Config.PORTNAT['web'], "bind":('127.0.0.1', PORT), "volume":userhome})
     cid = Dk.Create(mode=docker_network_mode)
     Dk.Start(cid)
 
@@ -82,7 +82,7 @@ def StartWeb(**user):
         "service": service, 
         "email": email, 
         "image": image, 
-        "ip": "127.0.0.1" 
+        "ip": "127.0.0.1",
         "port": int(PORT), 
         "dn": dn, 
         "userhome": userhome, 

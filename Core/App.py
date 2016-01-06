@@ -24,7 +24,7 @@ def StartApp(**user):
             docker_network_mode = Config.DOCKER_NETWORK
 
     #Dk = Docker.Docker(**{"image":image, "name":name, 'port':Config.PORTNAT[service], 'bind':(Config.SERVER_IP, PORT)})
-    Dk = Docker.Docker("image":image, "name":name, 'port':Config.PORTNAT[service], 'bind':(Config.SERVER_IP, PORT))
+    Dk = Docker.Docker(**{"image":image, "name":name, 'port':Config.PORTNAT[service], 'bind':(Config.SERVER_IP, PORT)})
     cid = Dk.Create(mode=docker_network_mode)    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
     Dk.Start(cid)
     userinfo_user = r'''
@@ -46,7 +46,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
     rc = Redis.RedisObject()
     ec = Mail.SendMail()
     if rc.ping():
-        rc.hashset("name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':Config.SERVER_IP, 'port':int(PORT), 'continer':cid, 'expiretime':Public.Time(m=time), 'network':docker_network_mode)
+        rc.hashset(**{"name":name, "passwd":passwd, "time":int(time), "service":service, "email":email, 'image':image, 'ip':Config.SERVER_IP, 'port':int(PORT), 'continer':cid, 'expiretime':Public.Time(m=time), 'network':docker_network_mode})
         ec.send(*userconn)
     else:
         #raise an error for RedisConnectError(Error.py)

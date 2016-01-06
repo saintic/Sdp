@@ -7,18 +7,6 @@ from __init__ import __version__
 from optparse import OptionParser
 from optparse import OptionGroup
 
-def read_conf(f, i):
-    if not isinstance(f, (str)):
-        raise TypeError('Bad operand type, ask a file.')
-    if not isinstance(i, (str)):
-        raise TypeError('bad operand type, ask string.')
-    try:
-        from configobj import ConfigObj
-        return ConfigObj(f)[i]
-    except ImportError:
-        print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
-        exit(1)
-
 def Time(m=None):
     import datetime
     time = datetime.datetime.now()

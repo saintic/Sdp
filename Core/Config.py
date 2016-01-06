@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #-*- coding:utf8 -*-
 __doc__ = 'Config file parser'
-"""
+
+import os
+
 def read_conf(f, i):
     if not isinstance(f, (str)):
         raise TypeError('Bad operand type, ask a file.')
@@ -11,14 +13,10 @@ def read_conf(f, i):
         from configobj import ConfigObj
         return ConfigObj(f)[i]
     except ImportError:
-        print 'Import module configobj failed, maybe you need to install it.(pip install configobj)'
-        exit(1)
-"""
-from Public import read_conf
-import os
+        raise ImportError('Import module configobj failed, maybe you need to install it.(pip install configobj)')
 
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_CONF = os.path.join(os.path.dirname(__file__), "sdp.cfg")
+BASE_DIR  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_CONF = os.path.join(BASE_DIR, "sdp.cfg")
 
 if not os.path.exists(BASE_CONF):
     raise OSError('No config file sdp.cfg')
