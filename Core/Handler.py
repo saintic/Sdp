@@ -99,7 +99,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 邮箱: staugur@saintic.com
 官网: http://www.saintic.com/''' %(name, name, passwd, int(time), service, email, str(conn))
 
-    else:
+    else:#WEB, include code type, ftp svn git.
         userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
 账号: %s
@@ -115,20 +115,6 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 官网: http://www.saintic.com/
 问题: https://github.com/SaintIC/Sdp/issues''' %(name, name, passwd, int(time), service, email, str(conn), userrepo)
 
-        userinfo_user_ftp = r'''
-Dear %s, 以下是您的SdpCloud服务使用信息！
-账号: %s
-密码: %s
-使用期: %d个月
-服务类型: %s
-验证邮箱: %s
-连接域名: %s
-
-祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
-邮箱: staugur@saintic.com
-官网: http://www.saintic.com/
-问题: https://github.com/SaintIC/Sdp/issues''' %(name, name, passwd, int(time), service, email, str(conn))
-
         userinfo_welcome = r'''<!DOCTYPE html>
 <html>
 <head>
@@ -143,13 +129,13 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 <p>验证邮箱: %s</p>
 <p>连接域名: %s</p>
 
-<p>这是一个欢迎页面，请尽快使用FTP或SVN覆盖此页面!</p>
+<p>这是一个欢迎页面，请尽快使用FTP、SVN或Git覆盖此页面!</p>
 <p><em>Thank you for using SdpCloud.</em></p>
 </body>
 </html>''' %(name, name, passwd, int(time), service, email, str(conn))
 
     userconn = (name, email, userinfo_user)
-    #define instances
+    #define instances for writing redis and sending email.
     rc = RedisObject()
     ec = SendMail()
 
@@ -165,6 +151,12 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
                 f.write(userinfo_welcome)
 
             #define other code type, default is only ftp, disable svn and git.
+            """
+            About svn, if the command line is True(--enable-svn), then will follow the svn-type settings.
+            If there is a svn-type setting, you can choose "svn_type" for 'http' or 'https'.
+            If there is no svn-type settings, then you will read the configuration file settings.
+            However, if the configuration file is set to none, it means that the SVN is not enabled.
+            """
             if user['enable_svn'] != None:
                 enable_svn = user['enable_svn']
             else:
@@ -174,12 +166,12 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
                 svn_type = user['svn_type']
             else:
                 svn_type = Config.SVN_TYPE
+                if svn_type == "none":
+                    enable_svn = False
 
             if enable_svn == True:
                 if svn_type == 'svn':
                     raise TypeError('Code type unsupport.')
-                elif svn_type == 'none':
-                    userconn = (name, email, userinfo_user_ftp)
                 else:
                     Code.CreateApacheSvn(connect=Config.SVN_TYPE)
                     Code.initSvn(svntype=Config.SVN_TYPE)
@@ -187,8 +179,9 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
                     svn('add', 'index.html')
                     svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
 
-            #git
-
+            """
+            About git
+            """
             Code.Proxy()
 
         rc.hashset(**userinfo_admin)
