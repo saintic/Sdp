@@ -14,7 +14,6 @@ def StartWeb(**user):
 
     name, passwd, time, service, email = user['name'], user['passwd'], str(user['time']), user['service'], user['email']
     dn = name + Config.DN_BASE
-    portfile = os.path.join(Config.SDP_DATA_HOME, 'port')
     PORT, image = Public.Handler()
     userhome = os.path.join(Config.SDP_USER_DATA_HOME, name)
 
@@ -48,19 +47,50 @@ def StartWeb(**user):
             svn_type = user['svn_type']
         else:
             svn_type = Config.SVN_TYPE
-            if svn_type == "none":
-                enable_svn = False
+        if svn_type == "none" or svn_type == "svn":
+            enable_svn = False
     else:
         enable_svn = False
+
+    svn_repo = Config.SVN_ADDR + name
 
     """
     About Git
     """
     if user['enable_git'] != None:
         enable_git = True
-        git_repo = 'git@' + Config.GIT_SVR + ':' + os.path.join(Config.GIT_ROOT, self.name) + '.git'
+        git_repo = 'git@' + Config.GIT_SVR + ':' + os.path.join(Config.GIT_ROOT, name) + '.git'
     else:
         enable_git = False
+
+    #make repo info
+    if enable_svn == False:
+        if enable_git == False:
+            repos = "None"
+        else:
+            repos = "git:",git_repo
+    if enable_svn == True:
+        if enable_git == True:
+            repos = "svn:",svn_repo,"git:",git_repo
+        else:
+            repos = "svn:",svn_repo
+
+    userinfo_admin = {
+        "name": name, 
+        "passwd": passwd, 
+        "time": int(time), 
+        "service": service, 
+        "email": email, 
+        "image": image, 
+        "ip": "127.0.0.1" 
+        "port": int(PORT), 
+        "dn": dn, 
+        "userhome": userhome, 
+        "repo": str(repos),
+        "container": cid,
+        "expiretime": Public.Time(m=time),
+        "network": docker_network_mode
+    }
 
     userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
@@ -69,13 +99,13 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 使用期: %d个月
 服务类型: %s
 验证邮箱: %s
-连接域名: http://%s
-版本库地址: %s
+用户域名: %s
+版本库信息: %s
 
-祝您使用愉快。如果有任何疑惑，欢迎与我们联系:
+更多问题请查询官网文档(www.saintic.com)，祝您使用愉快。 如果有任何疑惑，欢迎与我们联系:
 邮箱: staugur@saintic.com
 官网: http://www.saintic.com/
-问题: https://github.com/SaintIC/Sdp/issues''' %(name, name, passwd, int(time), service, email, str(conn), userrepo)
+问题: https://github.com/saintic/Sdp/issues''' %(name, name, passwd, int(time), service, email, dn, str(repos))
 
     userinfo_welcome = r'''<!DOCTYPE html>
 <html>
@@ -89,67 +119,36 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 <p>使用期: %d个月</p>
 <p>服务类型: %s</p>
 <p>验证邮箱: %s</p>
-<p>连接域名: %s</p>
+<p>用户域名: %s</p>
+<p>版本库信息: %s</p>
 
 <p>这是一个欢迎页面，请尽快使用FTP、SVN或Git覆盖此页面!</p>
 <p><em>Thank you for using SdpCloud.</em></p>
 </body>
-</html>''' %(name, name, passwd, int(time), service, email, str(conn))
-
-    userinfo_admin = {
-        "name": name, 
-        "passwd": passwd, 
-        "time": int(time), 
-        "service": service, 
-        "email": email, 
-        "image": image, 
-        "ip": "127.0.0.1" 
-        "port": int(PORT), 
-        "dn": dn, 
-        "userhome": userhome, 
-        "repo": userrepo,
-        "container": cid,
-        "expiretime": Public.Time(m=time),
-        "network": docker_network_mode
-    }
+</html>''' %(name, name, passwd, int(time), service, email, dn, str(repos))
 
     #define instances for writing redis and sending email.
     rc = Redis.RedisObject()
     ec = Mail.SendMail()
-    userconn = (name, email, userinfo_user)
-
-    #start write data
     if rc.ping():
-        if SdpType == "WEB":
-            import Coding
-            from sh import svn
+        import Coding
+        from sh import svn
+        Code = Coding.CodeManager(**userinfo_admin)
+        Code.ftp()
+        with open(os.path.join(userhome, 'index.html'), 'w') as f:
+            f.write(userinfo_welcome)
 
-            Code = Coding.CodeManager(**userinfo_admin)
-            Code.ftp()
-            with open(os.path.join(userhome, 'index.html'), 'w') as f:
-                f.write(userinfo_welcome)
+        if enable_svn == True:
+            Code.CreateApacheSvn(connect=svn_type)
+            Code.initSvn()
 
-            if enable_svn == True:
-                if svn_type == 'svn':
-                    raise TypeError('Code type unsupport.')
-                else:
-                    Code.CreateApacheSvn(connect=Config.SVN_TYPE)
-                    Code.initSvn(svntype=svn_type)
-                    os.chdir(userhome)
-                    svn('add', 'index.html')
-                    svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
+        if enable_git == True:
+            Code.Git()
+            Code.initGit()
 
-            """
-            About git
-            """
-            Code.Proxy()
-
+        Code.Proxy()
         rc.hashset(**userinfo_admin)
-        ec.send(*userconn)
-        #异步要保证写入数据库和文件中的数据都是正确的，抛出错误终止执行。
-        with open(Config.SDP_UC, 'a+') as f:
-            f.write(json.dumps(userinfo_admin))
-
+        ec.send(name, email, userinfo_user)
     else:
         #raise an error for RedisConnectError(Error.py)
         print "\033[0;31;40mConnect Redis Server Error,Quit.\033[0m"

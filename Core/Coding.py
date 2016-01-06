@@ -103,9 +103,8 @@ local_root=%s
 [%s:/]
 %s=rw
 *=r
-'''     %(self.name, self.name)
+''' %(self.name, self.name)
         user_pass_content = "%s=%s\n" %(self.name, self.passwd)
-
         with open(Config.SVN_AUTH, 'a+') as f:
             f.write(user_repo_authz)
         with open(Config.SVN_PASSFILE, 'a+') as f:
@@ -113,14 +112,10 @@ local_root=%s
         """
         pass
 
-    def initSvn(self, svntype):
+    def initSvn(self):
         from sh import svn, chmod, chown
         repourl = Config.SVN_ADDR + self.name
-        if type == 'svn':
-            #svn('co', '--username', self.name, '--password', self.passwd, repourl, self.userhome)
-            raise TypeError('Unsupported type svn')
-        else:
-            svn('co', '--non-interactive', '--trust-server-cert', repourl, self.userhome)
+        svn('co', '--non-interactive', '--trust-server-cert', repourl, self.userhome)
         hook_content = r'''#!/bin/bash
 export LC_CTYPE=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -133,6 +128,9 @@ svn up %s
         chmod('-R', 777, self.user_repo)
         chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.userhome)
         #chmod('-R' 777, self.userhome)   #When you need to open FTP's write permissions
+        os.chdir(userhome)
+        svn('add', 'index.html')
+        svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
 
     def Git(self):
         from sh import git,chown
@@ -143,7 +141,10 @@ svn up %s
         from sh import git
         git_repourl = 'git@' + Config.GIT_SVR + ':' + self.user_gitrepo
         git('clone', git_repourl)
-        #hooks
+        #hooks add
+        git('add',  'index.html')
+        git('commit', '-m', 'init commit')
+        git('push', 'origin', 'master')
 
     def Proxy(self):
         ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'

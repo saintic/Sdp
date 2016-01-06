@@ -130,7 +130,6 @@ class Precheck:
             sys.exit(1)
 
     def checkargs(self):
-
         from Redis import RedisObject
         rc = RedisObject()
         if rc.ping():
@@ -173,6 +172,8 @@ class Sysinfo:
     MemPerc=str(UsedPerc)+'%'
 
 def Handler():
+    portfile = os.path.join(Config.SDP_DATA_HOME, 'port')
+
     if not os.path.isdir(Config.SDP_DATA_HOME):
         os.mkdir(Config.SDP_DATA_HOME)
 

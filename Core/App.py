@@ -13,7 +13,6 @@ def StartApp(**user):
         raise TypeError('StartAll need a dict(user).')
 
     name, passwd, time, service, email = user['name'], user['passwd'], str(user['time']), user['service'], user['email']
-    portfile = os.path.join(Config.SDP_DATA_HOME, 'port')
     PORT, image = Public.Handler()
 
     if user['network'] != None:
