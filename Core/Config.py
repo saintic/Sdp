@@ -18,7 +18,7 @@ from Public import read_conf
 import os
 
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_CONF = os.path.join(os.path.dirname(__file__), "sdp.cfg"
+BASE_CONF = os.path.join(os.path.dirname(__file__), "sdp.cfg")
 
 if not os.path.exists(BASE_CONF):
     raise OSError('No config file sdp.cfg')
@@ -54,7 +54,6 @@ DN_BASE            = GLOBAL_CONF['DN']
 #set redis variables
 REDIS_HOST         = REDIS_CONF['host']
 REDIS_PORT         = int(REDIS_CONF['port'])
-REDIS_QUEUEDB      = int(REDIS_CONF['QueueDB'])
 REDIS_DATADB       = int(REDIS_CONF['DataDB'])
 REDIS_PASSWORD     = REDIS_CONF['password']
 if REDIS_PASSWORD == "None":

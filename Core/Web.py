@@ -9,7 +9,6 @@ import Redis
 import Mail
 
 def StartWeb(**user):
-    print "StartAll, args is %s" % user
     if not isinstance(user, (dict)):
         raise TypeError('StartAll need a dict(user).')
 
@@ -23,7 +22,7 @@ def StartWeb(**user):
     if not os.path.isdir(name):
         os.mkdir(name)
 
-    #docker network mode='bridge' or 'host'(not allow none and ContainerID)
+    #docker network mode is 'bridge' or 'host'(not allow none and ContainerID)
     if user['network'] != None:
         docker_network_mode = user['network']
     else:
@@ -36,7 +35,33 @@ def StartWeb(**user):
     cid = Dk.Create(mode=docker_network_mode)
     Dk.Start(cid)
 
-    #WEB, include code type, ftp svn git.
+    #define other code type, default is only ftp, disable svn and git.
+    """
+    About svn, if the command line is True(--enable-svn), then will follow the svn-type settings.
+    If there is a svn-type setting, you can choose "svn_type" for 'http' or 'https'.
+    If there is no svn-type settings, then you will read the configuration file settings.
+    However, if the configuration file is set to none, it means that the SVN is not enabled.
+    """
+    if user['enable_svn'] != None:
+        enable_svn = True
+        if user['svn_type'] != None:
+            svn_type = user['svn_type']
+        else:
+            svn_type = Config.SVN_TYPE
+            if svn_type == "none":
+                enable_svn = False
+    else:
+        enable_svn = False
+
+    """
+    About Git
+    """
+    if user['enable_git'] != None:
+        enable_git = True
+        git_repo = 'git@' + Config.GIT_SVR + ':' + os.path.join(Config.GIT_ROOT, self.name) + '.git'
+    else:
+        enable_git = False
+
     userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
 账号: %s
@@ -52,7 +77,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 官网: http://www.saintic.com/
 问题: https://github.com/SaintIC/Sdp/issues''' %(name, name, passwd, int(time), service, email, str(conn), userrepo)
 
-        userinfo_welcome = r'''<!DOCTYPE html>
+    userinfo_welcome = r'''<!DOCTYPE html>
 <html>
 <head>
 <title>User information for SdpCloud!</title>
@@ -71,11 +96,6 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 </body>
 </html>''' %(name, name, passwd, int(time), service, email, str(conn))
 
-    userconn = (name, email, userinfo_user)
-    #define instances for writing redis and sending email.
-    rc = RedisObject()
-    ec = SendMail()
-
     userinfo_admin = {
         "name": name, 
         "passwd": passwd, 
@@ -93,35 +113,21 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
         "network": docker_network_mode
     }
 
+    #define instances for writing redis and sending email.
+    rc = Redis.RedisObject()
+    ec = Mail.SendMail()
+    userconn = (name, email, userinfo_user)
+
     #start write data
     if rc.ping():
         if SdpType == "WEB":
-            import Success
+            import Coding
             from sh import svn
 
-            Code = Success.CodeManager(**userinfo_admin)
+            Code = Coding.CodeManager(**userinfo_admin)
             Code.ftp()
             with open(os.path.join(userhome, 'index.html'), 'w') as f:
                 f.write(userinfo_welcome)
-
-            #define other code type, default is only ftp, disable svn and git.
-            """
-            About svn, if the command line is True(--enable-svn), then will follow the svn-type settings.
-            If there is a svn-type setting, you can choose "svn_type" for 'http' or 'https'.
-            If there is no svn-type settings, then you will read the configuration file settings.
-            However, if the configuration file is set to none, it means that the SVN is not enabled.
-            """
-            if user['enable_svn'] != None:
-                enable_svn = user['enable_svn']
-            else:
-                enable_svn = False
-
-            if user['svn_type'] != None:
-                svn_type = user['svn_type']
-            else:
-                svn_type = Config.SVN_TYPE
-                if svn_type == "none":
-                    enable_svn = False
 
             if enable_svn == True:
                 if svn_type == 'svn':

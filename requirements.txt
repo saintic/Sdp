@@ -1,4 +1,4 @@
-docker-py
+docker-py=1.4.0
 redis
 configobj
 sh
