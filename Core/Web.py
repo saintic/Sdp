@@ -135,6 +135,8 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 
         if enable_svn == False and enable_git == False:
             os.mkdir(userhome)
+            with open(os.path.join(userhome, 'index.html'), 'w') as f:
+                f.write(userinfo_welcome)
             chown('-R', Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER, userhome)
             chmod('-R', 'a+t', userhome)
 
