@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 #-*- coding:utf8 -*-
 
+import os
+import re
+import sys
+import psutil
+import platform
 import Config
-import re,sys,psutil,platform
 from __init__ import __version__
 from optparse import OptionParser
 from optparse import OptionGroup
@@ -159,7 +163,7 @@ class Sysinfo:
     mem_free=str(free / 1024 / 1024) + 'M'
     MemPerc=str(UsedPerc)+'%'
 
-def Handler():
+def Handler(service):
     portfile = os.path.join(Config.SDP_DATA_HOME, 'port')
 
     if not os.path.isdir(Config.SDP_DATA_HOME):

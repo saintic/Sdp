@@ -15,7 +15,7 @@ apps=("mongodb" "mysql" "redis" "memcache")
 for s in ${Ss[@]}
 do
   user=${pre}_$s
-  ${sdpexec}/../sdp.py $user 12 $s ${user}@saintic.com
+  ${sdpexec}/../sdp -u $user -s $s -e staugur@vip.qq.com $@
   if [ $? -eq 0 ];then
       #check web
       if echo "${webs[@]}" | grep -w $s &> /dev/null ;then

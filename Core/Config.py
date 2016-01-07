@@ -48,6 +48,9 @@ SDP_USER_DATA_HOME = os.path.join(SDP_DATA_HOME, 'users')
 STARTPORT          = GLOBAL_CONF['STARTPORT']
 SERVER_IP          = GLOBAL_CONF['ServerIp']
 DN_BASE            = GLOBAL_CONF['DN']
+if not SERVER_IP:
+    import socket
+    SERVER_IP      = socket.gethostbyname(socket.gethostname())
 
 #set redis variables
 REDIS_HOST         = REDIS_CONF['host']

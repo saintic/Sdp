@@ -14,12 +14,8 @@ def StartWeb(**user):
 
     name, passwd, time, service, email = user['name'], user['passwd'], str(user['time']), user['service'], user['email']
     dn = name + Config.DN_BASE
-    PORT, image = Public.Handler()
+    PORT, image = Public.Handler(service)
     userhome = os.path.join(Config.SDP_USER_DATA_HOME, name)
-
-    os.chdir(Config.SDP_USER_DATA_HOME)
-    if not os.path.isdir(name):
-        os.mkdir(name)
 
     #docker network mode is 'bridge' or 'host'(not allow none and ContainerID)
     if user['network'] != None:
@@ -30,11 +26,7 @@ def StartWeb(**user):
         else:
             docker_network_mode = Config.DOCKER_NETWORK
 
-    Dk = Docker.Docker(**{"image":image, "name":name, "port":Config.PORTNAT['web'], "bind":('127.0.0.1', PORT), "volume":userhome})
-    cid = Dk.Create(mode=docker_network_mode)
-    Dk.Start(cid)
-
-    #define other code type, default is only ftp, disable svn and git.
+    #define other code type, default is only ftp, disable svn and git, but SVN and git can't exist at the same time!
     """
     About svn, if the command line is True(--enable-svn), then will follow the svn-type settings.
     If there is a svn-type setting, you can choose "svn_type" for 'http' or 'https'.
@@ -55,7 +47,11 @@ def StartWeb(**user):
     svn_repo = Config.SVN_ADDR + name
 
     """
-    About Git
+    Git是什么？
+    Git是目前世界上最先进的分布式版本控制系统（没有之一）。
+    Git有什么特点？简单来说就是：高端大气上档次！
+    The Git feature that really makes it stand apart from nearly every other SCM out there is its branching model.
+    Git allows and encourages you to have multiple local branches that can be entirely independent of each other. The creation, merging, and deletion of those lines of development takes seconds.
     """
     if user['enable_git'] != None:
         enable_git = True
@@ -63,34 +59,19 @@ def StartWeb(**user):
     else:
         enable_git = False
 
-    #make repo info
+    #make repo info, make a choice
     if enable_svn == False:
         if enable_git == False:
             repos = "None"
         else:
-            repos = "git:",git_repo
+            repos = "git=> " + git_repo
     if enable_svn == True:
         if enable_git == True:
-            repos = "svn:",svn_repo,"git:",git_repo
+            #repos = "svn=> " + svn_repo, "git=> "+git_repo
+            print "\033[0;31;40mSorry...You have to make a choice between SVN and git, and you don't have to choose all of the options.\033[0m"
+            exit()
         else:
-            repos = "svn:",svn_repo
-
-    userinfo_admin = {
-        "name": name, 
-        "passwd": passwd, 
-        "time": int(time), 
-        "service": service, 
-        "email": email, 
-        "image": image, 
-        "ip": "127.0.0.1",
-        "port": int(PORT), 
-        "dn": dn, 
-        "userhome": userhome, 
-        "repo": str(repos),
-        "container": cid,
-        "expiretime": Public.Time(m=time),
-        "network": docker_network_mode
-    }
+            repos = "svn=> "+svn_repo
 
     userinfo_user = r'''
 Dear %s, 以下是您的SdpCloud服务使用信息！
@@ -102,7 +83,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 用户域名: %s
 版本库信息: %s
 
-更多问题请查询官网文档(www.saintic.com)，祝您使用愉快。 如果有任何疑惑，欢迎与我们联系:
+更多使用方法请查询官方文档(www.saintic.com)，祝您使用愉快。 如果有任何疑惑，欢迎与我们联系:
 邮箱: staugur@saintic.com
 官网: http://www.saintic.com/
 问题: https://github.com/saintic/Sdp/issues''' %(name, name, passwd, int(time), service, email, dn, str(repos))
@@ -127,26 +108,49 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
 </body>
 </html>''' %(name, name, passwd, int(time), service, email, dn, str(repos))
 
+    userinfo_admin = {
+        "name": name,
+        "passwd": passwd,
+        "time": int(time),
+        "service": service,
+        "email": email,
+        "image": image,
+        "ip": "127.0.0.1",
+        "port": int(PORT),
+        "dn": dn,
+        "userhome": userhome,
+        "repo": str(repos),
+        "expiretime": Public.Time(m=time),
+        "network": docker_network_mode
+    }
+
     #define instances for writing redis and sending email.
     rc = Redis.RedisObject()
     ec = Mail.SendMail()
     if rc.ping():
-        import Coding
-        from sh import svn
-        Code = Coding.CodeManager(**userinfo_admin)
+        import Source
+        from sh import svn,chmod,chown
+        Code = Source.CodeManager(**userinfo_admin)
         Code.ftp()
-        with open(os.path.join(userhome, 'index.html'), 'w') as f:
-            f.write(userinfo_welcome)
+
+        if enable_svn == False and enable_git == False:
+            os.mkdir(userhome)
+            chown('-R', Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER, userhome)
+            chmod('-R', 'a+t', userhome)
 
         if enable_svn == True:
             Code.CreateApacheSvn(connect=svn_type)
-            Code.initSvn()
+            Code.initSvn(userinfo_welcome)
 
         if enable_git == True:
             Code.Git()
-            Code.initGit()
+            Code.initGit(userinfo_welcome)
 
         Code.Proxy()
+        Dk = Docker.Docker(**{"image":image, "name":name, "port":Config.PORTNAT['web'], "bind":('127.0.0.1', PORT), "volume":userhome})
+        cid = Dk.Create(mode=docker_network_mode)
+        Dk.Start(cid)
+        userinfo_admin["container"] = cid
         rc.hashset(**userinfo_admin)
         ec.send(name, email, userinfo_user)
     else:

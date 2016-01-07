@@ -3,12 +3,8 @@
 __date__ = '2015-11-29'
 __doc__ = '''read or write redis, set or get, mset or mget.'''
 
-try:
-    import redis
-    from Config import REDIS_HOST,REDIS_PORT,REDIS_DATADB,REDIS_PASSWORD
-except ImportError as Errmsg:
-    print __file__, "import redis module failed, because %s" % Errmsg
-    exit(1)
+import redis
+from Config import REDIS_HOST,REDIS_PORT,REDIS_DATADB,REDIS_PASSWORD
 
 class RedisObject:
 

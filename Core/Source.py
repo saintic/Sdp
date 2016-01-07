@@ -21,9 +21,7 @@ class CodeManager():
 
     def ftp(self):
         if Config.FTP_TYPE == 'virtual':
-            ftp_user_list = r'''%s
-%s
-''' %(self.name, self.passwd)
+            ftp_user_list = "%s\n%s\n" %(self.name, self.passwd)
             ftp_content_conf = r'''write_enable=YES
 anon_world_readable_only=NO
 anon_upload_enable=YES
@@ -40,8 +38,6 @@ local_root=%s
             db_load("-T", "-t", "hash", "-f", Config.FTP_VFTPUSERFILE, Config.FTP_VFTPUSERDBFILE)
             vsftpd=Command(Config.FTP_SCRIPT)
             vsftpd('restart')
-            chown('-R', Config.FTP_VFTPUSER + ':' + Config.FTP_VFTPUSER, self.userhome)
-            chmod('-R', 'a+t', self.userhome)
 
     def CreateApacheSvn(self, connect):
         from sh import svnadmin, chown, htpasswd, apachectl
@@ -49,8 +45,7 @@ local_root=%s
             os.mkdir(Config.SVN_ROOT)
         svnadmin('create', self.user_repo)
         chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.user_repo)
-        http_user_repo_content = r'''
-<Location /sdp/%s>
+        http_user_repo_content = r'''<Location /sdp/%s>
     DAV svn
     SVNPath %s
     AuthType Basic
@@ -62,8 +57,7 @@ local_root=%s
 </Location>
 ''' % (self.name, self.user_repo, Config.SVN_PASSFILE)
 
-        https_user_repo_content = r'''
-<Location /sdp/%s>
+        https_user_repo_content = r'''<Location /sdp/%s>
     DAV svn
     SVNPath %s
     AuthType Basic
@@ -94,57 +88,60 @@ local_root=%s
         apachectl('restart')  #sh.Command(script)
 
     def Svn(self):
+        pass
         """
         from sh import svnadmin
         if not os.path.exists(Config.SVN_ROOT):
             raise IOError('Not such directory: %s' % Config.SVN_ROOT)
         svnadmin('create', self.user_repo)
-        user_repo_authz = r'''
-[%s:/]
-%s=rw
-*=r
-''' %(self.name, self.name)
+        user_repo_authz = "[%s:/]\n%s=rw\n*=r\n" %(self.name, self.name)
         user_pass_content = "%s=%s\n" %(self.name, self.passwd)
         with open(Config.SVN_AUTH, 'a+') as f:
             f.write(user_repo_authz)
         with open(Config.SVN_PASSFILE, 'a+') as f:
             f.write(user_pass_content)
         """
-        pass
 
-    def initSvn(self):
+    def initSvn(self, file_content):
         from sh import svn, chmod, chown
         repourl = Config.SVN_ADDR + self.name
-        svn('co', '--non-interactive', '--trust-server-cert', repourl, self.userhome)
         hook_content = r'''#!/bin/bash
 export LC_CTYPE=en_US.UTF-8
 export LANG=en_US.UTF-8
 svn up %s
 ''' % self.userhome
-
+        #auto update with hook
         os.chdir(os.path.join(self.user_repo, 'hooks'))
-        with open('post-commit', 'w') as f:
-            f.write(hook_content)
+        with open('post-commit', 'w') as f: f.write(hook_content)
         chmod('-R', 777, self.user_repo)
+        #checkout add ci for init
+        svn('co', '--non-interactive', '--trust-server-cert', repourl, self.userhome)
         chown('-R', Config.HTTPD_USER + ':' + Config.HTTPD_GROUP, self.userhome)
-        #chmod('-R' 777, self.userhome)   #When you need to open FTP's write permissions
-        os.chdir(userhome)
+        os.chdir(self.userhome)
+        with open('index.html', 'w') as f:
+            f.write(file_content)
         svn('add', 'index.html')
-        svn('ci', '--username', name, '--password', passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
+        svn('ci', '--username', self.name, '--password', self.passwd, '--non-interactive', '--trust-server-cert', '-m', 'init commit', '--force-log')
 
     def Git(self):
         from sh import git,chown
         git('init', '--bare', self.user_gitrepo)
         chown('-R', Config.GIT_USER, self.user_gitrepo)
 
-    def initGit(self):
+    def initGit(self, file_content):
         from sh import git
         git_repourl = 'git@' + Config.GIT_SVR + ':' + self.user_gitrepo
+        os.chdir(Config.SDP_USER_DATA_HOME)
         git('clone', git_repourl)
-        #hooks add
-        git('add',  'index.html')
+        #git of add ci push
+        os.chdir(self.userhome)
+        with open('index.html', 'w') as f:
+            f.write(file_content)
+        git('add', 'index.html')
         git('commit', '-m', 'init commit')
         git('push', 'origin', 'master')
+        #git of hooks, for update code
+        #private publick key
 
     def Proxy(self):
         ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'
