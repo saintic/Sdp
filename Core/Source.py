@@ -129,7 +129,7 @@ svn up %s
         chown('-R', Config.GIT_USER, self.user_gitrepo)
 
     def initGit(self, file_content):
-        from sh import git
+        from sh import git,chmod,chown
         git_repourl = 'git@' + Config.GIT_SVR + ':' + self.user_gitrepo
         os.chdir(Config.SDP_USER_DATA_HOME)
         git('clone', git_repourl)
@@ -161,6 +161,8 @@ echo -e "\033[32mDeploy done!\033[0m"
 exit 0""" %(self.userhome, git_repourl)
         with open(os.path.join(self.user_gitrepo, 'hooks/post-update'), 'w') as f:
             f.write(post_update_content)
+        chmod('a+x', os.path.join(self.user_gitrepo, 'hooks/post-update'))
+        chown('-R', Config.GIT_USER, self.userhome)
         #private publick key or public password
 
     def Proxy(self):

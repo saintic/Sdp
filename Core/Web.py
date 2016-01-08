@@ -119,7 +119,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
         "port": int(PORT),
         "dn": dn,
         "userhome": userhome,
-        "repo": str(repos),
+        "repo": str(repos.split()[-1]),
         "expiretime": Public.Time(m=time),
         "network": docker_network_mode
     }
