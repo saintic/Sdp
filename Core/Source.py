@@ -141,8 +141,8 @@ svn up %s
         git('commit', '-m', 'init commit')
         git('push', 'origin', 'master')
         #git of hooks, for update code
-        post-update = r'''
-#!/bin/bash
+        post_update_content = """#!/bin/bash
+#Automatically update the project code, if there is an automatic update error, will re deploy the code.
 unset $(git rev-parse --local-env-vars)
 DeployPath=%s
 echo -e "\033[33mDeploy path is => ${DeployPath}\033[0m"
@@ -158,11 +158,10 @@ if test $? -ne 0;then
     [ $? -ne 0 ] && echo -e "\033[31mRedeploy fail, quit!\033[0m" && exit 1
 fi
 echo -e "\033[32mDeploy done!\033[0m"
-exit 0
-        ''' %(self.userhome, git_repourl)
+exit 0""" %(self.userhome, git_repourl)
         with open(os.path.join(self.user_gitrepo, 'hooks/post-update'), 'w') as f:
-            f.write(post-update)
-        #private publick key
+            f.write(post_update_content)
+        #private publick key or public password
 
     def Proxy(self):
         ngx_user_conf = os.path.join(Config.PROXY_DIR, self.name) + '.conf'
