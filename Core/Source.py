@@ -145,7 +145,7 @@ svn up %s
 #Automatically update the project code, if there is an automatic update error, will re deploy the code.
 unset $(git rev-parse --local-env-vars)
 DeployPath=%s
-echo -e "\033[33mDeploy path is => ${DeployPath}\033[0m"
+echo -e "\033[33mDeploy user is => %s\033[0m"
 [ ! -d $DeployPath ] && echo -e "\033[31mDirectory $DeployPath does not exist!\033[0m" && exit 1
 cd $DeployPath
 git pull
@@ -158,7 +158,7 @@ if test $? -ne 0;then
     [ $? -ne 0 ] && echo -e "\033[31mRedeploy fail, quit!\033[0m" && exit 1
 fi
 echo -e "\033[32mDeploy done!\033[0m"
-exit 0""" %(self.userhome, git_repourl)
+exit 0""" %(self.userhome, self.name, git_repourl)
         with open(os.path.join(self.user_gitrepo, 'hooks/post-update'), 'w') as f:
             f.write(post_update_content)
         chmod('a+x', os.path.join(self.user_gitrepo, 'hooks/post-update'))
