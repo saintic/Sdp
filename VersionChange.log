@@ -32,6 +32,12 @@
     1.Git(svn or git)
     2.命令行参数支持两种，一是顺序方式，但增加了code type，代码管理方式只能是svn或git或none，即ftp；第二种是选项参数方式。
 
+2015-01-17 Relase 1.1.6 Pre
+    1.修复已知的bug
+    2.发布可用的稳定版本。
+
+2015-01-17 Relase 1.1.7 Pre for Tools branch.
+
 Release 1.2
     主要是PythonWeb用户注册管理服务系统和集成代码管理
 

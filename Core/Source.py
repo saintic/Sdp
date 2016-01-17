@@ -157,7 +157,7 @@ if test $? -ne 0;then
     git clone %s $DeployPath
     [ $? -ne 0 ] && echo -e "\033[31mRedeploy fail, quit!\033[0m" && exit 1
 fi
-echo -e "\033[32mDeploy done!\033[0m"
+echo -e "\033[32mAutomatic deployment complete.\033[0m"
 exit 0""" %(self.userhome, self.name, git_repourl)
         with open(os.path.join(self.user_gitrepo, 'hooks/post-update'), 'w') as f:
             f.write(post_update_content)
