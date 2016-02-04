@@ -33,7 +33,7 @@
     2.命令行参数支持两种，一是顺序方式，但增加了code type，代码管理方式只能是svn或git或none，即ftp；第二种是选项参数方式。
 
 2015-01-17 Relase 1.1.6 Pre
-    1.修复已知的bug
+    1.修复已知的bug(去掉--svn-type命令行选项)
     2.发布可用的稳定版本。
 
 2015-01-17 Relase 1.1.7 Pre for Tools branch.
