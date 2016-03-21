@@ -46,7 +46,6 @@ def SOA():
     svn_group = OptionGroup(parser, "Svn Options")
     parser.add_option_group(svn_group)
     svn_group.add_option("--enable-svn", action="store_true", dest="enable_svn", metavar="enable svn", help="Enable svn support, default disable")
-    svn_group.add_option('--svn-type', dest='svn_type', metavar='svn type', help="Svn type for http, https")
 
     #git options group
     git_group = OptionGroup(parser, "Git Options")
@@ -71,14 +70,13 @@ def SOA():
 
     """Make option args, must have:-u, -t, -s, -e, defalt ftp, not svn and git.
     1. If "enable_svn" and "enable_git" is False, only ftp is enabled.
-    2. If "enable_svn" is True only, you can choose "svn_type" for 'http' or 'https'.
-    3. If "enable_git" is True only, will use 'git', but not svn.
-    4. If "enable_svn" and "enable_git" is True both, will use 'svn' and 'git'.
-    5. Whatever, ftp is enabled.
+    2. If "enable_git" is True only, will use 'git', but not svn.
+    3. If "enable_svn" and "enable_git" is True both, will use 'svn' and 'git'.
+    4. Whatever, ftp is enabled.
     """
     #print "options:%s, args:%s" %(options, args)
     user = {"name":options.name, "time":options.time, "service":options.service, "email":options.email}
-    opts = {"enable_svn":options.enable_svn, "svn_type":options.svn_type, "enable_git":options.enable_git, "network":options.network}
+    opts = {"enable_svn":options.enable_svn, "enable_git":options.enable_git, "network":options.network}
 
     #check command line options
     try:

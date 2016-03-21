@@ -39,7 +39,7 @@ local_root=%s
             vsftpd=Command(Config.FTP_SCRIPT)
             vsftpd('restart')
 
-    def CreateApacheSvn(self, connect):
+    def CreateApacheSvn(self, connect=Config.SVN_TYPE):
         from sh import svnadmin, chown, htpasswd, apachectl
         if not os.path.exists(Config.SVN_ROOT):
             os.mkdir(Config.SVN_ROOT)

@@ -27,20 +27,8 @@ def StartWeb(**user):
             docker_network_mode = Config.DOCKER_NETWORK
 
     #define other code type, default is only ftp, disable svn and git, but SVN and git can't exist at the same time!
-    """
-    About svn, if the command line is True(--enable-svn), then will follow the svn-type settings.
-    If there is a svn-type setting, you can choose "svn_type" for 'http' or 'https'.
-    If there is no svn-type settings, then you will read the configuration file settings.
-    However, if the configuration file is set to none, it means that the SVN is not enabled.
-    """
     if user['enable_svn'] != None:
         enable_svn = True
-        if user['svn_type'] != None:
-            svn_type = user['svn_type']
-        else:
-            svn_type = Config.SVN_TYPE
-        if svn_type == "none" or svn_type == "svn":
-            enable_svn = False
     else:
         enable_svn = False
 
@@ -141,7 +129,7 @@ Dear %s, 以下是您的SdpCloud服务使用信息！
             chmod('-R', 'a+t', userhome)
 
         if enable_svn == True:
-            Code.CreateApacheSvn(connect=svn_type)
+            Code.CreateApacheSvn()
             Code.initSvn(userinfo_welcome)
 
         if enable_git == True:

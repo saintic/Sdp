@@ -61,7 +61,7 @@ class Docker:
             cfs=None
         if not self.Images():
             self.Pull()
-        cid=self.connect.create_container(image=self.image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings, network_mode=mode), mem_limit=None, memswap_limit=None, cpu_shares=None)['Id'][:12]
+        cid=self.connect.create_container(image=self.image, name=name, stdin_open=True, tty=True, ports=cports, volumes=None, host_config=self.connect.create_host_config(restart_policy={"MaximumRetryCount": 0, "Name": "always"}, binds=cfs, port_bindings=port_bindings, network_mode=mode), mem_limit=None, memswap_limit=None, cpuset=None)['Id'][:12]
         return cid
 
     def Start(self, cid):
