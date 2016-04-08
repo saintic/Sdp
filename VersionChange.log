@@ -35,6 +35,7 @@
 2015-01-17 Relase 1.1.6 Pre
     1.修复已知的bug(去掉--svn-type命令行选项)
     2.发布可用的稳定版本。
+    3.代码管理方式只保留一种，默认启用ftp，否认关闭ftp启用svn、git任一种。
 
 2015-01-17 Relase 1.1.7 Pre for Tools branch.
 
