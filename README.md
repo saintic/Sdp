@@ -1,24 +1,28 @@
-# Sdp
-*Simle Docker PaaS, version 1.1.6, by Python.*
+# Sdp API
 
-**[中文]**
---------
+## 功能
 
-**快速开始：**
----------
-1.基础环境部署，官方文档：http://www.saintic.com/sdpv1.0/autodeploy.html
+查询用户信息
 
-2.pip install -r requirements.txt (运行中发现提示docker-py版本过高或过低，请尝试安装具体版本)
+更新用户名
 
-3.git clone https://github.com/saintic/Sdp
+更改用户下的键值
 
-4.cd Sdp ; ./sdp -u username -t time -s service -e email <--enable-svn> --svn-type <--enable-git>(以root身份运行) or 软链到PATH可执行。
+操作用户，包括删除用户、更新用户信息、增加用户(即构建服务)
 
-**如果还有问题，请到[https://github.com/saintic/Sdp/issues][2]提问。**
+其他。
 
-  [1]: http://www.saintic.com
-  [2]: https://github.com/saintic/Sdp/issues
+>目录结构说明
 
-Version question: VersionChange.log
-
-Documents: [www.saintic.com](http://www.saintic.com/)
+```
+├── config.py        配置文件
+├── gevent_server.py 生产环境启动脚本(gevent)
+├── README.md        说明
+├── requirements.txt 第三方Python需求模块
+├── scri
+│   └── init.d      系统服务脚本
+├── SdpAPI.py        主程序文件
+├── test
+│   └── __init__.py
+└── tornado_server.py生产环境启动脚本(tornado)
+```
