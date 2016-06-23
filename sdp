@@ -4,11 +4,11 @@ __doc__ = 'Sdp entry file, all the start.'
 
 import os
 import sys
-from Libs.Public import Sysinfo, Time, Precheck, SOA
-from Libs.Config import LANG, WEBS, APPS
-from Libs.Web import StartWeb
-from Libs.App import StartApp
-from Libs import __version__
+from lib.Public import Sysinfo, Time, Precheck, SOA
+from lib.Config import LANG, WEBS, APPS
+from lib.Web import StartWeb
+from lib.App import StartApp
+from lib import __version__
 
 
 def SdpCloudRun(**kwargs):
